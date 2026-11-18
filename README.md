@@ -9,7 +9,7 @@
 [![Build](https://github.com/deepcodecreate/lumenstore/actions/workflows/build.yml/badge.svg)](https://github.com/deepcodecreate/lumenstore/actions/workflows/build.yml)
 [![Release](https://img.shields.io/github/v/release/deepcodecreate/lumenstore?include_prereleases&label=release)](https://github.com/deepcodecreate/lumenstore/releases)
 [![Downloads](https://img.shields.io/github/downloads/deepcodecreate/lumenstore/total)](https://github.com/deepcodecreate/lumenstore/releases)
-[![License](https://img.shields.io/github/license/deepcodecreate/lumenstore)](LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
 ![Min SDK](https://img.shields.io/badge/minSdk-26-3DDC84?logo=android&logoColor=white)
 ![Material 3](https://img.shields.io/badge/Material-3-6750A4?logo=materialdesign&logoColor=white)
 
