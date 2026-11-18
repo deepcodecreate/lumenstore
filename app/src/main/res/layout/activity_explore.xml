@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp"
+        app:liftOnScroll="false">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/searchLayout"
+                style="@style/Widget.App.SearchField"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/search_hint"
+                app:startIconDrawable="@drawable/ic_search"
+                app:startIconTint="?attr/colorOnSurfaceVariant"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/colorOnSurfaceVariant">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/exploreRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="80dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <FrameLayout
+            android:id="@+id/contentFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/exploreScroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fillViewport="true">
+            <LinearLayout
+                android:id="@+id/exploreContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="24dp">
+                <LinearLayout
+                    android:id="@+id/sectionNew"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="4dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:paddingStart="16dp" android:paddingEnd="8dp">
+                        <TextView android:id="@+id/sectionNewTitle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textAppearance="?attr/textAppearanceTitleMedium" android:textColor="?attr/colorOnSurface" />
+                        <ImageView android:id="@+id/sectionNewArrow" android:layout_width="36dp" android:layout_height="36dp" android:padding="8dp" android:src="@drawable/ic_chevron_right" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="@null" app:tint="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView android:id="@+id/sectionNewRecycler" android:layout_width="match_parent" android:layout_height="wrap_content" android:clipToPadding="false" android:overScrollMode="never" android:paddingStart="8dp" android:paddingEnd="8dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/sectionUpdated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="4dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:paddingStart="16dp" android:paddingEnd="8dp">
+                        <TextView android:id="@+id/sectionUpdatedTitle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textAppearance="?attr/textAppearanceTitleMedium" android:textColor="?attr/colorOnSurface" />
+                        <ImageView android:id="@+id/sectionUpdatedArrow" android:layout_width="36dp" android:layout_height="36dp" android:padding="8dp" android:src="@drawable/ic_chevron_right" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="@null" app:tint="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView android:id="@+id/sectionUpdatedRecycler" android:layout_width="match_parent" android:layout_height="wrap_content" android:clipToPadding="false" android:overScrollMode="never" android:paddingStart="8dp" android:paddingEnd="8dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/sectionPopular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="4dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:paddingStart="16dp" android:paddingEnd="8dp">
+                        <TextView android:id="@+id/sectionPopularTitle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textAppearance="?attr/textAppearanceTitleMedium" android:textColor="?attr/colorOnSurface" />
+                        <ImageView android:id="@+id/sectionPopularArrow" android:layout_width="36dp" android:layout_height="36dp" android:padding="8dp" android:src="@drawable/ic_chevron_right" android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackgroundBorderless" android:contentDescription="@null" app:tint="?attr/colorOnSurfaceVariant" />
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView android:id="@+id/sectionPopularRecycler" android:layout_width="match_parent" android:layout_height="wrap_content" android:clipToPadding="false" android:overScrollMode="never" android:paddingStart="8dp" android:paddingEnd="8dp" />
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/categories_title"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface" />
+                <LinearLayout
+                    android:id="@+id/categoriesContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="8dp"
+            android:visibility="gone" />
+        <include
+            android:id="@+id/loadingPanel"
+            layout="@layout/view_explore_skeleton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_results_simple"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:visibility="gone" />
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <include layout="@layout/include_bottom_nav" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

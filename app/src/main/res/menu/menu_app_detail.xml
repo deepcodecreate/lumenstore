@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_latest" android:icon="@drawable/ic_download" android:title="@string/action_latest" app:showAsAction="never" />
+    <item android:id="@+id/action_run" android:icon="@drawable/ic_player_play" android:title="@string/action_run" app:showAsAction="never" />
+    <item android:id="@+id/action_repo" android:icon="@drawable/ic_external_link" android:title="@string/action_repo" app:showAsAction="never" />
+    <item android:id="@+id/action_share" android:icon="@drawable/ic_share" android:title="@string/action_share" app:showAsAction="ifRoom" />
+</menu>

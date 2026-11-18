@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@android:color/transparent">
+    <com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@android:color/transparent" app:elevation="0dp" app:liftOnScroll="false">
+        <com.google.android.material.appbar.MaterialToolbar android:id="@+id/toolbar" android:layout_width="match_parent" android:layout_height="?attr/actionBarSize" android:title="@string/settings_title" app:titleTextAppearance="?attr/textAppearanceTitleLarge" app:titleTextColor="?attr/colorOnSurface" />
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.core.widget.NestedScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:clipToPadding="false" android:overScrollMode="never" app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout android:id="@+id/settingsSectionsContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingStart="12dp" android:paddingTop="8dp" android:paddingEnd="12dp" android:paddingBottom="120dp">
+            <com.google.android.material.card.MaterialCardView android:id="@+id/cardAppearance" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" app:cardBackgroundColor="?attr/colorSurfaceContainer" app:cardElevation="0dp" app:shapeAppearance="?attr/shapeAppearanceCornerMedium" app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                    <include android:id="@+id/headerAppearance" layout="@layout/item_settings_section_header" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                    <LinearLayout android:id="@+id/contentAppearance" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                        <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowTheme" layout="@layout/item_settings_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowLanguage" layout="@layout/item_settings_segment_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowFontSize" layout="@layout/item_settings_slider_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowNavLabels" layout="@layout/item_settings_switch_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView android:id="@+id/cardBehavior" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" app:cardBackgroundColor="?attr/colorSurfaceContainer" app:cardElevation="0dp" app:shapeAppearance="?attr/shapeAppearanceCornerMedium" app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                    <include android:id="@+id/headerBehavior" layout="@layout/item_settings_section_header" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                    <LinearLayout android:id="@+id/contentBehavior" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                        <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowDefaultTab" layout="@layout/item_settings_segment_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowMotionStyle" layout="@layout/item_settings_segment_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowHaptics" layout="@layout/item_settings_switch_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView android:id="@+id/cardSync" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" app:cardBackgroundColor="?attr/colorSurfaceContainer" app:cardElevation="0dp" app:shapeAppearance="?attr/shapeAppearanceCornerMedium" app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                    <include android:id="@+id/headerSync" layout="@layout/item_settings_section_header" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                    <LinearLayout android:id="@+id/contentSync" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                        <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowAutoCheckUpdates" layout="@layout/item_settings_switch_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowBackgroundSync" layout="@layout/item_settings_switch_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowWifiOnlySync" layout="@layout/item_settings_switch_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowFdroidIndex" layout="@layout/item_settings_switch_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView android:id="@+id/cardDownloads" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" app:cardBackgroundColor="?attr/colorSurfaceContainer" app:cardElevation="0dp" app:shapeAppearance="?attr/shapeAppearanceCornerMedium" app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                    <include android:id="@+id/headerDownloads" layout="@layout/item_settings_section_header" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                    <LinearLayout android:id="@+id/contentDownloads" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                        <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowSaveDownloads" layout="@layout/item_settings_switch_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowKeepApk" layout="@layout/item_settings_switch_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView android:id="@+id/cardData" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" app:cardBackgroundColor="?attr/colorSurfaceContainer" app:cardElevation="0dp" app:shapeAppearance="?attr/shapeAppearanceCornerMedium" app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                    <include android:id="@+id/headerData" layout="@layout/item_settings_section_header" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                    <LinearLayout android:id="@+id/contentData" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                        <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowRescan" layout="@layout/item_settings_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowRepos" layout="@layout/item_settings_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowBackup" layout="@layout/item_settings_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowGithub" layout="@layout/item_settings_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                <include layout="@layout/item_settings_divider_inset" />
+                <include android:id="@+id/rowVersion" layout="@layout/item_settings_value_row" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

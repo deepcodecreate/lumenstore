@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <color name="md_primary">#4FD1C5</color>
+    <color name="md_on_primary">#003732</color>
+    <color name="md_primary_container">#005046</color>
+    <color name="md_on_primary_container">#9CF6E1</color>
+    <color name="md_secondary">#B1CCC6</color>
+    <color name="md_on_secondary">#1C3531</color>
+    <color name="md_secondary_container">#334B47</color>
+    <color name="md_on_secondary_container">#CDE8E2</color>
+    <color name="md_tertiary">#A8CBE4</color>
+    <color name="md_on_tertiary">#0D344A</color>
+    <color name="md_error">#FFB4AB</color>
+    <color name="md_on_error">#690005</color>
+    <color name="md_background">#0F1416</color>
+    <color name="md_on_background">#DEE3E6</color>
+    <color name="md_surface">#0F1416</color>
+    <color name="md_on_surface">#DEE3E6</color>
+    <color name="md_surface_variant">#3F4947</color>
+    <color name="md_on_surface_variant">#BEC9C6</color>
+    <color name="md_outline">#899390</color>
+    <color name="md_surface_container">#1B2123</color>
+    <color name="md_surface_container_high">#252B2D</color>
+    <color name="md_surface_container_low">#171D1F</color>
+    <color name="chip_update_bg">#005046</color>
+    <color name="chip_update_text">#9CF6E1</color>
+    <color name="chip_uptodate_bg">#334B47</color>
+    <color name="chip_uptodate_text">#CDE8E2</color>
+    <color name="icon_avatar_bg">#2A3133</color>
+    <color name="download_cancel_dark_theme">#2E8B57</color>
+    <color name="download_cancel_light_theme">#8E5FD1</color>
+</resources>

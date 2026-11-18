@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.OpenSourceFinder" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:textViewStyle">@style/Widget.App.TextView</item>
+        <item name="android:fontFamily">@font/naskh</item>
+        <item name="fontFamily">@font/naskh</item>
+        <item name="colorPrimary">@color/md_primary</item>
+        <item name="colorOnPrimary">@color/md_on_primary</item>
+        <item name="colorPrimaryContainer">@color/md_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/md_on_primary_container</item>
+        <item name="colorSecondary">@color/md_secondary</item>
+        <item name="colorOnSecondary">@color/md_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/md_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/md_on_secondary_container</item>
+        <item name="colorTertiary">@color/md_tertiary</item>
+        <item name="colorOnTertiary">@color/md_on_tertiary</item>
+        <item name="colorError">@color/md_error</item>
+        <item name="colorOnError">@color/md_on_error</item>
+        <item name="android:colorBackground">@color/md_background</item>
+        <item name="colorOnBackground">@color/md_on_background</item>
+        <item name="colorSurface">@color/md_surface</item>
+        <item name="colorOnSurface">@color/md_on_surface</item>
+        <item name="colorSurfaceVariant">@color/md_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/md_on_surface_variant</item>
+        <item name="colorOutline">@color/md_outline</item>
+        <item name="colorSurfaceContainer">@color/md_surface_container</item>
+        <item name="colorSurfaceContainerHigh">@color/md_surface_container_high</item>
+        <item name="colorSurfaceContainerLow">@color/md_surface_container_low</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout.Outlined</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Dark</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Light" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:textViewStyle">@style/Widget.App.TextView</item>
+        <item name="android:fontFamily">@font/naskh</item>
+        <item name="fontFamily">@font/naskh</item>
+        <item name="colorPrimary">#006A62</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#9CF2E4</item>
+        <item name="colorOnPrimaryContainer">#00201D</item>
+        <item name="colorSecondary">#4A635F</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorSecondaryContainer">#CCE8E2</item>
+        <item name="colorOnSecondaryContainer">#06201D</item>
+        <item name="colorTertiary">#456179</item>
+        <item name="colorOnTertiary">#FFFFFF</item>
+        <item name="colorError">#BA1A1A</item>
+        <item name="colorOnError">#FFFFFF</item>
+        <item name="android:colorBackground">#F5FAF8</item>
+        <item name="colorOnBackground">#171D1C</item>
+        <item name="colorSurface">#F5FAF8</item>
+        <item name="colorOnSurface">#171D1C</item>
+        <item name="colorSurfaceVariant">#DCE5E2</item>
+        <item name="colorOnSurfaceVariant">#404946</item>
+        <item name="colorOutline">#707975</item>
+        <item name="colorSurfaceContainerLowest">#FFFFFF</item>
+        <item name="colorSurfaceContainerLow">#EFF5F2</item>
+        <item name="colorSurfaceContainer">#E9EFEC</item>
+        <item name="colorSurfaceContainerHigh">#E3E9E6</item>
+        <item name="colorSurfaceContainerHighest">#DDE4E1</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout.Outlined</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.EmberLight" parent="Theme.OpenSourceFinder.Light">
+        <item name="colorPrimary">#8B3A28</item><item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#FFDAD2</item><item name="colorOnPrimaryContainer">#410E06</item>
+        <item name="android:colorBackground">#FFF8F6</item><item name="colorSurface">#FFF8F6</item>
+        <item name="colorOnSurface">#201A18</item><item name="colorSurfaceContainer">#F4E0DC</item>
+        <item name="colorSurfaceContainerHigh">#EDC7BE</item><item name="colorSurfaceContainerLow">#FAEEEB</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.StoneLight" parent="Theme.OpenSourceFinder.Light">
+        <item name="colorPrimary">#5D5D5D</item><item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#E2E2E2</item><item name="colorOnPrimaryContainer">#1B1B1B</item>
+        <item name="android:colorBackground">#F7F7F7</item><item name="colorSurface">#F7F7F7</item>
+        <item name="colorOnSurface">#1B1B1B</item><item name="colorSurfaceContainer">#EEEEEE</item>
+        <item name="colorSurfaceContainerHigh">#E5E5E5</item><item name="colorSurfaceContainerLow">#F2F2F2</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.DuskLight" parent="Theme.OpenSourceFinder.Light">
+        <item name="colorPrimary">#006A64</item><item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#70F7EE</item><item name="colorOnPrimaryContainer">#00201D</item>
+        <item name="android:colorBackground">#F3FAF9</item><item name="colorSurface">#F3FAF9</item>
+        <item name="colorOnSurface">#171D1C</item><item name="colorSurfaceContainer">#E5F1EF</item>
+        <item name="colorSurfaceContainerHigh">#DCE9E6</item><item name="colorSurfaceContainerLow">#ECF5F3</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.MidnightLight" parent="Theme.OpenSourceFinder.Light">
+        <item name="colorPrimary">#4F5FA8</item><item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#DEE0FF</item><item name="colorOnPrimaryContainer">#111B55</item>
+        <item name="android:colorBackground">#F7F7FF</item><item name="colorSurface">#F7F7FF</item>
+        <item name="colorOnSurface">#191A22</item><item name="colorSurfaceContainer">#E9E9F5</item>
+        <item name="colorSurfaceContainerHigh">#E0E0ED</item><item name="colorSurfaceContainerLow">#F0F0FA</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.NeonLight" parent="Theme.OpenSourceFinder.Light">
+        <item name="colorPrimary">#246B00</item><item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#8BFA55</item><item name="colorOnPrimaryContainer">#092100</item>
+        <item name="android:colorBackground">#F7FAF3</item><item name="colorSurface">#F7FAF3</item>
+        <item name="colorOnSurface">#191D16</item><item name="colorSurfaceContainer">#EAF1E4</item>
+        <item name="colorSurfaceContainerHigh">#DDE8D4</item><item name="colorSurfaceContainerLow">#F0F5EB</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.MintLight" parent="Theme.OpenSourceFinder.Light">
+        <item name="colorPrimary">#006B52</item><item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#9CF4D5</item><item name="colorOnPrimaryContainer">#002117</item>
+        <item name="android:colorBackground">#F2FAF6</item><item name="colorSurface">#F2FAF6</item>
+        <item name="colorOnSurface">#171D19</item><item name="colorSurfaceContainer">#E4F1E9</item>
+        <item name="colorSurfaceContainerHigh">#D9E9DF</item><item name="colorSurfaceContainerLow">#ECF5EF</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.RoseLight" parent="Theme.OpenSourceFinder.Light">
+        <item name="colorPrimary">#A72E52</item><item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#FFD9E1</item><item name="colorOnPrimaryContainer">#3F0017</item>
+        <item name="android:colorBackground">#FFF7F8</item><item name="colorSurface">#FFF7F8</item>
+        <item name="colorOnSurface">#21191B</item><item name="colorSurfaceContainer">#F5E5E8</item>
+        <item name="colorSurfaceContainerHigh">#EED7DC</item><item name="colorSurfaceContainerLow">#FAEEF0</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.PlumLight" parent="Theme.OpenSourceFinder.Light">
+        <item name="colorPrimary">#7D3DA7</item><item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#F0DFFF</item><item name="colorOnPrimaryContainer">#2B064C</item>
+        <item name="android:colorBackground">#FBF7FF</item><item name="colorSurface">#FBF7FF</item>
+        <item name="colorOnSurface">#1E1922</item><item name="colorSurfaceContainer">#F0E7F5</item>
+        <item name="colorSurfaceContainerHigh">#E8DDF0</item><item name="colorSurfaceContainerLow">#F6F0FA</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.OceanLight" parent="Theme.OpenSourceFinder.Light">
+        <item name="colorPrimary">#006399</item><item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#CDE5FF</item><item name="colorOnPrimaryContainer">#001D32</item>
+        <item name="android:colorBackground">#F5F9FF</item><item name="colorSurface">#F5F9FF</item>
+        <item name="colorOnSurface">#171C22</item><item name="colorSurfaceContainer">#E6EEF6</item>
+        <item name="colorSurfaceContainerHigh">#DBE6F0</item><item name="colorSurfaceContainerLow">#EEF4FA</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.SandDark" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#D4C09D</item><item name="colorOnPrimary">#392E1B</item>
+        <item name="colorPrimaryContainer">#514530</item><item name="colorOnPrimaryContainer">#F2E2C2</item>
+        <item name="android:colorBackground">#1C1913</item><item name="colorSurface">#1C1913</item>
+        <item name="colorOnSurface">#E9E1D2</item><item name="colorSurfaceContainer">#29251E</item>
+        <item name="colorSurfaceContainerHigh">#342F27</item><item name="colorSurfaceContainerLow">#231F19</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.SkyDark" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#90CDE8</item><item name="colorOnPrimary">#003548</item>
+        <item name="colorPrimaryContainer">#164D63</item><item name="colorOnPrimaryContainer">#C8E6F5</item>
+        <item name="android:colorBackground">#111A20</item><item name="colorSurface">#111A20</item>
+        <item name="colorOnSurface">#DDE5EA</item><item name="colorSurfaceContainer">#1D272E</item>
+        <item name="colorSurfaceContainerHigh">#28343B</item><item name="colorSurfaceContainerLow">#172127</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.AutumnDark" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#FFB68D</item><item name="colorOnPrimary">#512300</item>
+        <item name="colorPrimaryContainer">#733600</item><item name="colorOnPrimaryContainer">#FFDBC8</item>
+        <item name="android:colorBackground">#20150F</item><item name="colorSurface">#20150F</item>
+        <item name="colorOnSurface">#F0DFD4</item><item name="colorSurfaceContainer">#2D2019</item>
+        <item name="colorSurfaceContainerHigh">#3A2A21</item><item name="colorSurfaceContainerLow">#261B15</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.BlossomDark" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#FFB1C8</item><item name="colorOnPrimary">#5E1132</item>
+        <item name="colorPrimaryContainer">#7C2949</item><item name="colorOnPrimaryContainer">#FFD8E6</item>
+        <item name="android:colorBackground">#201218</item><item name="colorSurface">#201218</item>
+        <item name="colorOnSurface">#F2DDE4</item><item name="colorSurfaceContainer">#2D1D25</item>
+        <item name="colorSurfaceContainerHigh">#392630</item><item name="colorSurfaceContainerLow">#261820</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.ForestDark" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#8AD18F</item><item name="colorOnPrimary">#00390D</item>
+        <item name="colorPrimaryContainer">#165321</item><item name="colorOnPrimaryContainer">#C8F0CC</item>
+        <item name="android:colorBackground">#111A12</item><item name="colorSurface">#111A12</item>
+        <item name="colorOnSurface">#DCE9DC</item><item name="colorSurfaceContainer">#1D271D</item>
+        <item name="colorSurfaceContainerHigh">#283428</item><item name="colorSurfaceContainerLow">#172117</item>
+    </style>
+    <style name="ShapeAppearance.App.Corner.ExtraSmall" parent="ShapeAppearance.Material3.Corner.ExtraSmall"><item name="cornerFamily">rounded</item><item name="cornerSize">8dp</item></style>
+    <style name="ShapeAppearance.App.Corner.Small" parent="ShapeAppearance.Material3.Corner.Small"><item name="cornerFamily">rounded</item><item name="cornerSize">12dp</item></style>
+    <style name="ShapeAppearance.App.Corner.Medium" parent="ShapeAppearance.Material3.Corner.Medium"><item name="cornerFamily">rounded</item><item name="cornerSize">16dp</item></style>
+    <style name="ShapeAppearance.App.Corner.Large" parent="ShapeAppearance.Material3.Corner.Large"><item name="cornerFamily">rounded</item><item name="cornerSize">24dp</item></style>
+    <style name="ShapeAppearance.App.Corner.ExtraLarge" parent="ShapeAppearance.Material3.Corner.ExtraLarge"><item name="cornerFamily">rounded</item><item name="cornerSize">32dp</item></style>
+    <style name="ThemeOverlay.OpenSourceFinder.StrataShapes" parent="">
+        <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.App.Corner.ExtraSmall</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.App.Corner.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.App.Corner.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.App.Corner.Large</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.App.Corner.ExtraLarge</item>
+        <item name="popupMenuStyle">@style/Widget.App.PopupMenu</item>
+        <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+        <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
+        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
+        <item name="android:windowElevation">0dp</item>
+    </style>
+    <style name="Widget.App.CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardElevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+    <style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="elevation">0dp</item>
+        <item name="pressedTranslationZ">0dp</item>
+        <item name="hoveredFocusedTranslationZ">0dp</item>
+        <item name="borderWidth">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+    <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
+        <item name="elevation">0dp</item>
+        <item name="pressedTranslationZ">0dp</item>
+        <item name="hoveredFocusedTranslationZ">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+    <style name="Widget.App.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="android:elevation">0dp</item>
+    </style>
+    <style name="Widget.App.PopupMenu" parent="Widget.Material3.PopupMenu">
+        <item name="android:popupBackground">@drawable/bg_popup_menu</item>
+        <item name="android:popupElevation">0dp</item>
+        <item name="android:popupAnimationStyle">@style/Animation.App.PopupMenu</item>
+    </style>
+    <style name="Animation.App.PopupMenu" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_menu_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_menu_exit</item>
+    </style>
+    <style name="ThemeOverlay.OpenSourceFinder.PureBlack" parent="">
+        <item name="android:colorBackground">#000000</item>
+        <item name="colorSurface">#000000</item>
+        <item name="colorSurfaceContainerLowest">#000000</item>
+        <item name="colorSurfaceContainerLow">#030303</item>
+        <item name="colorSurfaceContainer">#080808</item>
+        <item name="colorSurfaceContainerHigh">#101010</item>
+        <item name="colorSurfaceContainerHighest">#181818</item>
+    </style>
+    <style name="ThemeOverlay.OpenSourceFinder.ContrastLight" parent="">
+        <item name="colorOnSurface">#000000</item><item name="colorOnSurfaceVariant">#171717</item>
+        <item name="colorOutline">#3D4441</item><item name="colorOutlineVariant">#606965</item>
+    </style>
+    <style name="ThemeOverlay.OpenSourceFinder.ContrastDark" parent="">
+        <item name="colorOnSurface">#FFFFFF</item><item name="colorOnSurfaceVariant">#F0F0F0</item>
+        <item name="colorOutline">#D0D0D0</item><item name="colorOutlineVariant">#A3A3A3</item>
+    </style>
+    <style name="ThemeOverlay.OpenSourceFinder.ContrastSoftLight" parent="">
+        <item name="colorOnSurfaceVariant">#555D59</item><item name="colorOutline">#919A95</item>
+    </style>
+    <style name="ThemeOverlay.OpenSourceFinder.ContrastSoftDark" parent="">
+        <item name="colorOnSurfaceVariant">#AEB8B4</item><item name="colorOutline">#69736F</item>
+    </style>
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:windowElevation">0dp</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.Dialog</item>
+    </style>
+    <style name="ShapeAppearance.App.Dialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+    <style name="Widget.App.SearchField" parent="Widget.Material3.TextInputLayout.FilledBox.Dense">
+        <item name="boxBackgroundColor">?attr/colorSurfaceContainerHigh</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxCornerRadiusTopStart">26dp</item>
+        <item name="boxCornerRadiusTopEnd">26dp</item>
+        <item name="boxCornerRadiusBottomStart">26dp</item>
+        <item name="boxCornerRadiusBottomEnd">26dp</item>
+    </style>
+    <style name="Widget.App.TextInputLayout.Outlined" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+    </style>
+        <style name="Widget.App.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="android:textDirection">locale</item>
+        <item name="chipBackgroundColor">@color/chip_filter_background</item>
+        <item name="android:textColor">@color/chip_filter_text</item>
+        <item name="chipStrokeColor">@color/chip_filter_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="checkedIconTint">?attr/colorOnPrimaryContainer</item>
+        <item name="rippleColor">?attr/colorPrimary</item>
+    </style>
+        <style name="Widget.App.Slider" parent="Widget.Material3.Slider">
+        <item name="thumbColor">?attr/colorPrimary</item>
+        <item name="trackColorActive">?attr/colorPrimary</item>
+        <item name="trackColorInactive">?attr/colorSurfaceContainerHigh</item>
+        <item name="haloColor">@color/slider_halo</item>
+        <item name="tickColorActive">?attr/colorOnPrimary</item>
+        <item name="tickColorInactive">?attr/colorOutline</item>
+    </style>
+        <style name="Theme.OpenSourceFinder.Ember" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#FFB4A2</item>
+        <item name="colorOnPrimary">#5C1A0C</item>
+        <item name="colorPrimaryContainer">#8B3A28</item>
+        <item name="colorOnPrimaryContainer">#FFDAD2</item>
+        <item name="android:colorBackground">#1C1010</item>
+        <item name="colorSurface">#1C1010</item>
+        <item name="colorOnSurface">#F5DDD8</item>
+        <item name="colorSurfaceContainer">#2A1816</item>
+        <item name="colorSurfaceContainerHigh">#35201D</item>
+        <item name="colorSurfaceContainerLow">#241412</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Stone" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#C6C6C6</item>
+        <item name="colorOnPrimary">#303030</item>
+        <item name="colorPrimaryContainer">#474747</item>
+        <item name="colorOnPrimaryContainer">#E2E2E2</item>
+        <item name="android:colorBackground">#121212</item>
+        <item name="colorSurface">#121212</item>
+        <item name="colorOnSurface">#E6E6E6</item>
+        <item name="colorSurfaceContainer">#1E1E1E</item>
+        <item name="colorSurfaceContainerHigh">#2A2A2A</item>
+        <item name="colorSurfaceContainerLow">#1A1A1A</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Dusk" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#4DD0C8</item>
+        <item name="colorOnPrimary">#003733</item>
+        <item name="colorPrimaryContainer">#00504B</item>
+        <item name="colorOnPrimaryContainer">#70F7EE</item>
+        <item name="android:colorBackground">#0E1A22</item>
+        <item name="colorSurface">#0E1A22</item>
+        <item name="colorOnSurface">#D6E4EC</item>
+        <item name="colorSurfaceContainer">#172430</item>
+        <item name="colorSurfaceContainerHigh">#1F2E3B</item>
+        <item name="colorSurfaceContainerLow">#131F28</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Midnight" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#8B9CF7</item>
+        <item name="colorOnPrimary">#14218B</item>
+        <item name="colorPrimaryContainer">#2F3FAF</item>
+        <item name="colorOnPrimaryContainer">#DEE0FF</item>
+        <item name="android:colorBackground">#0D0F1A</item>
+        <item name="colorSurface">#0D0F1A</item>
+        <item name="colorOnSurface">#E2E1EC</item>
+        <item name="colorSurfaceContainer">#181A28</item>
+        <item name="colorSurfaceContainerHigh">#222436</item>
+        <item name="colorSurfaceContainerLow">#141622</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Sand" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:textViewStyle">@style/Widget.App.TextView</item>
+        <item name="android:fontFamily">@font/naskh</item>
+        <item name="fontFamily">@font/naskh</item>
+        <item name="colorPrimary">#7A6548</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#F5E6C8</item>
+        <item name="colorOnPrimaryContainer">#2A2112</item>
+        <item name="android:colorBackground">#F5F0E6</item>
+        <item name="colorSurface">#F5F0E6</item>
+        <item name="colorOnSurface">#1C1B16</item>
+        <item name="colorSurfaceContainer">#EBE4D6</item>
+        <item name="colorSurfaceContainerHigh">#E3DAC8</item>
+        <item name="colorSurfaceContainerLow">#F0EADF</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout.Outlined</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Sky" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:textViewStyle">@style/Widget.App.TextView</item>
+        <item name="android:fontFamily">@font/naskh</item>
+        <item name="fontFamily">@font/naskh</item>
+        <item name="colorPrimary">#2B6B8A</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#C8E6F5</item>
+        <item name="colorOnPrimaryContainer">#001E2C</item>
+        <item name="android:colorBackground">#F0F6FA</item>
+        <item name="colorSurface">#F0F6FA</item>
+        <item name="colorOnSurface">#161C20</item>
+        <item name="colorSurfaceContainer">#E2ECF2</item>
+        <item name="colorSurfaceContainerHigh">#D4E2EB</item>
+        <item name="colorSurfaceContainerLow">#E8F0F5</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout.Outlined</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Autumn" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:textViewStyle">@style/Widget.App.TextView</item>
+        <item name="android:fontFamily">@font/naskh</item>
+        <item name="fontFamily">@font/naskh</item>
+        <item name="colorPrimary">#A85B2A</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#FFDBC8</item>
+        <item name="colorOnPrimaryContainer">#341000</item>
+        <item name="android:colorBackground">#FFF8F0</item>
+        <item name="colorSurface">#FFF8F0</item>
+        <item name="colorOnSurface">#221A14</item>
+        <item name="colorSurfaceContainer">#F3E8DC</item>
+        <item name="colorSurfaceContainerHigh">#EBDDCE</item>
+        <item name="colorSurfaceContainerLow">#F8F0E6</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout.Outlined</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Neon" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#39FF14</item>
+        <item name="colorOnPrimary">#003A00</item>
+        <item name="colorPrimaryContainer">#0B5C00</item>
+        <item name="colorOnPrimaryContainer">#7DFF6A</item>
+        <item name="android:colorBackground">#0A0A0A</item>
+        <item name="colorSurface">#0A0A0A</item>
+        <item name="colorOnSurface">#E6FFE0</item>
+        <item name="colorSurfaceContainer">#141414</item>
+        <item name="colorSurfaceContainerHigh">#1E1E1E</item>
+        <item name="colorSurfaceContainerLow">#101010</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Mint" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#7FE7C4</item>
+        <item name="colorOnPrimary">#00382A</item>
+        <item name="colorPrimaryContainer">#00513E</item>
+        <item name="colorOnPrimaryContainer">#9CF4D5</item>
+        <item name="android:colorBackground">#0B1A18</item>
+        <item name="colorSurface">#0B1A18</item>
+        <item name="colorOnSurface">#D4E8E3</item>
+        <item name="colorSurfaceContainer">#142422</item>
+        <item name="colorSurfaceContainerHigh">#1C2E2B</item>
+        <item name="colorSurfaceContainerLow">#101F1D</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Rose" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#FF8FAB</item>
+        <item name="colorOnPrimary">#5F001E</item>
+        <item name="colorPrimaryContainer">#8B2340</item>
+        <item name="colorOnPrimaryContainer">#FFD9E1</item>
+        <item name="android:colorBackground">#1A0F14</item>
+        <item name="colorSurface">#1A0F14</item>
+        <item name="colorOnSurface">#F5DCE3</item>
+        <item name="colorSurfaceContainer">#281820</item>
+        <item name="colorSurfaceContainerHigh">#342028</item>
+        <item name="colorSurfaceContainerLow">#22141A</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Plum" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#D0A8FF</item>
+        <item name="colorOnPrimary">#3D1063</item>
+        <item name="colorPrimaryContainer">#5C2E86</item>
+        <item name="colorOnPrimaryContainer">#F0DFFF</item>
+        <item name="android:colorBackground">#180F1F</item>
+        <item name="colorSurface">#180F1F</item>
+        <item name="colorOnSurface">#EADFF0</item>
+        <item name="colorSurfaceContainer">#241A2C</item>
+        <item name="colorSurfaceContainerHigh">#302438</item>
+        <item name="colorSurfaceContainerLow">#1D1424</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Ocean" parent="Theme.OpenSourceFinder">
+        <item name="colorPrimary">#6FC3FF</item>
+        <item name="colorOnPrimary">#003353</item>
+        <item name="colorPrimaryContainer">#00497A</item>
+        <item name="colorOnPrimaryContainer">#CDE5FF</item>
+        <item name="android:colorBackground">#0A141F</item>
+        <item name="colorSurface">#0A141F</item>
+        <item name="colorOnSurface">#D8E3EC</item>
+        <item name="colorSurfaceContainer">#13202E</item>
+        <item name="colorSurfaceContainerHigh">#1B2C3D</item>
+        <item name="colorSurfaceContainerLow">#0E1922</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Blossom" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:textViewStyle">@style/Widget.App.TextView</item>
+        <item name="android:fontFamily">@font/naskh</item>
+        <item name="fontFamily">@font/naskh</item>
+        <item name="colorPrimary">#B23A6E</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#FFD8E6</item>
+        <item name="colorOnPrimaryContainer">#3A0018</item>
+        <item name="android:colorBackground">#FFF5F8</item>
+        <item name="colorSurface">#FFF5F8</item>
+        <item name="colorOnSurface">#221019</item>
+        <item name="colorSurfaceContainer">#FBE7EE</item>
+        <item name="colorSurfaceContainerHigh">#F5DAE4</item>
+        <item name="colorSurfaceContainerLow">#FDEFF3</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout.Outlined</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
+    </style>
+    <style name="Theme.OpenSourceFinder.Forest" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:textViewStyle">@style/Widget.App.TextView</item>
+        <item name="android:fontFamily">@font/naskh</item>
+        <item name="fontFamily">@font/naskh</item>
+        <item name="colorPrimary">#2F6B3A</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#C8F0CC</item>
+        <item name="colorOnPrimaryContainer">#002106</item>
+        <item name="android:colorBackground">#F3FAF1</item>
+        <item name="colorSurface">#F3FAF1</item>
+        <item name="colorOnSurface">#16201A</item>
+        <item name="colorSurfaceContainer">#E4F0E2</item>
+        <item name="colorSurfaceContainerHigh">#D8E8D6</item>
+        <item name="colorSurfaceContainerLow">#ECF6EA</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout.Outlined</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
+    </style>
+    <style name="TextAppearance.App.NavLabel" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="Widget.App.BottomNav.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@android:color/transparent</item>
+        <item name="android:height">24dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.App.NavIndicator</item>
+    </style>
+    <style name="ShapeAppearance.App.NavIndicator" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="Widget.App.LinearProgress" parent="Widget.Material3Expressive.LinearProgressIndicator.Wavy">
+        <item name="trackCornerRadius">100dp</item>
+        <item name="trackThickness">4dp</item>
+        <item name="indicatorColor">?attr/colorPrimary</item>
+        <item name="trackColor">?attr/colorSurfaceContainerHighest</item>
+    </style>
+    <style name="Widget.App.CircularProgress" parent="Widget.Material3.CircularProgressIndicator">
+        <item name="trackThickness">3dp</item>
+        <item name="indicatorColor">?attr/colorPrimary</item>
+        <item name="trackColor">?attr/colorSurfaceContainerHighest</item>
+        <item name="trackCornerRadius">100dp</item>
+    </style>
+    <style name="Widget.App.Button.IconButton.Centered" parent="Widget.Material3.Button.IconButton">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+    <style name="Widget.App.Button.IconButton.Filled.Tonal.Centered" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="backgroundTint">?attr/colorPrimaryContainer</item>
+        <item name="iconTint">?attr/colorOnPrimaryContainer</item>
+    </style>
+    <style name="Widget.App.Button.TonalButton" parent="Widget.Material3.Button.TonalButton">
+        <item name="backgroundTint">?attr/colorPrimaryContainer</item>
+        <item name="android:textColor">?attr/colorOnPrimaryContainer</item>
+        <item name="iconTint">?attr/colorOnPrimaryContainer</item>
+    </style>
+    <style name="Widget.App.Button.OutlinedDanger" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">?attr/colorError</item>
+        <item name="android:textColor">?attr/colorError</item>
+        <item name="iconTint">?attr/colorError</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+    <style name="ShapeAppearance.App.IconRounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+    <style name="ShapeAppearance.App.IconRoundedSmall" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
+    </style>
+    <style name="Widget.App.LoadingIndicator" parent="Widget.Material3.LoadingIndicator">
+        <item name="indicatorSize">38dp</item>
+    </style>
+    <style name="Widget.App.LoadingIndicator.Small" parent="Widget.Material3.LoadingIndicator">
+        <item name="indicatorSize">16dp</item>
+        <item name="containerWidth">20dp</item>
+        <item name="containerHeight">20dp</item>
+    </style>
+    <style name="Widget.App.LoadingIndicator.Contained.Small" parent="Widget.Material3.LoadingIndicator.Contained">
+        <item name="indicatorSize">18dp</item>
+        <item name="containerWidth">32dp</item>
+        <item name="containerHeight">32dp</item>
+        <item name="containerColor">?attr/colorPrimaryContainer</item>
+    </style>
+    <style name="Theme.App.ScreenshotPreview" parent="Theme.OpenSourceFinder">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:statusBarColor">@android:color/black</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    <style name="Widget.App.SortDropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxStrokeColor">?attr/colorOutlineVariant</item>
+        <item name="boxBackgroundColor">?attr/colorSurfaceContainerLow</item>
+        <item name="hintEnabled">false</item>
+        <item name="endIconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="startIconTint">?attr/colorPrimary</item>
+    </style>
+    <style name="Widget.App.Button.ListAction" parent="Widget.Material3.Button.TonalButton">
+        <item name="backgroundTint">?attr/colorPrimaryContainer</item>
+        <item name="android:textColor">?attr/colorOnPrimaryContainer</item>
+        <item name="iconTint">?attr/colorOnPrimaryContainer</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:minWidth">@dimen/list_action_min_width</item>
+        <item name="android:minHeight">@dimen/list_action_height</item>
+        <item name="android:paddingStart">@dimen/list_action_padding</item>
+        <item name="android:paddingEnd">@dimen/list_action_padding</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="iconSize">16dp</item>
+        <item name="iconPadding">4dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="cornerRadius">@dimen/list_action_height</item>
+    </style>
+    <style name="Widget.App.Button.DropdownField" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:textDirection">locale</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="icon">@drawable/ic_arrow_drop_down</item>
+        <item name="iconGravity">end</item>
+        <item name="iconSize">20dp</item>
+        <item name="iconPadding">4dp</item>
+        <item name="iconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="backgroundTint">?attr/colorSurfaceContainerHigh</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+    <style name="Widget.App.TextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textDirection">locale</item>
+    </style>
+</resources>

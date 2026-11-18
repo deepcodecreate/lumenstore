@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp">
+    <TextView
+        android:id="@+id/linkSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceLabelLarge"
+        android:textColor="?attr/colorPrimary" />
+    <TextView
+        android:id="@+id/linkTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textColor="?attr/colorOnSurface" />
+    <TextView
+        android:id="@+id/linkMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="?attr/colorOnSurfaceVariant" />
+    <com.google.android.material.loadingindicator.LoadingIndicator
+        android:id="@+id/linkProgress"
+        style="@style/Widget.App.LoadingIndicator.Small"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/linkAddButton"
+        style="@style/Widget.App.Button.TonalButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:minHeight="52dp"
+        android:text="@string/link_add"
+        android:textAllCaps="false"
+        app:cornerRadius="16dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/linkBrowserButton"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:minHeight="52dp"
+        android:text="@string/link_open_browser"
+        android:textAllCaps="false"
+        app:cornerRadius="16dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/linkCancelButton"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/cancel"
+        android:textAllCaps="false" />
+</LinearLayout>

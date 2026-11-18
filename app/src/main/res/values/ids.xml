@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="refreshCatalogButton" type="id" />
+    <item name="refreshLoadingIndicator" type="id" />
+    <item name="tag_strata_original_shape_appearance" type="id" />
+    <item name="tag_strata_corner_scale" type="id" />
+    <item name="nav_settings" type="id" />
+    <item name="exploreHeaderRow" type="id" />
+    <item name="tag_icon_shape" type="id" />
+    <item name="tag_accordion_animator" type="id" />
+    <item name="tag_readmore_animator" type="id" />
+    <item name="sourceDropdown" type="id" />
+    <item name="filterRow" type="id" />
+    <item name="sortDropdown" type="id" />
+</resources>

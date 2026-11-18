@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/themeCard"
+    android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="6dp"
+    android:clickable="true" android:focusable="true"
+    app:cardElevation="0dp" app:strokeWidth="1dp"
+    app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+        <FrameLayout android:id="@+id/themePreview" android:layout_width="match_parent" android:layout_height="212dp"
+            android:layoutDirection="ltr">
+            <View android:id="@+id/themeBarDot" android:layout_width="20dp" android:layout_height="20dp" android:layout_gravity="top|start"
+                android:layout_marginStart="12dp" android:layout_marginTop="9dp" android:layout_marginEnd="0dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeBar" android:layout_width="58dp" android:layout_height="7dp" android:layout_gravity="top|start"
+                android:layout_marginStart="38dp" android:layout_marginTop="16dp" android:layout_marginEnd="0dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeAction2" android:layout_width="18dp" android:layout_height="18dp" android:layout_gravity="top|end"
+                android:layout_marginStart="0dp" android:layout_marginTop="10dp" android:layout_marginEnd="12dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeAction1" android:layout_width="18dp" android:layout_height="18dp" android:layout_gravity="top|end"
+                android:layout_marginStart="0dp" android:layout_marginTop="10dp" android:layout_marginEnd="34dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeSearch" android:layout_width="match_parent" android:layout_height="44dp" android:layout_gravity="top|start"
+                android:layout_marginStart="10dp" android:layout_marginTop="38dp" android:layout_marginEnd="10dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeHeroBlob" android:layout_width="30dp" android:layout_height="30dp" android:layout_gravity="top|end"
+                android:layout_marginStart="0dp" android:layout_marginTop="45dp" android:layout_marginEnd="20dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeHeroLine" android:layout_width="64dp" android:layout_height="7dp" android:layout_gravity="top|start"
+                android:layout_marginStart="22dp" android:layout_marginTop="49dp" android:layout_marginEnd="0dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeHeroLineSub" android:layout_width="40dp" android:layout_height="5dp" android:layout_gravity="top|start"
+                android:layout_marginStart="22dp" android:layout_marginTop="62dp" android:layout_marginEnd="0dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeCardOne" android:layout_width="match_parent" android:layout_height="28dp" android:layout_gravity="top|start"
+                android:layout_marginStart="10dp" android:layout_marginTop="88dp" android:layout_marginEnd="10dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeIconOne" android:layout_width="18dp" android:layout_height="18dp" android:layout_gravity="top|start"
+                android:layout_marginStart="16dp" android:layout_marginTop="93dp" android:layout_marginEnd="0dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeLineOne" android:layout_width="50dp" android:layout_height="6dp" android:layout_gravity="top|start"
+                android:layout_marginStart="42dp" android:layout_marginTop="94dp" android:layout_marginEnd="0dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeLineOneSub" android:layout_width="32dp" android:layout_height="4dp" android:layout_gravity="top|start"
+                android:layout_marginStart="42dp" android:layout_marginTop="104dp" android:layout_marginEnd="0dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeBtnOne" android:layout_width="26dp" android:layout_height="12dp" android:layout_gravity="top|end"
+                android:layout_marginStart="0dp" android:layout_marginTop="96dp" android:layout_marginEnd="18dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeCardTwo" android:layout_width="match_parent" android:layout_height="28dp" android:layout_gravity="top|start"
+                android:layout_marginStart="10dp" android:layout_marginTop="118dp" android:layout_marginEnd="10dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeIconTwo" android:layout_width="18dp" android:layout_height="18dp" android:layout_gravity="top|start"
+                android:layout_marginStart="16dp" android:layout_marginTop="123dp" android:layout_marginEnd="0dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeLineTwo" android:layout_width="50dp" android:layout_height="6dp" android:layout_gravity="top|start"
+                android:layout_marginStart="42dp" android:layout_marginTop="124dp" android:layout_marginEnd="0dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeLineTwoSub" android:layout_width="32dp" android:layout_height="4dp" android:layout_gravity="top|start"
+                android:layout_marginStart="42dp" android:layout_marginTop="134dp" android:layout_marginEnd="0dp" android:layout_marginBottom="0dp" />
+            <View android:id="@+id/themeBtnTwo" android:layout_width="26dp" android:layout_height="12dp" android:layout_gravity="top|end"
+                android:layout_marginStart="0dp" android:layout_marginTop="126dp" android:layout_marginEnd="18dp" android:layout_marginBottom="0dp" />
+            <LinearLayout android:id="@+id/themeNav" android:layout_width="match_parent" android:layout_height="30dp"
+                android:layout_gravity="bottom" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginBottom="12dp"
+                android:gravity="center_vertical" android:orientation="horizontal">
+                <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+                    <View android:id="@+id/themeNavIndicator" android:layout_width="28dp" android:layout_height="20dp" android:layout_gravity="center" />
+                </FrameLayout>
+                <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+                    <View android:id="@+id/themeNavDot1" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="center" />
+                </FrameLayout>
+                <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+                    <View android:id="@+id/themeNavDot2" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="center" />
+                </FrameLayout>
+                <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+                    <View android:id="@+id/themeNavDot3" android:layout_width="9dp" android:layout_height="9dp" android:layout_gravity="center" />
+                </FrameLayout>
+            </LinearLayout>
+            <View android:id="@+id/themeFab" android:layout_width="22dp" android:layout_height="22dp" android:layout_gravity="bottom|end"
+                android:layout_marginStart="0dp" android:layout_marginTop="0dp" android:layout_marginEnd="14dp" android:layout_marginBottom="50dp" />
+            <FrameLayout android:id="@+id/themeCheck" android:layout_width="24dp" android:layout_height="24dp"
+                android:layout_gravity="top|end" android:layout_margin="6dp" android:visibility="gone">
+                <ImageView android:id="@+id/themeCheckIcon" android:layout_width="16dp" android:layout_height="16dp"
+                    android:layout_gravity="center" android:src="@drawable/ic_check" android:contentDescription="@null" />
+            </FrameLayout>
+        </FrameLayout>
+        <TextView android:id="@+id/themeTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center" android:textAlignment="center" android:minHeight="44dp" android:paddingStart="14dp" android:paddingEnd="14dp"
+            android:textAppearance="?attr/textAppearanceTitleSmall" android:textColor="?attr/colorOnSurface" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

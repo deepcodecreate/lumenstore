@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.CoordinatorLayoutDesign
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="?attr/colorSurface">
+	<org.appdevforall.codeonthego.layouteditor.editor.palette.containers.AppBarLayoutDesign
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="?attr/colorSurface"
+		app:elevation="0dp"
+		app:liftOnScroll="false">
+		<org.appdevforall.codeonthego.layouteditor.editor.palette.containers.MaterialToolbarDesign
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:title="@string/explore_title"
+			app:titleTextAppearance="?attr/textAppearanceHeadlineSmall"
+			app:titleTextColor="?attr/colorOnSurface" />
+		<org.appdevforall.codeonthego.layouteditor.editor.palette.text.TextInputLayoutDesign
+			android:id="@+id/searchLayout"
+			style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="16dp"
+			android:layout_marginEnd="16dp"
+			android:layout_marginBottom="12dp"
+			android:hint="@string/search_hint"
+			app:boxCornerRadiusTopStart="28dp"
+			app:boxCornerRadiusTopEnd="28dp"
+			app:boxCornerRadiusBottomStart="28dp"
+			app:boxCornerRadiusBottomEnd="28dp"
+			app:startIconDrawable="@drawable/ic_search"
+			app:startIconTint="?attr/colorOnSurfaceVariant">
+			<org.appdevforall.codeonthego.layouteditor.editor.palette.text.TextInputEditTextDesign
+				android:id="@+id/searchInput"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:imeOptions="actionSearch"
+				android:inputType="text"
+				android:maxLines="1" />
+		</org.appdevforall.codeonthego.layouteditor.editor.palette.text.TextInputLayoutDesign>
+	</org.appdevforall.codeonthego.layouteditor.editor.palette.containers.AppBarLayoutDesign>
+	<org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.FrameLayoutDesign
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginBottom="80dp"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior">
+		<org.appdevforall.codeonthego.layouteditor.editor.palette.containers.NestedScrollViewDesign
+			android:id="@+id/exploreScroll"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:clipToPadding="false"
+			android:fillViewport="true">
+			<org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.LinearLayoutDesign
+				android:id="@+id/exploreContent"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:paddingBottom="24dp">
+				<include
+					android:id="@+id/sectionNew"
+					layout="@layout/item_explore_section" />
+				<include
+					android:id="@+id/sectionUpdated"
+					layout="@layout/item_explore_section" />
+				<include
+					android:id="@+id/sectionPopular"
+					layout="@layout/item_explore_section" />
+				<org.appdevforall.codeonthego.layouteditor.editor.palette.text.TextViewDesign
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:paddingStart="16dp"
+					android:paddingEnd="16dp"
+					android:paddingTop="16dp"
+					android:paddingBottom="8dp"
+					android:text="@string/categories_title"
+					android:textAppearance="?attr/textAppearanceTitleMedium"
+					android:textColor="?attr/colorOnSurface" />
+				<org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.LinearLayoutDesign
+					android:id="@+id/categoriesContainer"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical" />
+			</org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.LinearLayoutDesign>
+		</org.appdevforall.codeonthego.layouteditor.editor.palette.containers.NestedScrollViewDesign>
+		<org.appdevforall.codeonthego.layouteditor.editor.palette.containers.RecyclerViewDesign
+			android:id="@+id/recyclerView"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:clipToPadding="false"
+			android:padding="8dp"
+			android:visibility="gone" />
+		<include
+			android:id="@+id/loadingPanel"
+			layout="@layout/view_explore_skeleton"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" />
+		<org.appdevforall.codeonthego.layouteditor.editor.palette.text.TextViewDesign
+			android:id="@+id/emptyView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:text="@string/no_results_simple"
+			android:textAppearance="?attr/textAppearanceBodyLarge"
+			android:textColor="?attr/colorOnSurfaceVariant"
+			android:visibility="gone" />
+	</org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.FrameLayoutDesign>
+	<include
+		layout="@layout/include_bottom_nav" />
+</org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.CoordinatorLayoutDesign>

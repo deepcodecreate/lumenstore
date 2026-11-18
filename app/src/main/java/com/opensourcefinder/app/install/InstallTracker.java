@@ -1,0 +1,248 @@
+/*
+ * This file is part of OpenSourceFinder.
+ *
+ * Copyright (C) 2026 deepcodecreate
+ *
+ * OpenSourceFinder is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenSourceFinder is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenSourceFinder. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+package com.opensourcefinder.app.install;
+
+import android.app.Activity;
+import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInstaller;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import com.opensourcefinder.app.download.DownloadTracker;
+import com.opensourcefinder.app.scanner.MatchStore;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public final class InstallTracker {
+
+    public enum State { IDLE, INSTALLING, AWAITING_CONFIRM, INSTALLED, CANCELLED, FAILED, FAILED_INCOMPATIBLE }
+
+    public static final class Entry {
+        public final String key;
+        public final boolean firstInstall;
+        public volatile boolean shortcutPending;
+        public volatile State state = State.IDLE;
+        public volatile String message;
+        public volatile File apkFile;
+        public volatile Context appContext;
+        final CopyOnWriteArrayList<Listener> listeners = new CopyOnWriteArrayList<>();
+
+        Entry(String key, boolean firstInstall) {
+            this.key = key;
+            this.firstInstall = firstInstall;
+        }
+
+        void notifyState() {
+            for (Listener l : listeners) l.onStateChanged(this);
+        }
+    }
+
+    public interface Listener {
+        void onStateChanged(Entry entry);
+    }
+
+    private static final InstallTracker INSTANCE = new InstallTracker();
+    public static InstallTracker get() { return INSTANCE; }
+    private InstallTracker() {}
+
+    private final Map<String, Entry> entries = new ConcurrentHashMap<>();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private boolean watchdogRegistered = false;
+    private int startedActivityCount = 0;
+    private boolean wasInBackground = false;
+    private volatile Activity resumedActivity;
+
+    public Entry getEntry(String key) { return entries.get(key); }
+
+    public void watchForDismissedConfirmations(Application app) {
+        if (watchdogRegistered) return;
+        watchdogRegistered = true;
+        app.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override public void onActivityStarted(Activity activity) {
+                if (startedActivityCount == 0) wasInBackground = true;
+                startedActivityCount++;
+            }
+            @Override public void onActivityStopped(Activity activity) {
+                startedActivityCount = Math.max(0, startedActivityCount - 1);
+            }
+            @Override public void onActivityResumed(Activity activity) {
+                resumedActivity = activity;
+                if (wasInBackground) {
+                    wasInBackground = false;
+                    Context appContext = activity.getApplicationContext();
+                    mainHandler.postDelayed(() -> reconcileAwaitingConfirm(appContext), 400L);
+                }
+                requestPendingShortcuts();
+            }
+            @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
+            @Override public void onActivityPaused(Activity activity) {
+                if (resumedActivity == activity) resumedActivity = null;
+            }
+            @Override public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+            @Override public void onActivityDestroyed(Activity activity) {
+                if (resumedActivity == activity) resumedActivity = null;
+            }
+        });
+    }
+
+    private void reconcileAwaitingConfirm(Context context) {
+        for (Entry e : entries.values()) {
+            if (e.state != State.AWAITING_CONFIRM) continue;
+
+            boolean installed = InstallState.isApkInstalled(context, e.apkFile, e.key);
+            e.state = installed ? State.INSTALLED : State.CANCELLED;
+            if (installed && e.firstInstall) {
+                e.shortcutPending = true;
+                mainHandler.post(() -> requestPendingShortcut(e));
+            }
+            if (!installed) cleanupAbandonedPlaceholder(e);
+            e.notifyState();
+        }
+    }
+
+    private void requestPendingShortcuts() {
+        for (Entry entry : entries.values()) requestPendingShortcut(entry);
+    }
+
+    private void requestPendingShortcut(Entry entry) {
+        if (entry == null || !entry.shortcutPending) return;
+        Activity activity = resumedActivity;
+        if (activity == null || activity.isFinishing() || activity.isDestroyed()) return;
+        if (InstallShortcutHelper.requestPinForInstalledApp(activity, entry.key)) {
+            entry.shortcutPending = false;
+        }
+    }
+
+    public void reconcileNow(Context context) {
+        reconcileAwaitingConfirm(context);
+    }
+
+    private void cleanupAbandonedPlaceholder(Entry entry) {
+        Context context = entry.appContext;
+        if (context == null) return;
+        DownloadTracker.Entry de = DownloadTracker.get().getEntry(entry.key);
+        if (de != null && de.homePlaceholderOwned) {
+            MatchStore.removeIfNeverInstalled(context, entry.key);
+        }
+    }
+
+    public void attach(String key, Listener listener) {
+        Entry e = entries.get(key);
+        if (e == null || listener == null) return;
+        e.listeners.add(listener);
+    }
+
+    public void detach(String key, Listener listener) {
+        Entry e = entries.get(key);
+        if (e != null && listener != null) e.listeners.remove(listener);
+    }
+
+    public void clear(String key) { entries.remove(key); }
+
+    public void startInstall(Context context, String key, File apkFile, Listener listener) {
+        boolean firstInstall = true;
+        try {
+            context.getPackageManager().getApplicationInfo(key, 0);
+            firstInstall = false;
+        } catch (android.content.pm.PackageManager.NameNotFoundException ignored) {}
+        Entry entry = new Entry(key, firstInstall);
+        entry.apkFile = apkFile;
+        entry.state = State.INSTALLING;
+        entry.appContext = context.getApplicationContext();
+        if (listener != null) entry.listeners.add(listener);
+        entries.put(key, entry);
+        entry.notifyState();
+
+        final Context appContext = entry.appContext;
+        new Thread(() -> runSession(appContext, entry), "install-session-" + key).start();
+    }
+
+    private void runSession(Context context, Entry entry) {
+        try {
+            PackageInstaller installer = context.getPackageManager().getPackageInstaller();
+            PackageInstaller.SessionParams params =
+                    new PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL);
+            int sessionId = installer.createSession(params);
+            try (PackageInstaller.Session session = installer.openSession(sessionId)) {
+                try (InputStream in = new FileInputStream(entry.apkFile);
+                     OutputStream out = session.openWrite("apk", 0, entry.apkFile.length())) {
+                    byte[] buffer = new byte[65536];
+                    int read;
+                    while ((read = in.read(buffer)) != -1) out.write(buffer, 0, read);
+                    session.fsync(out);
+                }
+
+                Intent callback = new Intent(context, InstallResultReceiver.class);
+                callback.setAction(InstallResultReceiver.ACTION_INSTALL_STATUS);
+                callback.putExtra(InstallResultReceiver.EXTRA_KEY, entry.key);
+                int flags = PendingIntent.FLAG_UPDATE_CURRENT
+                        | (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_MUTABLE : 0);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, sessionId, callback, flags);
+                session.commit(pendingIntent.getIntentSender());
+            }
+        } catch (Exception e) {
+            reportStatus(entry.key, PackageInstaller.STATUS_FAILURE, e.getMessage());
+        }
+    }
+
+    public void reportAwaitingConfirm(String key) {
+        Entry e = entries.get(key);
+        if (e == null) return;
+        e.state = State.AWAITING_CONFIRM;
+        e.notifyState();
+    }
+
+    public void reportStatus(String key, int status, String message) {
+        Entry e = entries.get(key);
+        if (e == null) return;
+        State state;
+        if (status == PackageInstaller.STATUS_SUCCESS) {
+            state = State.INSTALLED;
+        } else if (status == PackageInstaller.STATUS_FAILURE_ABORTED) {
+            state = State.CANCELLED;
+        } else if (status == PackageInstaller.STATUS_FAILURE_CONFLICT
+                || status == PackageInstaller.STATUS_FAILURE_INCOMPATIBLE) {
+            state = State.FAILED_INCOMPATIBLE;
+        } else {
+            state = State.FAILED;
+        }
+        e.state = state;
+        e.message = message;
+
+        if (state == State.CANCELLED || state == State.FAILED) cleanupAbandonedPlaceholder(e);
+        if (state == State.INSTALLED && e.firstInstall) e.shortcutPending = true;
+        e.notifyState();
+        if (state == State.INSTALLED && e.appContext != null) {
+            mainHandler.post(() -> requestPendingShortcut(e));
+            InstallEvents.packageChanged(e.appContext, null);
+        }
+    }
+}

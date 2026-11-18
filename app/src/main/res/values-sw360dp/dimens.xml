@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="home_control_height">40dp</dimen>
+    <dimen name="list_action_height">36dp</dimen>
+    <dimen name="list_action_min_width">72dp</dimen>
+    <dimen name="list_action_padding">12dp</dimen>
+    <dimen name="list_action_max_width">124dp</dimen>
+    <dimen name="store_row_icon">60dp</dimen>
+    <dimen name="store_row_padding">12dp</dimen>
+    <dimen name="store_install_width">84dp</dimen>
+    <dimen name="app_row_icon_container">46dp</dimen>
+    <dimen name="app_row_icon">30dp</dimen>
+    <dimen name="github_card_icon">48dp</dimen>
+    <dimen name="home_row_icon">56dp</dimen>
+    <dimen name="explore_tile_min_width">84dp</dimen>
+    <dimen name="explore_tile_icon_min">56dp</dimen>
+    <dimen name="explore_tile_icon_max">68dp</dimen>
+    <dimen name="explore_hero_height">120dp</dimen>
+    <dimen name="explore_section_pad_top">12dp</dimen>
+    <dimen name="explore_section_pad_bottom">8dp</dimen>
+    <dimen name="store_row_min_height">76dp</dimen>
+</resources>

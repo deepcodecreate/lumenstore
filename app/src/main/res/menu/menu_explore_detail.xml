@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_share" android:icon="@drawable/ic_share" android:title="@string/action_share" app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_view_repo" android:icon="@drawable/ic_external_link" android:title="@string/btn_view_in_browser" app:showAsAction="never"/>
+    <item android:id="@+id/action_view_website" android:icon="@drawable/ic_home" android:title="@string/link_website" app:showAsAction="never"/>
+    <item android:id="@+id/action_view_issues" android:icon="@drawable/ic_external_link" android:title="@string/link_issues" app:showAsAction="never"/>
+    <item android:id="@+id/action_view_changelog" android:icon="@drawable/ic_external_link" android:title="@string/link_changelog" app:showAsAction="never"/>
+    <item android:id="@+id/action_view_translation" android:icon="@drawable/ic_language" android:title="@string/link_translation" app:showAsAction="never"/>
+    <item android:id="@+id/action_donate" android:icon="@drawable/ic_external_link" android:title="@string/donate_section_title" app:showAsAction="never"/>
+</menu>

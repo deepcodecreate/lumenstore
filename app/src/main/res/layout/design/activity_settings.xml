@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.CoordinatorLayoutDesign
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="?attr/colorSurface">
+	<org.appdevforall.codeonthego.layouteditor.editor.palette.containers.AppBarLayoutDesign
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="?attr/colorSurface"
+		app:elevation="0dp">
+		<org.appdevforall.codeonthego.layouteditor.editor.palette.containers.MaterialToolbarDesign
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:title="@string/settings_title"
+			app:titleTextAppearance="?attr/textAppearanceHeadlineSmall" />
+	</org.appdevforall.codeonthego.layouteditor.editor.palette.containers.AppBarLayoutDesign>
+	<org.appdevforall.codeonthego.layouteditor.editor.palette.containers.NestedScrollViewDesign
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginBottom="80dp"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior">
+		<org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.LinearLayoutDesign
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:padding="16dp">
+			<com.google.android.material.card.MaterialCardView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:cardBackgroundColor="?attr/colorSurfaceContainer"
+				app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+				app:cardElevation="0dp"
+				app:strokeWidth="0dp">
+				<org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.LinearLayoutDesign
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+					<include
+						android:id="@+id/rowRescan"
+						layout="@layout/item_settings_row" />
+					<include
+						android:id="@+id/rowRepos"
+						layout="@layout/item_settings_row" />
+					<include
+						android:id="@+id/rowTheme"
+						layout="@layout/item_settings_row" />
+					<include
+						android:id="@+id/rowLanguage"
+						layout="@layout/item_settings_row" />
+					<include
+						android:id="@+id/rowBackup"
+						layout="@layout/item_settings_row" />
+					<include
+						android:id="@+id/rowRestore"
+						layout="@layout/item_settings_row" />
+					<include
+						android:id="@+id/rowGithub"
+						layout="@layout/item_settings_row" />
+				</org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.LinearLayoutDesign>
+			</com.google.android.material.card.MaterialCardView>
+		</org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.LinearLayoutDesign>
+	</org.appdevforall.codeonthego.layouteditor.editor.palette.containers.NestedScrollViewDesign>
+	<include
+		layout="@layout/include_bottom_nav" />
+</org.appdevforall.codeonthego.layouteditor.editor.palette.layouts.CoordinatorLayoutDesign>

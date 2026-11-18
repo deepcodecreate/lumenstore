@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+    app:cardElevation="0dp"
+    app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
+    app:strokeWidth="0dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_shape_preview_label"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:textColor="?attr/colorPrimary" />
+        <FrameLayout
+            android:layout_width="176dp"
+            android:layout_height="176dp"
+            android:layout_marginTop="6dp">
+            <com.opensourcefinder.app.ui.ShapeView
+                android:id="@+id/previewHalo"
+                        android:padding="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <com.opensourcefinder.app.ui.ShapeView
+                android:id="@+id/previewHero"
+                android:layout_width="116dp"
+                android:layout_height="116dp"
+                android:layout_gravity="center" />
+        </FrameLayout>
+        <TextView
+            android:id="@+id/previewName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="?attr/colorOnSurface"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="@string/icon_shape_preview_hint"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <com.opensourcefinder.app.ui.ShapeView android:id="@+id/previewSw1" android:layout_width="44dp" android:layout_height="44dp" android:layout_marginEnd="10dp" />
+            <com.opensourcefinder.app.ui.ShapeView android:id="@+id/previewSw2" android:layout_width="44dp" android:layout_height="44dp" android:layout_marginEnd="10dp" />
+            <com.opensourcefinder.app.ui.ShapeView android:id="@+id/previewSw3" android:layout_width="44dp" android:layout_height="44dp" android:layout_marginEnd="10dp" />
+            <com.opensourcefinder.app.ui.ShapeView android:id="@+id/previewSw4" android:layout_width="44dp" android:layout_height="44dp" android:layout_marginEnd="10dp" />
+            <com.opensourcefinder.app.ui.ShapeView android:id="@+id/previewSw5" android:layout_width="44dp" android:layout_height="44dp" />
+        </LinearLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainer"
+            app:cardElevation="0dp"
+            app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+            app:strokeWidth="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="64dp"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="8dp">
+                <com.opensourcefinder.app.ui.ShapeView
+                    android:id="@+id/previewRowIcon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="@string/icon_shape_preview_app"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="?attr/colorOnSurface" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:maxLines="1"
+                        android:text="@string/icon_shape_preview_sub"
+                        android:textAppearance="?attr/textAppearanceLabelSmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.App.Button.ListAction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:text="@string/icon_shape_preview_action" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

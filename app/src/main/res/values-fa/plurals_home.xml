@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="home_hero_updates">
+        <item quantity="one">%1$d بروزرسانی در دسترس است</item>
+        <item quantity="other">%1$d بروزرسانی در دسترس است</item>
+    </plurals>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_downloads" android:title="@string/downloads_title" app:showAsAction="never" />
+    <item android:id="@+id/action_rescan_all" android:title="@string/rescan_all_menu" app:showAsAction="never" />
+    <item android:id="@+id/action_manage_repos" android:title="@string/manage_repos" app:showAsAction="never" />
+    <item android:id="@+id/action_theme" android:title="@string/theme_title" app:showAsAction="never" />
+    <item android:id="@+id/action_backup" android:title="@string/backup_list" app:showAsAction="never" />
+    <item android:id="@+id/action_restore" android:title="@string/restore_list" app:showAsAction="never" />
+    <item android:id="@+id/action_github_login" android:title="@string/login_github_optional" app:showAsAction="never" />
+    <item android:id="@+id/action_logout" android:title="@string/logout_github" app:showAsAction="never" />
+</menu>
