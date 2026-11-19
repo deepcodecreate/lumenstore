@@ -6,8 +6,10 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ### Fixed
 - Lumen Store is now detected in the Home list so its own updates appear
+- Manual repositories showing "None found" during a scan: the saved list is recovered automatically
 
 ### Changed
+- R8 shrinking turned off again until fully tested on devices
 - Releases now include both release and debug APKs with checksums
 
 ## [0.5.0] - Beta
@@ -28,4 +30,3 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 - GitHub token is encrypted with a hardware-backed Android Keystore key and migrated from plain storage
 - System backups are disabled so the token never leaves the device
 - File sharing paths restricted to app-private and app download folders
-- R8 code shrinking enabled for release builds

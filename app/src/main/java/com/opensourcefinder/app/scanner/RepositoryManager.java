@@ -24,10 +24,15 @@ package com.opensourcefinder.app.scanner;
 import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.opensourcefinder.app.model.MatchedApp;
 import com.opensourcefinder.app.model.SourceRepository;
+import com.opensourcefinder.app.network.PlayStoreClient;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public final class RepositoryManager {
     private static final String PREFS = "repositories";
@@ -36,13 +41,51 @@ public final class RepositoryManager {
 
     public static synchronized List<SourceRepository> get(Context context) {
         String raw = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY, "[]");
+        List<SourceRepository> result = new ArrayList<>();
         try {
             Type type = new TypeToken<List<SourceRepository>>(){}.getType();
             List<SourceRepository> list = new Gson().fromJson(raw, type);
-            return list == null ? new ArrayList<>() : new ArrayList<>(list);
-        } catch (Exception e) {
-            return new ArrayList<>();
+            if (list != null) result.addAll(list);
+        } catch (Exception ignored) {}
+        if (result.isEmpty()) {
+            List<SourceRepository> recovered = recoverFromMatches(context);
+            if (!recovered.isEmpty()) {
+                save(context, recovered);
+                result.addAll(recovered);
+            }
         }
+        return result;
+    }
+
+    private static List<SourceRepository> recoverFromMatches(Context context) {
+        List<SourceRepository> out = new ArrayList<>();
+        Set<String> seen = new HashSet<>();
+        try {
+            for (MatchedApp app : MatchStore.get(context)) {
+                if (app == null || !"manual".equals(app.getOrigin())) continue;
+                String url = app.getSourceUrl();
+                String sourceType = app.getSourceType();
+                if (url == null || url.isEmpty() || sourceType == null) continue;
+                String type;
+                String name;
+                if (PlayStoreClient.SOURCE_TYPE.equalsIgnoreCase(sourceType)) {
+                    type = PlayStoreClient.SOURCE_TYPE;
+                    name = app.getAppLabel() != null && !app.getAppLabel().isEmpty() ? app.getAppLabel() : url;
+                } else if ("github".equalsIgnoreCase(sourceType)) {
+                    type = "github";
+                    name = url.replaceFirst("(?i)^https?://[^/]+/", "").replaceAll("/+$", "");
+                } else if ("gitlab".equalsIgnoreCase(sourceType) || "codeberg".equalsIgnoreCase(sourceType)) {
+                    type = "auto";
+                    name = url.replaceFirst("(?i)^https?://[^/]+/", "").replaceAll("/+$", "");
+                } else {
+                    continue;
+                }
+                if (!url.toLowerCase(Locale.ROOT).startsWith("http")) continue;
+                if (!seen.add(url.toLowerCase(Locale.ROOT).replaceAll("/+$", ""))) continue;
+                out.add(new SourceRepository(url, name, type));
+            }
+        } catch (Exception ignored) {}
+        return out;
     }
 
     public static synchronized void add(Context context, SourceRepository source) {
