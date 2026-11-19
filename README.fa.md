@@ -13,7 +13,7 @@
 [![License](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/deepcodecreate/lumenstore?style=flat)](https://github.com/deepcodecreate/lumenstore/stargazers)
 
-[English](README.md) · فارسی
+[English](README.md) · فارسی · [وب‌سایت](https://deepcodecreate.github.io/lumenstore/fa/)
 
 </div>
 
