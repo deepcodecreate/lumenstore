@@ -1,0 +1,15 @@
+changelog:
+  exclude:
+    labels: [skip-changelog]
+    authors: [dependabot]
+  categories:
+    - title: New features
+      labels: [enhancement]
+    - title: Bug fixes
+      labels: [bug]
+    - title: Translations
+      labels: [translation]
+    - title: Documentation
+      labels: [documentation]
+    - title: Other changes
+      labels: ['*']

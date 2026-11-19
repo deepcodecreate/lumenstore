@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 
 jobs:
   release:
@@ -39,20 +41,28 @@ jobs:
 
       - run: ./gradlew assembleRelease --stacktrace
 
-      - name: Name the APK
+      - name: Name the APK and write checksums
         run: |
           VERSION="${GITHUB_REF_NAME}"
           mkdir -p dist
           cp app/build/outputs/apk/release/*.apk "dist/Lumenstore-${VERSION//\//-}.apk"
+          cd dist
+          sha256sum *.apk > SHA256SUMS.txt
+
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/*.apk
 
       - uses: actions/upload-artifact@v4
         with:
           name: lumenstore-release
-          path: dist/*.apk
+          path: dist/*
           if-no-files-found: error
 
       - uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: dist/*.apk
+          files: |
+            dist/*.apk
+            dist/SHA256SUMS.txt
           generate_release_notes: true

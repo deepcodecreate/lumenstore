@@ -9,7 +9,9 @@
 [![Build](https://github.com/deepcodecreate/lumenstore/actions/workflows/build.yml/badge.svg)](https://github.com/deepcodecreate/lumenstore/actions/workflows/build.yml)
 [![Release](https://img.shields.io/github/v/release/deepcodecreate/lumenstore?include_prereleases&label=release)](https://github.com/deepcodecreate/lumenstore/releases)
 [![Downloads](https://img.shields.io/github/downloads/deepcodecreate/lumenstore/total)](https://github.com/deepcodecreate/lumenstore/releases)
+[![CodeQL](https://github.com/deepcodecreate/lumenstore/actions/workflows/codeql.yml/badge.svg)](https://github.com/deepcodecreate/lumenstore/actions/workflows/codeql.yml)
 [![License](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/deepcodecreate/lumenstore?style=flat)](https://github.com/deepcodecreate/lumenstore/stargazers)
 ![Min SDK](https://img.shields.io/badge/minSdk-26-3DDC84?logo=android&logoColor=white)
 ![Material 3](https://img.shields.io/badge/Material-3-6750A4?logo=materialdesign&logoColor=white)
 
@@ -138,9 +140,35 @@ git push origin v0.5.0
 - WorkManager for background scans and backups
 - Tabler Icons
 
+## Privacy and security
+
+- No analytics, ads, trackers or crash reporting
+- No account required; a GitHub token is optional and stays on your device
+- Every release is published with SHA-256 checksums and a signed build provenance attestation
+
+Verify a download:
+
+```bash
+sha256sum -c SHA256SUMS.txt
+gh attestation verify Lumenstore-vX.Y.Z.apk --repo deepcodecreate/lumenstore
+```
+
+Read the full [Privacy Policy](PRIVACY.md) and [Security Policy](SECURITY.md). Report vulnerabilities privately through the Security tab.
+
+## Community
+
+- Ask questions and share ideas in [Discussions](https://github.com/deepcodecreate/lumenstore/discussions)
+- Report bugs in [Issues](https://github.com/deepcodecreate/lumenstore/issues/new/choose)
+- Help translate the app, see [CONTRIBUTING](CONTRIBUTING.md)
+- Read the [Changelog](CHANGELOG.md)
+
+If Lumen Store is useful to you, a star helps other people find it.
+
+[![Star History](https://api.star-history.com/svg?repos=deepcodecreate/lumenstore&type=Date)](https://star-history.com/#deepcodecreate/lumenstore&Date)
+
 ## Contributing
 
-Issues and pull requests are welcome. For larger changes, please open an issue first so we can talk it through.
+Issues, translations and pull requests are welcome. Please read [CONTRIBUTING](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md). For larger changes, open an issue first so we can talk it through.
 
 1. Fork the repository
 2. Create a branch: `git checkout -b feature/my-change`

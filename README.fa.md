@@ -9,7 +9,9 @@
 [![Build](https://github.com/deepcodecreate/lumenstore/actions/workflows/build.yml/badge.svg)](https://github.com/deepcodecreate/lumenstore/actions/workflows/build.yml)
 [![Release](https://img.shields.io/github/v/release/deepcodecreate/lumenstore?include_prereleases&label=release)](https://github.com/deepcodecreate/lumenstore/releases)
 [![Downloads](https://img.shields.io/github/downloads/deepcodecreate/lumenstore/total)](https://github.com/deepcodecreate/lumenstore/releases)
+[![CodeQL](https://github.com/deepcodecreate/lumenstore/actions/workflows/codeql.yml/badge.svg)](https://github.com/deepcodecreate/lumenstore/actions/workflows/codeql.yml)
 [![License](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/deepcodecreate/lumenstore?style=flat)](https://github.com/deepcodecreate/lumenstore/stargazers)
 
 [English](README.md) · فارسی
 
@@ -157,6 +159,23 @@ git push origin v0.5.0
 - Markwon برای نمایش Markdown و HTML
 - WorkManager برای اسکن و پشتیبان‌گیری پس‌زمینه
 - Tabler Icons
+
+## حریم خصوصی و امنیت
+
+- بدون تحلیل‌گر، تبلیغات، ردیاب و گزارش خطا
+- بدون نیاز به حساب کاربری؛ توکن اختیاری گیتهاب فقط روی دستگاه شما می‌ماند
+- هر نسخه همراه با چک‌سام SHA-256 و گواهی امضاشده منشأ ساخت منتشر می‌شود
+
+سیاست کامل را در [حریم خصوصی](PRIVACY.md) و [سیاست امنیتی](SECURITY.md) بخوانید. آسیب‌پذیری‌ها را از تب Security به‌صورت خصوصی گزارش دهید.
+
+## جامعه
+
+- سؤال و ایده‌ها را در [Discussions](https://github.com/deepcodecreate/lumenstore/discussions) مطرح کنید
+- باگ‌ها را در [Issues](https://github.com/deepcodecreate/lumenstore/issues/new/choose) گزارش دهید
+- برای ترجمه برنامه به [CONTRIBUTING](CONTRIBUTING.md) سر بزنید
+- [تاریخچه تغییرات](CHANGELOG.md)
+
+اگر لومن استور برایتان مفید بود، یک ستاره به پیدا شدن آن توسط دیگران کمک می‌کند.
 
 ## مشارکت
 

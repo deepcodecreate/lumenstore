@@ -1,0 +1,30 @@
+Lumen Store scans the apps on your phone, finds the open-source ones and keeps them up to date by downloading releases directly from F-Droid, IzzyOnDroid, GitHub, GitLab and Codeberg. No account, no ads, no tracking.
+
+<b>Scan and update</b>
+<ul>
+<li>Match installed apps with F-Droid, IzzyOnDroid and GitHub releases</li>
+<li>One-tap install and update with the right APK for your device</li>
+<li>Background scans with update notifications</li>
+</ul>
+
+<b>Explore</b>
+<ul>
+<li>Browse GitHub projects with rendered READMEs and screenshots</li>
+<li>View developer and organization profiles</li>
+<li>Search Google Play listings and find open-source alternatives</li>
+</ul>
+
+<b>Your sources</b>
+<ul>
+<li>Add repositories from GitHub, GitLab or Codeberg</li>
+<li>Optional GitHub token for a higher rate limit</li>
+<li>DNS over HTTPS support</li>
+</ul>
+
+<b>Make it yours</b>
+<ul>
+<li>Material 3 themes, seed colors and icon shapes</li>
+<li>Animated live backgrounds</li>
+<li>English and Persian with full RTL support</li>
+<li>Backup and restore your app list</li>
+</ul>
