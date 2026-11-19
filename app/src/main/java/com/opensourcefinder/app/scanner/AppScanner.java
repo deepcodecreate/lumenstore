@@ -64,7 +64,6 @@ public class AppScanner {
                 boolean wasUpdated = (applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0;
 
                 if (isSystemApp && !wasUpdated) continue;
-                if (packageInfo.packageName.equals(appContext.getPackageName())) continue;
 
                 String label = applicationInfo.loadLabel(packageManager).toString();
                 String versionName = packageInfo.versionName != null ? packageInfo.versionName : "";

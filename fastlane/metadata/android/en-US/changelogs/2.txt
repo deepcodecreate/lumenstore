@@ -1,0 +1,1 @@
+Fixes Lumen Store not being detected in the Home list. Adds token encryption and other security hardening.

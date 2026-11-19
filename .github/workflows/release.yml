@@ -15,14 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v6
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      - uses: gradle/actions/setup-gradle@v6
+      - uses: gradle/actions/setup-gradle@v4
 
       - run: chmod +x gradlew
 
@@ -39,30 +39,40 @@ jobs:
             printf 'storeFile=../keystore/release.keystore\nstorePassword=%s\nkeyAlias=%s\nkeyPassword=%s\n' "$KEYSTORE_PASSWORD" "$KEY_ALIAS" "$KEY_PASSWORD" > keystore.properties
           fi
 
-      - run: ./gradlew assembleRelease --stacktrace
+      - run: ./gradlew assembleRelease assembleDebug --stacktrace
 
-      - name: Name the APK and write checksums
+      - name: Name the APKs and write checksums
         run: |
-          VERSION="${GITHUB_REF_NAME}"
+          VERSION="${GITHUB_REF_NAME//\//-}"
           mkdir -p dist
-          cp app/build/outputs/apk/release/*.apk "dist/Lumenstore-${VERSION//\//-}.apk"
+          cp app/build/outputs/apk/release/*.apk "dist/Lumenstore-${VERSION}.apk"
+          cp app/build/outputs/apk/debug/*.apk "dist/Lumenstore-${VERSION}-debug.apk"
           cd dist
           sha256sum *.apk > SHA256SUMS.txt
+
+      - name: Find release notes
+        id: notes
+        run: |
+          FILE=".github/release-notes/${GITHUB_REF_NAME}.md"
+          if [ -f "$FILE" ]; then echo "path=$FILE" >> "$GITHUB_OUTPUT"; fi
 
       - uses: actions/attest-build-provenance@v2
         with:
           subject-path: dist/*.apk
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v4
         with:
           name: lumenstore-release
           path: dist/*
           if-no-files-found: error
 
-      - uses: softprops/action-gh-release@v3
+      - uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          name: Lumen Store ${{ github.ref_name }}
+          body_path: ${{ steps.notes.outputs.path }}
+          generate_release_notes: ${{ steps.notes.outputs.path == '' }}
+          prerelease: ${{ startsWith(github.ref_name, 'v0.') }}
           files: |
             dist/*.apk
             dist/SHA256SUMS.txt
-          generate_release_notes: true

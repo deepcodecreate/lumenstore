@@ -2,6 +2,14 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.1] - Beta
+
+### Fixed
+- Lumen Store is now detected in the Home list so its own updates appear
+
+### Changed
+- Releases now include both release and debug APKs with checksums
+
 ## [0.5.0] - Beta
 
 ### Added
