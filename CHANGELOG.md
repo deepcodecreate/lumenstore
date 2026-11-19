@@ -15,3 +15,9 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 - English and Persian with RTL support
 - `lumenstore://app/<package-name>` deep links
 - GitHub Actions for builds, releases, CodeQL and dependency tracking
+
+### Security
+- GitHub token is encrypted with a hardware-backed Android Keystore key and migrated from plain storage
+- System backups are disabled so the token never leaves the device
+- File sharing paths restricted to app-private and app download folders
+- R8 code shrinking enabled for release builds

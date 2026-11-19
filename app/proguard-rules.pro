@@ -1,0 +1,7 @@
+-keepattributes Signature,*Annotation*,InnerClasses,EnclosingMethod,RuntimeVisibleAnnotations
+-keep class com.opensourcefinder.app.** { *; }
+-keep class com.caverock.androidsvg.** { *; }
+-dontwarn javax.annotation.**
+-dontwarn org.conscrypt.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.openjsse.**
