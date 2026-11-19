@@ -78,5 +78,5 @@ dependencies {
     implementation "io.noties.markwon:ext-tables:4.6.2"
     implementation "io.noties.markwon:image-glide:4.6.2"
     implementation "io.noties.markwon:ext-strikethrough:4.6.2"
-    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:5.0.9")
 }
