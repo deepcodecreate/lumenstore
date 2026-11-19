@@ -21,6 +21,6 @@ jobs:
 
       - run: chmod +x gradlew
 
-      - uses: gradle/actions/dependency-submission@v4
+      - uses: gradle/actions/dependency-submission@v6
         env:
           DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: releaseRuntimeClasspath
