@@ -344,7 +344,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppViewH
             text = context.getString(R.string.install);
             bg = primary; fg = onPrimary; iconName = "ic_download";
             clickable = true;
-        } else if (app.isUpdateAvailable() && !installedFromLatest(dl, app)) {
+        } else if (app.isUpdateAvailable()) {
             text = context.getString(R.string.update);
             bg = primary; fg = onPrimary; iconName = "ic_download";
             clickable = true;
@@ -367,13 +367,6 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppViewH
         button.setClickable(clickable);
         button.setFocusable(clickable);
         button.setEnabled(true);
-    }
-
-    private static boolean installedFromLatest(DownloadTracker.Entry dl, MatchedApp app) {
-        if (dl == null || dl.state != DownloadTracker.State.INSTALLED) return false;
-        String tag = app.getLatestTag();
-        if (tag == null || tag.isEmpty() || dl.fileName == null) return false;
-        return dl.fileName.contains(tag);
     }
 
     public MatchedApp getItemAt(int position) {

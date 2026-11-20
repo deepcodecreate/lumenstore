@@ -2,6 +2,16 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.7-beta]
+
+### Fixed
+- An update now stays in the Home update list until the install is really confirmed and the installed version is compared with the latest version
+- The three-dot menu has four equal sharper corners and its pointer arrow sits exactly under the button
+
+### Added
+- Downloads: long-press an installed item with a kept APK to delete only its APK (the item stays in the list) or extract the APK into a chosen folder
+- The Explore Lumen apps slider now plays automatically with strongly animated transitions and returns to the first slide after the last one
+
 ## [0.5.6-beta]
 
 ### Changed

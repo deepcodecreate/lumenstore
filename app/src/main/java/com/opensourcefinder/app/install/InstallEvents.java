@@ -83,7 +83,10 @@ public final class InstallEvents {
                 if (packageName != null) {
                     for (MatchedApp m : MatchStore.get(app)) {
                         if (packageName.equals(m.getPackageName())) {
+                            DownloadTracker.Entry entry = DownloadTracker.get().getEntry(m.getPackageName());
+                            InstallState.recordInstalledTag(app, m, entry);
                             InstallState.refresh(app, m);
+                            InstallState.markCurrentIfFromLatest(app, m, entry);
                             MatchStore.upsert(app, m);
                         }
                     }

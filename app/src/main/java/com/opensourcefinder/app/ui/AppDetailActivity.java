@@ -718,12 +718,16 @@ public class AppDetailActivity extends BaseActivity {
         try {
             android.content.pm.PackageInfo pi = getPackageManager().getPackageInfo(pkg, 0);
             long vc = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ? pi.getLongVersionCode() : pi.versionCode;
-            if (entry != null) DownloadTracker.get().markInstalled(entry.key);
+            if (entry != null && entry.apkFile != null && entry.apkFile.exists()
+                    && (entry.state == DownloadTracker.State.COMPLETED || entry.state == DownloadTracker.State.INSTALLED)
+                    && com.opensourcefinder.app.install.InstallState.isApkInstalled(this, entry.apkFile, pkg)) {
+                DownloadTracker.get().markInstalled(entry.key);
+            }
             final String oldKey = matchedApp.getPackageName();
             matchedApp.setPackageName(pkg);
             com.opensourcefinder.app.install.InstallState.recordInstalledTag(this, matchedApp, entry);
             com.opensourcefinder.app.install.InstallState.refresh(this, matchedApp);
-            if (entry != null) com.opensourcefinder.app.install.InstallState.markCurrentIfFromLatest(matchedApp, entry);
+            if (entry != null) com.opensourcefinder.app.install.InstallState.markCurrentIfFromLatest(this, matchedApp, entry);
             try {
                 String systemLabel = getPackageManager().getApplicationLabel(pi.applicationInfo).toString();
                 if (matchedApp.isCloneVariant() && !systemLabel.toLowerCase(java.util.Locale.ROOT).contains("clone")) {

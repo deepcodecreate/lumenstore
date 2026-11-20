@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -81,6 +82,17 @@ public class ExploreFragment extends Fragment {
     private HeroAdapter heroAdapter;
     private LinearLayout heroDots;
     private androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback heroPageCallback;
+    private final android.os.Handler heroHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private final Runnable heroAuto = new Runnable() {
+        @Override public void run() {
+            if (heroPager == null || heroAdapter == null || !isAdded() || isHidden()) return;
+            int count = heroAdapter.getItemCount();
+            if (count < 2) return;
+            heroPager.setCurrentItem((heroPager.getCurrentItem() + 1) % count, true);
+            heroHandler.postDelayed(this, HERO_INTERVAL_MS);
+        }
+    };
+    private static final long HERO_INTERVAL_MS = 4200L;
     private ExploreAdapter searchAdapter;
     private View exploreScroll;
     private View loadingPanel;
@@ -207,6 +219,7 @@ public class ExploreFragment extends Fragment {
         if (pendingFilter != null) searchHandler.removeCallbacks(pendingFilter);
         if (searchStrokeAnimator != null) searchStrokeAnimator.cancel();
         DownloadTracker.get().removeGlobalListener(downloadSyncListener);
+        stopHeroAuto();
         if (heroPager != null && heroPageCallback != null) heroPager.unregisterOnPageChangeCallback(heroPageCallback);
         heroPager = null;
         heroAdapter = null;
@@ -372,6 +385,7 @@ public class ExploreFragment extends Fragment {
 
     @Override public void onPause() {
         com.opensourcefinder.app.install.InstallEvents.removeListener(installEventsListener);
+        stopHeroAuto();
         super.onPause();
     }
 
@@ -380,10 +394,13 @@ public class ExploreFragment extends Fragment {
         com.opensourcefinder.app.install.InstallEvents.addListener(installEventsListener);
         refreshInstalledStatesOnly();
         refreshDownloadButtons();
+        startHeroAuto();
     }
 
     @Override public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        if (hidden) stopHeroAuto();
+        else startHeroAuto();
         if (!hidden) {
             refreshInstalledStatesOnly();
             refreshDownloadButtons();
@@ -1081,13 +1098,111 @@ public class ExploreFragment extends Fragment {
         heroAdapter = new HeroAdapter();
         heroPager.setAdapter(heroAdapter);
         heroPager.setOffscreenPageLimit(1);
+        heroPager.setClipChildren(false);
+        View pagerList = heroPager.getChildAt(0);
+        if (pagerList instanceof RecyclerView) {
+            ((RecyclerView) pagerList).setClipChildren(false);
+            ((RecyclerView) pagerList).setClipToPadding(false);
+        }
+        if (AppPreferences.isReduceMotion(requireContext())) {
+            heroPager.setPageTransformer((page, position) -> page.setAlpha(1f - Math.min(1f, Math.abs(position))));
+        } else {
+            heroPager.setPageTransformer(this::transformHeroPage);
+        }
         heroPageCallback = new androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
             @Override public void onPageSelected(int position) {
                 updateHeroDots(position);
+                popHeroIcon(position);
+            }
+
+            @Override public void onPageScrollStateChanged(int state) {
+                if (state == androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING) stopHeroAuto();
+                else if (state == androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE) startHeroAuto();
             }
         };
         heroPager.registerOnPageChangeCallback(heroPageCallback);
         updateHeroSlides();
+    }
+
+    private void startHeroAuto() {
+        heroHandler.removeCallbacks(heroAuto);
+        if (heroPager == null || heroAdapter == null || !isAdded() || isHidden()) return;
+        if (AppPreferences.isReduceMotion(requireContext()) || heroAdapter.getItemCount() < 2) return;
+        heroHandler.postDelayed(heroAuto, HERO_INTERVAL_MS);
+    }
+
+    private void stopHeroAuto() {
+        heroHandler.removeCallbacks(heroAuto);
+    }
+
+    private void popHeroIcon(int position) {
+        if (heroPager == null || AppPreferences.isReduceMotion(requireContext())) return;
+        View list = heroPager.getChildAt(0);
+        if (!(list instanceof RecyclerView)) return;
+        RecyclerView.ViewHolder holder = ((RecyclerView) list).findViewHolderForAdapterPosition(position);
+        if (holder == null) return;
+        View icon = holder.itemView.findViewById(R.id.heroSlideIcon);
+        View title = holder.itemView.findViewById(R.id.heroSlideTitle);
+        View subtitle = holder.itemView.findViewById(R.id.heroSlideSubtitle);
+        if (icon != null) {
+            icon.animate().cancel();
+            icon.setScaleX(0.55f);
+            icon.setScaleY(0.55f);
+            icon.animate().scaleX(1f).scaleY(1f).setDuration(520L)
+                    .setInterpolator(new android.view.animation.OvershootInterpolator(2.6f)).start();
+        }
+        View[] texts = {title, subtitle};
+        for (int i = 0; i < texts.length; i++) {
+            View t = texts[i];
+            if (t == null) continue;
+            t.animate().cancel();
+            t.setTranslationY(14f * getResources().getDisplayMetrics().density);
+            t.animate().translationY(0f).setStartDelay(80L + i * 70L).setDuration(420L)
+                    .setInterpolator(new DecelerateInterpolator(2f)).start();
+        }
+    }
+
+    private void transformHeroPage(@NonNull View page, float position) {
+        float abs = Math.min(1f, Math.abs(position));
+        float width = page.getWidth();
+        page.setCameraDistance(page.getResources().getDisplayMetrics().density * 9000f);
+        page.setPivotX(position < 0 ? width : 0f);
+        page.setPivotY(page.getHeight() / 2f);
+        page.setRotationY(-32f * position);
+        page.setScaleX(1f - 0.2f * abs);
+        page.setScaleY(1f - 0.2f * abs);
+        page.setAlpha(1f - 0.7f * abs);
+        View icon = page.findViewById(R.id.heroSlideIcon);
+        View title = page.findViewById(R.id.heroSlideTitle);
+        View subtitle = page.findViewById(R.id.heroSlideSubtitle);
+        View circleA = page.findViewById(R.id.heroSlideCircleA);
+        View circleB = page.findViewById(R.id.heroSlideCircleB);
+        if (icon != null) {
+            icon.setTranslationX(-position * width * 0.5f);
+            icon.setRotation(position * -140f);
+            icon.setScaleX(1f - 0.45f * abs);
+            icon.setScaleY(1f - 0.45f * abs);
+        }
+        if (title != null) {
+            title.setTranslationX(position * width * 0.28f);
+            title.setAlpha(1f - abs);
+        }
+        if (subtitle != null) {
+            subtitle.setTranslationX(position * width * 0.45f);
+            subtitle.setAlpha((1f - abs) * 0.8f);
+        }
+        if (circleA != null) {
+            circleA.setTranslationX(position * width * 0.7f);
+            circleA.setRotation(position * 120f);
+            circleA.setScaleX(1f + 0.7f * abs);
+            circleA.setScaleY(1f + 0.7f * abs);
+        }
+        if (circleB != null) {
+            circleB.setTranslationX(-position * width * 0.35f);
+            circleB.setTranslationY(abs * 24f * page.getResources().getDisplayMetrics().density);
+            circleB.setScaleX(1f + 0.9f * abs);
+            circleB.setScaleY(1f + 0.9f * abs);
+        }
     }
 
     @Nullable
@@ -1113,6 +1228,7 @@ public class ExploreFragment extends Fragment {
         }
         heroAdapter.submit(slides);
         buildHeroDots(slides.size());
+        startHeroAuto();
     }
 
     private void buildHeroDots(int count) {

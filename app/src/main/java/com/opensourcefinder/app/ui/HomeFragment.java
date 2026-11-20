@@ -633,13 +633,14 @@ public class HomeFragment extends Fragment {
             panel.setLayoutParams(c);
         }
         float arrowW = dp(22);
-        float full = dp(cornerDp) * AppPreferences.getCornerScale(requireContext());
-        float edge = Math.min(full + arrowW / 2f, width / 2f);
+        float edge = arrowW / 2f + dp(2f);
         float tail = Math.max(edge, Math.min(centerX - left, width - edge));
         if (card instanceof MaterialCardView) {
+            float full = dp(cornerDp) * AppPreferences.getCornerScale(requireContext());
+            float limit = Math.max(dp(4f), Math.min(tail, width - tail) - arrowW / 2f);
             MaterialCardView mc = (MaterialCardView) card;
             mc.setShapeAppearanceModel(mc.getShapeAppearanceModel().toBuilder()
-                    .setAllCornerSizes(full)
+                    .setAllCornerSizes(Math.min(full, limit))
                     .build());
         }
         arrow.setTranslationX(tail - arrowW / 2f);
@@ -732,7 +733,7 @@ public class HomeFragment extends Fragment {
         if (scanPanelOpen) hideScanPanel();
         homeMenuOpen = true;
         HomeMenuPanel.populate(homeMenuContent, buildMenuConfig());
-        revealPanel(homeMenuPanel, homeMenuCard, homeMenuArrow, moreButtonView, 280, 40f);
+        revealPanel(homeMenuPanel, homeMenuCard, homeMenuArrow, moreButtonView, 280, 14f);
     }
 
     private void hideHomeMenu() {
@@ -1293,7 +1294,7 @@ public class HomeFragment extends Fragment {
                 if (!pkg.equals(oldKey)) found.setPackageName(pkg);
                 com.opensourcefinder.app.install.InstallState.recordInstalledTag(context, found, e);
                 com.opensourcefinder.app.install.InstallState.refresh(context, found);
-                com.opensourcefinder.app.install.InstallState.markCurrentIfFromLatest(found, e);
+                com.opensourcefinder.app.install.InstallState.markCurrentIfFromLatest(context, found, e);
                 try {
                      synchronized (iconCache) {
                          iconCache.put(pkg, context.getPackageManager().getApplicationIcon(pkg));

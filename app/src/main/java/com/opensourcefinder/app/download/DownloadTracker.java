@@ -346,6 +346,17 @@ public final class DownloadTracker {
         try { if (f.exists()) f.delete(); } catch (Exception ignored) {}
     }
 
+    public boolean deleteApkOnly(String key) {
+        Entry e = entries.get(key);
+        if (e == null || e.state != State.INSTALLED || e.apkFile == null) return false;
+        File f = e.apkFile;
+        e.apkFile = null;
+        try { if (f.exists()) f.delete(); } catch (Exception ignored) {}
+        e.notifyProgress();
+        persist();
+        return true;
+    }
+
     public void clear(String key) { entries.remove(key); }
 
     public boolean remove(String key) {

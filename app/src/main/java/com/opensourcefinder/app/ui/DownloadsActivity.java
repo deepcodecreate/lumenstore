@@ -67,6 +67,7 @@ public class DownloadsActivity extends BaseActivity {
     private View loading;
     private androidx.activity.result.ActivityResultLauncher<String> exportLauncher;
     private DownloadTracker.Entry exportEntry;
+    private androidx.activity.result.ActivityResultLauncher<Uri> exportFolderLauncher;
     private InstallTracker.Listener installListener;
     private volatile boolean loadingData = false;
     private final Handler refreshHandler = new Handler(Looper.getMainLooper());
@@ -110,6 +111,11 @@ public class DownloadsActivity extends BaseActivity {
             if (uri == null || exportEntry == null || exportEntry.apkFile == null) return;
             DownloadTracker.Entry entry = exportEntry; exportEntry = null;
             new Thread(() -> exportApk(uri, entry)).start();
+        });
+        exportFolderLauncher = registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.OpenDocumentTree(), uri -> {
+            if (uri == null || exportEntry == null || exportEntry.apkFile == null) return;
+            DownloadTracker.Entry entry = exportEntry; exportEntry = null;
+            new Thread(() -> exportApkToFolder(uri, entry)).start();
         });
         ThemeManager.applyWindow(this);
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
@@ -191,7 +197,7 @@ public class DownloadsActivity extends BaseActivity {
                         final String oldKey = m.getPackageName();
                         m.setPackageName(pkg);
                         com.opensourcefinder.app.install.InstallState.refresh(context, m);
-                        com.opensourcefinder.app.install.InstallState.markCurrentIfFromLatest(m, e);
+                        com.opensourcefinder.app.install.InstallState.markCurrentIfFromLatest(context, m, e);
                         try {
                             m.setAppLabel(context.getPackageManager().getApplicationLabel(pi.applicationInfo).toString());
                         } catch (Exception ignored) {}
@@ -516,6 +522,18 @@ public class DownloadsActivity extends BaseActivity {
                         }
                     });
                 }
+                boolean apkOnly = canExport && e.state == DownloadTracker.State.INSTALLED
+                        && e.apkFile != null && e.apkFile.exists();
+                if (apkOnly) {
+                    menu.action(getString(R.string.export_apk_to_folder), TablerIconRes.get(DownloadsActivity.this, "ic_download"), 0, () -> {
+                        if (e.apkFile != null) {
+                            exportEntry = e;
+                            exportFolderLauncher.launch(null);
+                        }
+                    });
+                    menu.action(getString(R.string.delete_apk_only), TablerIconRes.get(DownloadsActivity.this, "ic_trash"),
+                            themeColor("colorError"), () -> confirmDeleteApk(e));
+                }
                 if (canDelete) {
                     menu.action(getString(R.string.delete_download), TablerIconRes.get(DownloadsActivity.this, "ic_trash"),
                             themeColor("colorError"), () -> confirmDelete(e));
@@ -525,6 +543,40 @@ public class DownloadsActivity extends BaseActivity {
             });
         }
     }
+    private void confirmDeleteApk(DownloadTracker.Entry entry) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.delete_apk_only)
+                .setMessage(R.string.delete_apk_only_message)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.delete_apk_only, (dialog, which) -> {
+                    if (DownloadTracker.get().deleteApkOnly(entry.key)) {
+                        refresh();
+                        android.widget.Toast.makeText(this, R.string.apk_deleted, android.widget.Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
+    }
+
+    private void exportApkToFolder(Uri tree, DownloadTracker.Entry entry) {
+        final android.content.Context app = getApplicationContext();
+        if (app == null || entry.apkFile == null) return;
+        String name = entry.fileName == null || entry.fileName.isEmpty() ? "app.apk" : entry.fileName;
+        try {
+            Uri parent = android.provider.DocumentsContract.buildDocumentUriUsingTree(tree,
+                    android.provider.DocumentsContract.getTreeDocumentId(tree));
+            Uri target = android.provider.DocumentsContract.createDocument(app.getContentResolver(), parent,
+                    "application/vnd.android.package-archive", name);
+            if (target == null) throw new IllegalStateException("Cannot create file");
+            try (InputStream in = new java.io.FileInputStream(entry.apkFile); OutputStream out = app.getContentResolver().openOutputStream(target)) {
+                if (out == null) throw new IllegalStateException("Cannot open file");
+                byte[] buffer = new byte[32768]; int n; while ((n = in.read(buffer)) != -1) out.write(buffer, 0, n);
+            }
+            runOnUiThread(() -> android.widget.Toast.makeText(app, R.string.apk_exported, android.widget.Toast.LENGTH_SHORT).show());
+        } catch (Exception e) {
+            runOnUiThread(() -> android.widget.Toast.makeText(app, R.string.apk_export_failed, android.widget.Toast.LENGTH_LONG).show());
+        }
+    }
+
     private void exportApk(Uri uri, DownloadTracker.Entry entry) {
         try (InputStream in = new java.io.FileInputStream(entry.apkFile); OutputStream out = getContentResolver().openOutputStream(uri)) {
             if (out == null) throw new IllegalStateException("Cannot open output");

@@ -174,8 +174,16 @@ public final class InstallState {
         return updateAvailable(info, m.getLatestVersionCode(), latestTag);
     }
 
+    public static boolean verifiedInstalled(Context context, com.opensourcefinder.app.download.DownloadTracker.Entry e) {
+        if (context == null || e == null || e.state != com.opensourcefinder.app.download.DownloadTracker.State.INSTALLED) return false;
+        String pkg = e.realPackageName != null ? e.realPackageName : e.key;
+        if (read(context, pkg) == null && (pkg.equals(e.key) || read(context, e.key) == null)) return false;
+        if (e.apkFile == null || !e.apkFile.exists() || e.apkFile.length() == 0) return true;
+        return isApkInstalled(context, e.apkFile, pkg) || isApkInstalled(context, e.apkFile, e.key);
+    }
+
     public static void recordInstalledTag(Context context, MatchedApp m, com.opensourcefinder.app.download.DownloadTracker.Entry e) {
-        if (m == null || e == null || e.fileName == null) return;
+        if (m == null || e == null || e.fileName == null || !verifiedInstalled(context, e)) return;
         String tag = m.getLatestTag();
         if (tag == null || tag.isEmpty() || !e.fileName.contains(tag)) return;
         Info info = read(context, m.getPackageName());
@@ -230,8 +238,9 @@ public final class InstallState {
         return Ui.UP_TO_DATE;
     }
 
-    public static void markCurrentIfFromLatest(MatchedApp m, com.opensourcefinder.app.download.DownloadTracker.Entry e) {
+    public static void markCurrentIfFromLatest(Context context, MatchedApp m, com.opensourcefinder.app.download.DownloadTracker.Entry e) {
         if (m == null || e == null || m.isNotInstalled() || !m.isUpdateAvailable()) return;
+        if (!verifiedInstalled(context, e)) return;
         if (m.getLatestVersionCode() > 0) return;
         String tag = m.getLatestTag();
         if (tag != null && !tag.isEmpty() && e.fileName != null && e.fileName.contains(tag)) m.setUpdateAvailable(false);

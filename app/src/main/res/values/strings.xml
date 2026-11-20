@@ -750,4 +750,8 @@ This will replace your current app list and repositories with this backup. Conti
     <string name="hero_terbian_summary">Open-source Linux terminal for Android</string>
     <string name="hero_pond_summary">Detect tampering on custom-modified phones</string>
     <string name="hero_proxy_share_summary">Tunnel other devices through your proxy</string>
+    <string name="export_apk_to_folder">Extract APK to folder</string>
+    <string name="delete_apk_only">Delete APK only</string>
+    <string name="delete_apk_only_message">Only the APK file will be deleted. The item stays in the list.</string>
+    <string name="apk_deleted">APK deleted</string>
 </resources>
