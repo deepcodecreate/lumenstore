@@ -2,6 +2,12 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.5]
+
+### Changed
+- All pull-to-refresh views now use the Material 3 Expressive loading indicator in a round container, and the content slides down while you pull
+- Releases are published as stable and marked as latest instead of pre-release
+
 ## [0.5.4] - Beta
 
 ### Fixed

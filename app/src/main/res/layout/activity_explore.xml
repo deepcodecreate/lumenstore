@@ -37,7 +37,7 @@
             </com.google.android.material.textfield.TextInputLayout>
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <com.opensourcefinder.app.ui.MaterialRefreshLayout
         android:id="@+id/exploreRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -137,6 +137,6 @@
             android:textColor="?attr/colorOnSurfaceVariant"
             android:visibility="gone" />
         </FrameLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.opensourcefinder.app.ui.MaterialRefreshLayout>
     <include layout="@layout/include_bottom_nav" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

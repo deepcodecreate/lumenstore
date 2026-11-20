@@ -379,9 +379,6 @@ public class GitHubExploreFragment extends Fragment {
             AppPreferences.performHaptic(v);
             resultsList.smoothScrollToPosition(0);
         });
-        resultsRefresh.setColorSchemeColors(MaterialColors.getColor(resultsRefresh, android.R.attr.colorAccent));
-        resultsRefresh.setProgressBackgroundColorSchemeColor(MaterialColors.getColor(
-                resultsRefresh, com.google.android.material.R.attr.colorSurfaceContainerHigh));
         resultsRefresh.setOnChildScrollUpCallback((parent, child) -> resultsList.canScrollVertically(-1));
         resultsRefresh.setOnRefreshListener(() -> loadPage(true));
         retryButton.setOnClickListener(v -> loadPage(true));

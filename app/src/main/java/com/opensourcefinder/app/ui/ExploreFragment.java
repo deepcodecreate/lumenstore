@@ -40,7 +40,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -85,7 +84,7 @@ public class ExploreFragment extends Fragment {
     private TextView storeTitle;
     private androidx.activity.OnBackPressedCallback categoryBackCallback;
     private String lastQuery = "";
-    private SwipeRefreshLayout exploreRefresh;
+    private MaterialRefreshLayout exploreRefresh;
     private List<ExploreApp> activeCategoryApps;
     private volatile boolean destroyed = false;
     private volatile boolean catalogLoading = false;
@@ -145,12 +144,6 @@ public class ExploreFragment extends Fragment {
         loadingPanel = view.findViewById(R.id.loadingPanel);
         exploreRefresh = view.findViewById(R.id.exploreRefresh);
         if (exploreRefresh != null) {
-            exploreRefresh.setColorSchemeColors(
-                    com.google.android.material.color.MaterialColors.getColor(
-                            exploreRefresh, android.R.attr.colorAccent));
-            exploreRefresh.setProgressBackgroundColorSchemeColor(
-                    com.google.android.material.color.MaterialColors.getColor(
-                            exploreRefresh, com.google.android.material.R.attr.colorSurfaceContainerHigh));
             exploreRefresh.setOnChildScrollUpCallback((parent, child) -> {
                 if (searchRecycler != null && searchRecycler.getVisibility() == View.VISIBLE) {
                     return searchRecycler.canScrollVertically(-1);

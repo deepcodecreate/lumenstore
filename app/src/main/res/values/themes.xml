@@ -577,6 +577,11 @@
         <item name="containerWidth">20dp</item>
         <item name="containerHeight">20dp</item>
     </style>
+    <style name="Widget.App.LoadingIndicator.Pull" parent="Widget.Material3.LoadingIndicator.Contained">
+        <item name="indicatorSize">28dp</item>
+        <item name="containerWidth">52dp</item>
+        <item name="containerHeight">52dp</item>
+    </style>
     <style name="Widget.App.LoadingIndicator.Contained.Small" parent="Widget.Material3.LoadingIndicator.Contained">
         <item name="indicatorSize">18dp</item>
         <item name="containerWidth">32dp</item>

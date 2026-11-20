@@ -72,7 +72,8 @@ jobs:
           name: Lumen Store ${{ github.ref_name }}
           body_path: ${{ steps.notes.outputs.path }}
           generate_release_notes: ${{ steps.notes.outputs.path == '' }}
-          prerelease: ${{ startsWith(github.ref_name, 'v0.') }}
+          prerelease: false
+          make_latest: true
           files: |
             dist/*.apk
             dist/SHA256SUMS.txt

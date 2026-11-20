@@ -1,0 +1,1 @@
+All pull-to-refresh views now use the Material 3 Expressive loading indicator. Stable release marked as latest.

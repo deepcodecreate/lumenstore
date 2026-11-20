@@ -41,7 +41,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -75,7 +74,7 @@ public class ExploreActivity extends BaseActivity {
     private View exploreScroll;
     private View loadingPanel;
     private RecyclerView searchRecycler;
-    private SwipeRefreshLayout exploreRefresh;
+    private MaterialRefreshLayout exploreRefresh;
     private LinearLayout categoriesContainer;
     private TextView empty;
     private MaterialToolbar toolbar;
@@ -116,12 +115,6 @@ public class ExploreActivity extends BaseActivity {
         loadingPanel = findViewById(R.id.loadingPanel);
         exploreRefresh = findViewById(R.id.exploreRefresh);
         if (exploreRefresh != null) {
-            exploreRefresh.setColorSchemeColors(
-                    com.google.android.material.color.MaterialColors.getColor(
-                            exploreRefresh, android.R.attr.colorAccent));
-            exploreRefresh.setProgressBackgroundColorSchemeColor(
-                    com.google.android.material.color.MaterialColors.getColor(
-                            exploreRefresh, com.google.android.material.R.attr.colorSurfaceContainerHigh));
             exploreRefresh.setOnChildScrollUpCallback((parent, child) -> {
                 if (searchRecycler != null && searchRecycler.getVisibility() == View.VISIBLE) {
                     return searchRecycler.canScrollVertically(-1);

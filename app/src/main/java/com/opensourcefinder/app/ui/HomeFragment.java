@@ -49,7 +49,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -114,7 +113,7 @@ public class HomeFragment extends Fragment {
     private String lastFavoritesKey;
     private volatile boolean scanRunning = false;
     private AppListAdapter adapter;
-    private SwipeRefreshLayout swipe;
+    private MaterialRefreshLayout swipe;
     private TextView empty;
     private TextView appCount;
     private MaterialToolbar toolbar;
@@ -312,12 +311,6 @@ public class HomeFragment extends Fragment {
                 LiveBackgroundView.setScrollPaused(newState != RecyclerView.SCROLL_STATE_IDLE);
             }
         });
-        swipe.setColorSchemeColors(
-                com.google.android.material.color.MaterialColors.getColor(
-                        swipe, android.R.attr.colorAccent));
-        swipe.setProgressBackgroundColorSchemeColor(
-                com.google.android.material.color.MaterialColors.getColor(
-                        swipe, com.google.android.material.R.attr.colorSurfaceContainerHigh));
 
         swipe.setOnChildScrollUpCallback((parent, child) -> rv != null && (rv.canScrollVertically(-1) || appBarOffset != 0));
         swipe.setOnRefreshListener(() -> startScan(false, true));
