@@ -59,6 +59,7 @@ public class AppScanner {
             for (PackageInfo packageInfo : packages) {
                 ApplicationInfo applicationInfo = packageInfo.applicationInfo;
                 if (applicationInfo == null) continue;
+                if (PackageBlocklist.isBlocked(packageInfo.packageName)) continue;
 
                 boolean isSystemApp = (applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
                 boolean wasUpdated = (applicationInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0;

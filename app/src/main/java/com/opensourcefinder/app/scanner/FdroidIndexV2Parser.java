@@ -314,7 +314,7 @@ public final class FdroidIndexV2Parser {
                     reader.beginObject();
                     while (reader.hasNext()) {
                         String pkg = reader.nextName();
-                        if (filter != null && !filter.accept(pkg)) {
+                        if (PackageBlocklist.isBlocked(pkg) || (filter != null && !filter.accept(pkg))) {
                             reader.skipValue();
                             continue;
                         }

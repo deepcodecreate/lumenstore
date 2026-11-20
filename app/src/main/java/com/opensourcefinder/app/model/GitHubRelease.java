@@ -140,6 +140,11 @@ public class GitHubRelease implements Serializable {
     }
 
     public Asset findApkAsset(boolean clone) {
+        Asset best = findApkAsset(clone, false);
+        return best != null ? best : findApkAsset(clone, true);
+    }
+
+    private Asset findApkAsset(boolean clone, boolean debug) {
         if (assets == null) return null;
         Asset best = null;
         int bestRank = Integer.MAX_VALUE;
@@ -147,6 +152,7 @@ public class GitHubRelease implements Serializable {
             String name = asset == null ? null : asset.getName();
             if (name == null || !name.toLowerCase(Locale.ROOT).endsWith(".apk")) continue;
             if (isCloneName(name) != clone) continue;
+            if (isDebugName(name) != debug) continue;
             int rank = DeviceAbi.rank(DeviceAbi.fromFileName(name));
             if (rank < bestRank) {
                 best = asset;
@@ -197,6 +203,14 @@ public class GitHubRelease implements Serializable {
     private static final Pattern CLONE_TOKEN = Pattern.compile(
             "(?<![a-z0-9])(clone|clones|cloned|clon|dual|dualapp|dualspace|dual-space|parallel|parallelspace|twin|twins|2nd|second|secondary|cl)(?![a-z0-9])");
     private static final Pattern CAMEL_BOUNDARY = Pattern.compile("([a-z0-9])([A-Z])");
+
+    private static final Pattern DEBUG_TOKEN = Pattern.compile("(?<![a-z0-9])(debug|dbg)(?![a-z0-9])");
+
+    public static boolean isDebugName(String name) {
+        if (name == null) return false;
+        String spaced = CAMEL_BOUNDARY.matcher(name).replaceAll("$1-$2");
+        return DEBUG_TOKEN.matcher(spaced.toLowerCase(Locale.ROOT)).find();
+    }
 
     public static boolean isCloneName(String name) {
         if (name == null) return false;

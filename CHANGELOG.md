@@ -2,6 +2,15 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.4] - Beta
+
+### Fixed
+- Updates are no longer taken from debug APKs: debug builds are ignored when a release APK exists
+- `com.rk.xededitor` is removed from every list, including Home, Explore, search and repository indexes
+
+### Changed
+- The profile README on the GitHub account page now sits right under the account header, above the repositories
+
 ## [0.5.2] - Beta
 
 ### Changed

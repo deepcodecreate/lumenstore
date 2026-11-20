@@ -450,6 +450,7 @@ public class FdroidIndexManager {
                 ? java.util.Collections.emptySet() : installedPackages;
         List<ExploreApp> result = new ArrayList<>(cached.size());
         for (ExploreApp cachedApp : cached) {
+            if (PackageBlocklist.isBlocked(cachedApp.getPackageName())) continue;
             ExploreApp app = cachedApp.copy();
             app.setInstalled(installed.contains(app.getPackageName()));
             app.setInstalledVersionCode(0L);
@@ -908,7 +909,7 @@ public class FdroidIndexManager {
                     reader.beginObject();
                     while (reader.hasNext()) {
                         String packageName = reader.nextName();
-                        if (!installed.containsKey(packageName)) { reader.skipValue(); continue; }
+                        if (PackageBlocklist.isBlocked(packageName) || !installed.containsKey(packageName)) { reader.skipValue(); continue; }
                         long maxCode = -1;
                         String maxName = null, maxApk = null;
                         List<V1Build> candidates = new ArrayList<>();
@@ -1047,6 +1048,7 @@ private List<ExploreApp> parseExplore(File file, String indexUrl, String repoNam
                     reader.beginObject();
                     while (reader.hasNext()) {
                         String packageName = reader.nextName();
+                        if (PackageBlocklist.isBlocked(packageName)) { reader.skipValue(); continue; }
                         long maxCode = -1;
                         String maxName = null, maxApk = null;
                         long maxSize = 0;

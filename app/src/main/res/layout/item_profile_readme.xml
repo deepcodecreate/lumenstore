@@ -4,6 +4,7 @@
     android:id="@+id/profileReadmeCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="14dp"
     android:visibility="gone"
     app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
     app:cardCornerRadius="16dp"

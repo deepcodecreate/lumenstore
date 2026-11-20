@@ -182,6 +182,9 @@ final class GitHubProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             next.add(new Row(T_HEADER, "header", user));
             next.add(new Row(T_STATS, "stats", Arrays.asList(user, starredCount)));
             next.add(new Row(T_ACTIONS, "actions", user));
+            if (readme != null && !readme.trim().isEmpty()) {
+                next.add(new Row(T_README, "readme", readme));
+            }
 
             if (repos != null && !repos.isEmpty()) {
                 next.add(new Row(T_SECTION, "s_repos", new Section(R.string.profile_section_repos,
@@ -218,8 +221,7 @@ final class GitHubProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         }
 
-        if (readme != null && !readme.trim().isEmpty()) {
-            next.add(new Row(T_SECTION, "s_readme", new Section(R.string.profile_section_readme, null)));
+        if (user == null && readme != null && !readme.trim().isEmpty()) {
             next.add(new Row(T_README, "readme", readme));
         }
 

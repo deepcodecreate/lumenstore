@@ -1,0 +1,1 @@
+Updates now ignore debug APKs. Removed com.rk.xededitor from all lists. Profile README moved under the account header.

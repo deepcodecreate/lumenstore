@@ -615,6 +615,7 @@ public class CustomRepositoryScanner {
             if (link == null) continue;
             String name = link.optString("name", null);
             String url = link.optString("direct_asset_url", link.optString("url", null));
+            if (GitHubRelease.isDebugName(name != null ? name : url)) continue;
             if ((name != null && name.toLowerCase(java.util.Locale.ROOT).endsWith(".apk"))
                     || (url != null && url.toLowerCase(java.util.Locale.ROOT).contains(".apk"))) {
                 return new HostedRelease(tag, name, url);
@@ -630,6 +631,7 @@ public class CustomRepositoryScanner {
             if (asset == null) continue;
             String name = asset.optString("name", null);
             String url = asset.optString("browser_download_url", asset.optString("download_url", null));
+            if (GitHubRelease.isDebugName(name != null ? name : url)) continue;
             if ((name != null && name.toLowerCase(java.util.Locale.ROOT).endsWith(".apk"))
                     || (url != null && url.toLowerCase(java.util.Locale.ROOT).contains(".apk"))) {
                 return new HostedRelease(tag, name, url);
@@ -1137,7 +1139,7 @@ public class CustomRepositoryScanner {
                 String assetName = href.substring(href.lastIndexOf('/') + 1);
                 int query = assetName.indexOf('?');
                 if (query >= 0) assetName = assetName.substring(0, query);
-                if (GitHubRelease.isCloneName(assetName)) continue;
+                if (GitHubRelease.isCloneName(assetName) || GitHubRelease.isDebugName(assetName)) continue;
                 return new DirectRelease(tag, assetName, resolve(base + "/", href));
             }
         } catch (Exception ignored) {}
@@ -1191,7 +1193,7 @@ public class CustomRepositoryScanner {
                     String assetName = href.substring(href.lastIndexOf('/') + 1);
                     int query = assetName.indexOf('?');
                     if (query >= 0) assetName = assetName.substring(0, query);
-                    if (GitHubRelease.isCloneName(assetName)) continue;
+                    if (GitHubRelease.isCloneName(assetName) || GitHubRelease.isDebugName(assetName)) continue;
                     return new DirectRelease(tag, assetName, downloadUrl);
                 }
             } catch (Exception ignored) {}

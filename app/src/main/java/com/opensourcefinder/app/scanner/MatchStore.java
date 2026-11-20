@@ -46,6 +46,7 @@ public final class MatchStore {
 
     public static synchronized List<MatchedApp> get(Context context) {
         ensureLoaded(context);
+        if (cache.keySet().removeIf(PackageBlocklist::isBlocked)) persistAll(context);
         return new ArrayList<>(cache.values());
     }
 
@@ -58,7 +59,7 @@ public final class MatchStore {
         cache.clear();
         if (matches != null) {
             for (MatchedApp match : matches) {
-                if (match != null && match.getPackageName() != null) {
+                if (match != null && match.getPackageName() != null && !PackageBlocklist.isBlocked(match.getPackageName())) {
                     inherit(match, previous.get(match.getStoreKey()));
                     cache.put(match.getStoreKey(), match);
                 }
@@ -68,7 +69,7 @@ public final class MatchStore {
     }
 
     public static synchronized void upsert(Context context, MatchedApp match) {
-        if (match == null || match.getPackageName() == null) return;
+        if (match == null || match.getPackageName() == null || PackageBlocklist.isBlocked(match.getPackageName())) return;
         ensureLoaded(context);
         inherit(match, cache.get(match.getStoreKey()));
         cache.put(match.getStoreKey(), match);
@@ -110,7 +111,7 @@ public final class MatchStore {
     }
 
     public static synchronized void updateIfPresent(Context context, MatchedApp match) {
-        if (match == null || match.getPackageName() == null) return;
+        if (match == null || match.getPackageName() == null || PackageBlocklist.isBlocked(match.getPackageName())) return;
         ensureLoaded(context);
         if (!cache.containsKey(match.getStoreKey())) return;
         cache.put(match.getStoreKey(), match);
