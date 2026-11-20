@@ -43,6 +43,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.opensourcefinder.app.R;
@@ -74,6 +76,11 @@ public class ExploreFragment extends Fragment {
     private final List<ExploreApp> updated = new ArrayList<>();
     private final List<ExploreApp> popular = new ArrayList<>();
     private final List<ExploreApp> lumenApps = new ArrayList<>();
+    private final Map<String, Integer> heroColors = new HashMap<>();
+    private androidx.viewpager2.widget.ViewPager2 heroPager;
+    private HeroAdapter heroAdapter;
+    private LinearLayout heroDots;
+    private androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback heroPageCallback;
     private ExploreAdapter searchAdapter;
     private View exploreScroll;
     private View loadingPanel;
@@ -93,7 +100,6 @@ public class ExploreFragment extends Fragment {
     private RecyclerView.ItemAnimator searchItemAnimator;
 
     private RequestOptions iconOptions;
-    private final List<android.animation.Animator> heroAnimators = new ArrayList<>();
     private final FuzzySearch fuzzy = new FuzzySearch();
     private final android.os.Handler searchHandler = new android.os.Handler(android.os.Looper.getMainLooper());
     private Runnable pendingFilter;
@@ -155,7 +161,7 @@ public class ExploreFragment extends Fragment {
             });
         }
         categoriesContainer = view.findViewById(R.id.categoriesContainer);
-        setupHeroShapes(view);
+        setupHero(view);
 
         ((TextView) view.findViewById(R.id.sectionNew).findViewById(R.id.sectionNewTitle)).setText(getString(R.string.new_apps));
         ((TextView) view.findViewById(R.id.sectionUpdated).findViewById(R.id.sectionUpdatedTitle)).setText(getString(R.string.recently_updated));
@@ -201,8 +207,10 @@ public class ExploreFragment extends Fragment {
         if (pendingFilter != null) searchHandler.removeCallbacks(pendingFilter);
         if (searchStrokeAnimator != null) searchStrokeAnimator.cancel();
         DownloadTracker.get().removeGlobalListener(downloadSyncListener);
-        for (android.animation.Animator animator : heroAnimators) animator.cancel();
-        heroAnimators.clear();
+        if (heroPager != null && heroPageCallback != null) heroPager.unregisterOnPageChangeCallback(heroPageCallback);
+        heroPager = null;
+        heroAdapter = null;
+        heroDots = null;
         entrancePlayed = false;
         super.onDestroyView();
     }
@@ -330,63 +338,6 @@ public class ExploreFragment extends Fragment {
         }
     }
 
-    private void setupHeroShapes(View view) {
-        heroAnimators.clear();
-        if (AppPreferences.isReduceMotion(requireContext())) {
-            applyHeroShapeColors(view, null);
-            return;
-        }
-        applyHeroShapeColors(view, heroAnimators);
-    }
-
-    private void applyHeroShapeColors(View view, List<android.animation.Animator> sink) {
-        int[] ids = {R.id.heroShapeA, R.id.heroShapeB, R.id.heroShapeC};
-        int[] attrs = {
-                androidx.appcompat.R.attr.colorPrimary,
-                com.google.android.material.R.attr.colorTertiary,
-                com.google.android.material.R.attr.colorOnPrimaryContainer
-        };
-        int[] alphas = {70, 90, 60};
-        float[] sizes = {124f, 76f, 44f};
-        float density = getResources().getDisplayMetrics().density;
-        for (int i = 0; i < ids.length; i++) {
-            View shape = view.findViewById(ids[i]);
-            if (shape == null) continue;
-            int base = com.google.android.material.color.MaterialColors.getColor(shape, attrs[i], android.graphics.Color.GRAY);
-            int color = androidx.core.graphics.ColorUtils.setAlphaComponent(base, alphas[i]);
-            final android.graphics.drawable.GradientDrawable drawable = new android.graphics.drawable.GradientDrawable();
-            drawable.setColor(color);
-            final float size = sizes[i] * density;
-            drawable.setCornerRadius(size * 0.5f);
-            shape.setBackground(drawable);
-            if (sink == null) continue;
-            android.animation.ValueAnimator morph = android.animation.ValueAnimator.ofFloat(0.5f, 0.24f);
-            morph.setDuration(2600L + i * 700L);
-            morph.setRepeatCount(android.animation.ValueAnimator.INFINITE);
-            morph.setRepeatMode(android.animation.ValueAnimator.REVERSE);
-            morph.setInterpolator(new android.view.animation.AccelerateDecelerateInterpolator());
-            morph.addUpdateListener(a -> drawable.setCornerRadius(size * (float) a.getAnimatedValue()));
-            ObjectAnimator spin = ObjectAnimator.ofFloat(shape, View.ROTATION, 0f, i % 2 == 0 ? 360f : -360f);
-            spin.setDuration(16000L + i * 5000L);
-            spin.setRepeatCount(ObjectAnimator.INFINITE);
-            spin.setInterpolator(new android.view.animation.LinearInterpolator());
-            morph.start();
-            spin.start();
-            sink.add(morph);
-            sink.add(spin);
-        }
-    }
-
-    private void setHeroAnimating(boolean running) {
-        for (android.animation.Animator animator : heroAnimators) {
-            if (running) {
-                if (animator.isPaused()) animator.resume();
-            } else if (animator.isRunning()) {
-                animator.pause();
-            }
-        }
-    }
-
     private void playExploreEntrance() {
         if (entrancePlayed || !isAdded() || getView() == null) return;
         entrancePlayed = true;
@@ -433,7 +384,6 @@ public class ExploreFragment extends Fragment {
 
     @Override public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        setHeroAnimating(!hidden);
         if (!hidden) {
             refreshInstalledStatesOnly();
             refreshDownloadButtons();
@@ -586,8 +536,7 @@ public class ExploreFragment extends Fragment {
         View lumenSection = requireView().findViewById(R.id.sectionGames);
         if (lumenSection != null) lumenSection.setVisibility(lumenApps.isEmpty() ? View.GONE : View.VISIBLE);
         bindCategories();
-        TextView heroCount = requireView().findViewById(R.id.exploreHeroCount);
-        if (heroCount != null) heroCount.setText(getString(R.string.apps_found, all.size()));
+        updateHeroSlides();
         playExploreEntrance();
     }
 
@@ -1112,6 +1061,257 @@ public class ExploreFragment extends Fragment {
         frameParams.width = icon;
         frameParams.height = icon;
         frame.setLayoutParams(frameParams);
+    }
+
+    private static final class HeroSlide {
+        final ExploreApp app;
+        final String title;
+        final String subtitle;
+        HeroSlide(ExploreApp app, String title, String subtitle) {
+            this.app = app;
+            this.title = title;
+            this.subtitle = subtitle;
+        }
+    }
+
+    private void setupHero(View view) {
+        heroPager = view.findViewById(R.id.exploreHeroPager);
+        heroDots = view.findViewById(R.id.exploreHeroDots);
+        if (heroPager == null) return;
+        heroAdapter = new HeroAdapter();
+        heroPager.setAdapter(heroAdapter);
+        heroPager.setOffscreenPageLimit(1);
+        heroPageCallback = new androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+            @Override public void onPageSelected(int position) {
+                updateHeroDots(position);
+            }
+        };
+        heroPager.registerOnPageChangeCallback(heroPageCallback);
+        updateHeroSlides();
+    }
+
+    @Nullable
+    private ExploreApp findLumenApp(String token) {
+        for (ExploreApp app : lumenApps) {
+            String name = app.getName() == null ? "" : app.getName().toLowerCase(Locale.ROOT);
+            String pkg = app.getPackageName() == null ? "" : app.getPackageName().toLowerCase(Locale.ROOT);
+            if (name.contains(token) || pkg.contains(token)) return app;
+        }
+        return null;
+    }
+
+    private void updateHeroSlides() {
+        if (heroAdapter == null || !isAdded()) return;
+        List<HeroSlide> slides = new ArrayList<>();
+        String count = all.isEmpty() ? "" : getString(R.string.apps_found, all.size());
+        slides.add(new HeroSlide(null, getString(R.string.lumen_store_tagline), count));
+        String[] tokens = {"terbian", "pond", "proxy"};
+        int[] summaries = {R.string.hero_terbian_summary, R.string.hero_pond_summary, R.string.hero_proxy_share_summary};
+        for (int i = 0; i < tokens.length; i++) {
+            ExploreApp match = findLumenApp(tokens[i]);
+            if (match != null) slides.add(new HeroSlide(match, match.getName(), getString(summaries[i])));
+        }
+        heroAdapter.submit(slides);
+        buildHeroDots(slides.size());
+    }
+
+    private void buildHeroDots(int count) {
+        if (heroDots == null) return;
+        heroDots.removeAllViews();
+        heroDots.setVisibility(count > 1 ? View.VISIBLE : View.GONE);
+        float density = getResources().getDisplayMetrics().density;
+        for (int i = 0; i < count; i++) {
+            View dot = new View(requireContext());
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Math.round(6 * density), Math.round(6 * density));
+            lp.setMarginStart(Math.round(2 * density));
+            lp.setMarginEnd(Math.round(2 * density));
+            dot.setLayoutParams(lp);
+            heroDots.addView(dot);
+        }
+        updateHeroDots(heroPager == null ? 0 : heroPager.getCurrentItem());
+    }
+
+    private void updateHeroDots(int selected) {
+        if (heroDots == null) return;
+        float density = getResources().getDisplayMetrics().density;
+        int base = com.google.android.material.color.MaterialColors.getColor(heroDots,
+                com.google.android.material.R.attr.colorOnSurface, android.graphics.Color.GRAY);
+        for (int i = 0; i < heroDots.getChildCount(); i++) {
+            View dot = heroDots.getChildAt(i);
+            boolean on = i == selected;
+            android.graphics.drawable.GradientDrawable d = new android.graphics.drawable.GradientDrawable();
+            d.setCornerRadius(3 * density);
+            d.setColor(androidx.core.graphics.ColorUtils.setAlphaComponent(base, on ? 230 : 90));
+            dot.setBackground(d);
+            ViewGroup.LayoutParams lp = dot.getLayoutParams();
+            lp.width = Math.round((on ? 16 : 6) * density);
+            dot.setLayoutParams(lp);
+        }
+    }
+
+    private static int dominantColor(android.graphics.Bitmap bitmap) {
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+        if (w <= 0 || h <= 0) return 0;
+        int[] pixels = new int[w * h];
+        bitmap.getPixels(pixels, 0, w, 0, 0, w, h);
+        float[] score = new float[12];
+        long[] r = new long[12];
+        long[] g = new long[12];
+        long[] b = new long[12];
+        int[] n = new int[12];
+        float[] hsv = new float[3];
+        long ar = 0, ag = 0, ab = 0;
+        int an = 0;
+        for (int px : pixels) {
+            if (android.graphics.Color.alpha(px) < 128) continue;
+            int pr = android.graphics.Color.red(px);
+            int pg = android.graphics.Color.green(px);
+            int pb = android.graphics.Color.blue(px);
+            ar += pr;
+            ag += pg;
+            ab += pb;
+            an++;
+            android.graphics.Color.RGBToHSV(pr, pg, pb, hsv);
+            if (hsv[1] < 0.15f || hsv[2] < 0.15f) continue;
+            int bucket = Math.min(11, (int) (hsv[0] / 30f));
+            score[bucket] += hsv[1] * hsv[2];
+            r[bucket] += pr;
+            g[bucket] += pg;
+            b[bucket] += pb;
+            n[bucket]++;
+        }
+        int best = -1;
+        for (int i = 0; i < 12; i++) {
+            if (n[i] > 0 && (best < 0 || score[i] > score[best])) best = i;
+        }
+        if (best >= 0) return android.graphics.Color.rgb((int) (r[best] / n[best]), (int) (g[best] / n[best]), (int) (b[best] / n[best]));
+        if (an > 0) return android.graphics.Color.rgb((int) (ar / an), (int) (ag / an), (int) (ab / an));
+        return 0;
+    }
+
+    private class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.VH> {
+        private final List<HeroSlide> items = new ArrayList<>();
+
+        void submit(List<HeroSlide> next) {
+            items.clear();
+            items.addAll(next);
+            notifyDataSetChanged();
+        }
+
+        @NonNull @Override public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_explore_hero_slide, parent, false);
+            return new VH(v);
+        }
+
+        @Override public void onBindViewHolder(@NonNull VH h, int position) {
+            HeroSlide slide = items.get(position);
+            h.title.setText(slide.title);
+            h.subtitle.setText(slide.subtitle);
+            h.subtitle.setVisibility(slide.subtitle == null || slide.subtitle.isEmpty() ? View.GONE : View.VISIBLE);
+            float density = getResources().getDisplayMetrics().density;
+            if (slide.app == null) {
+                h.card.setTag(null);
+                h.card.setOnClickListener(null);
+                h.card.setClickable(false);
+                int container = com.google.android.material.color.MaterialColors.getColor(h.card,
+                        com.google.android.material.R.attr.colorPrimaryContainer, android.graphics.Color.GRAY);
+                int onContainer = com.google.android.material.color.MaterialColors.getColor(h.card,
+                        com.google.android.material.R.attr.colorOnPrimaryContainer, android.graphics.Color.WHITE);
+                paint(h, container, onContainer);
+                int pad = Math.round(16 * density);
+                h.icon.setPadding(pad, pad, pad, pad);
+                h.icon.setImageResource(R.drawable.ic_compass);
+                h.icon.setImageTintList(android.content.res.ColorStateList.valueOf(onContainer));
+                android.graphics.drawable.GradientDrawable ring = new android.graphics.drawable.GradientDrawable();
+                ring.setShape(android.graphics.drawable.GradientDrawable.OVAL);
+                ring.setColor(androidx.core.graphics.ColorUtils.setAlphaComponent(onContainer, 36));
+                h.icon.setBackground(ring);
+                return;
+            }
+            final String url = slide.app.getIconUrl();
+            h.card.setTag(url);
+            h.card.setClickable(true);
+            h.card.setOnClickListener(v -> openDetail(slide.app));
+            h.icon.setPadding(0, 0, 0, 0);
+            h.icon.setImageTintList(null);
+            h.icon.setBackground(null);
+            IconShapeHelper.apply(h.icon);
+            if (url != null) IconLoader.load(h.icon, url, iconOptions);
+            else h.icon.setImageDrawable(IconLoader.empty(requireContext()));
+            Integer cached = url == null ? null : heroColors.get(url);
+            if (cached != null) {
+                applyDominant(h, cached);
+                return;
+            }
+            int container = com.google.android.material.color.MaterialColors.getColor(h.card,
+                    com.google.android.material.R.attr.colorPrimaryContainer, android.graphics.Color.GRAY);
+            int onContainer = com.google.android.material.color.MaterialColors.getColor(h.card,
+                    com.google.android.material.R.attr.colorOnPrimaryContainer, android.graphics.Color.WHITE);
+            paint(h, container, onContainer);
+            if (url == null) return;
+            Glide.with(h.icon).asBitmap().load(url).disallowHardwareConfig().override(48, 48)
+                    .into(new CustomTarget<android.graphics.Bitmap>() {
+                        @Override public void onResourceReady(@NonNull android.graphics.Bitmap resource,
+                                                              @Nullable Transition<? super android.graphics.Bitmap> transition) {
+                            int color = dominantColor(resource);
+                            if (color == 0) return;
+                            heroColors.put(url, color);
+                            if (url.equals(h.card.getTag())) applyDominant(h, color);
+                        }
+
+                        @Override public void onLoadCleared(@Nullable android.graphics.drawable.Drawable placeholder) {}
+                    });
+        }
+
+        private void applyDominant(VH h, int dominant) {
+            boolean night = (getResources().getConfiguration().uiMode
+                    & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
+                    == android.content.res.Configuration.UI_MODE_NIGHT_YES;
+            float[] hsl = new float[3];
+            androidx.core.graphics.ColorUtils.colorToHSL(dominant, hsl);
+            float hue = hsl[0];
+            float sat = Math.min(hsl[1], 0.55f);
+            int bg = androidx.core.graphics.ColorUtils.HSLToColor(new float[]{hue, sat, night ? 0.22f : 0.88f});
+            int fg = androidx.core.graphics.ColorUtils.HSLToColor(new float[]{hue, Math.min(sat, 0.35f), night ? 0.92f : 0.12f});
+            paint(h, bg, fg);
+        }
+
+        private void paint(VH h, int bg, int fg) {
+            h.card.setCardBackgroundColor(bg);
+            h.title.setTextColor(fg);
+            h.subtitle.setTextColor(fg);
+            int soft = androidx.core.graphics.ColorUtils.setAlphaComponent(fg, 26);
+            h.circleA.setBackground(circle(soft));
+            h.circleB.setBackground(circle(soft));
+        }
+
+        private android.graphics.drawable.GradientDrawable circle(int color) {
+            android.graphics.drawable.GradientDrawable d = new android.graphics.drawable.GradientDrawable();
+            d.setShape(android.graphics.drawable.GradientDrawable.OVAL);
+            d.setColor(color);
+            return d;
+        }
+
+        @Override public int getItemCount() { return items.size(); }
+
+        class VH extends RecyclerView.ViewHolder {
+            final com.google.android.material.card.MaterialCardView card;
+            final TextView title;
+            final TextView subtitle;
+            final ImageView icon;
+            final View circleA;
+            final View circleB;
+            VH(View v) {
+                super(v);
+                card = v.findViewById(R.id.heroSlideCard);
+                title = v.findViewById(R.id.heroSlideTitle);
+                subtitle = v.findViewById(R.id.heroSlideSubtitle);
+                icon = v.findViewById(R.id.heroSlideIcon);
+                circleA = v.findViewById(R.id.heroSlideCircleA);
+                circleB = v.findViewById(R.id.heroSlideCircleB);
+            }
+        }
     }
 
     private class TileAdapter extends RecyclerView.Adapter<TileAdapter.VH> {

@@ -25,10 +25,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Outline;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewOutlineProvider;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
@@ -90,6 +92,12 @@ public class MaterialRefreshLayout extends FrameLayout implements NestedScrollin
         indicator = LayoutInflater.from(getContext()).inflate(R.layout.view_refresh_indicator, this, false);
         indicator.setVisibility(INVISIBLE);
         indicator.setAlpha(0f);
+        indicator.setElevation(6f * getResources().getDisplayMetrics().density);
+        indicator.setOutlineProvider(new ViewOutlineProvider() {
+            @Override public void getOutline(View view, Outline outline) {
+                outline.setOval(0, 0, view.getWidth(), view.getHeight());
+            }
+        });
         addView(indicator);
     }
 
@@ -128,8 +136,6 @@ public class MaterialRefreshLayout extends FrameLayout implements NestedScrollin
 
     private void setPull(float value) {
         pull = Math.max(0f, Math.min(maxPull, value));
-        View content = content();
-        if (content != null) content.setTranslationY(pull);
         if (indicator == null) return;
         float fraction = Math.min(1f, pull / hold);
         boolean visible = pull > 0f || refreshing;
@@ -138,7 +144,7 @@ public class MaterialRefreshLayout extends FrameLayout implements NestedScrollin
         float scale = 0.4f + 0.6f * (refreshing ? 1f : fraction);
         indicator.setScaleX(scale);
         indicator.setScaleY(scale);
-        indicator.setTranslationY(pull / 2f - indicator.getHeight() / 2f);
+        indicator.setTranslationY(Math.min(pull, hold * 1.4f) - indicator.getHeight());
     }
 
     private void animatePullTo(float target) {

@@ -633,19 +633,13 @@ public class HomeFragment extends Fragment {
             panel.setLayoutParams(c);
         }
         float arrowW = dp(22);
-        float edge = dp(17f);
+        float full = dp(cornerDp) * AppPreferences.getCornerScale(requireContext());
+        float edge = Math.min(full + arrowW / 2f, width / 2f);
         float tail = Math.max(edge, Math.min(centerX - left, width - edge));
         if (card instanceof MaterialCardView) {
-            float full = dp(cornerDp) * AppPreferences.getCornerScale(requireContext());
-            float room = dp(13f);
-            float topLeft = Math.max(dp(4f), Math.min(full, tail - room));
-            float topRight = Math.max(dp(4f), Math.min(full, width - tail - room));
             MaterialCardView mc = (MaterialCardView) card;
             mc.setShapeAppearanceModel(mc.getShapeAppearanceModel().toBuilder()
-                    .setTopLeftCornerSize(topLeft)
-                    .setTopRightCornerSize(topRight)
-                    .setBottomLeftCornerSize(full)
-                    .setBottomRightCornerSize(full)
+                    .setAllCornerSizes(full)
                     .build());
         }
         arrow.setTranslationX(tail - arrowW / 2f);
@@ -738,7 +732,7 @@ public class HomeFragment extends Fragment {
         if (scanPanelOpen) hideScanPanel();
         homeMenuOpen = true;
         HomeMenuPanel.populate(homeMenuContent, buildMenuConfig());
-        revealPanel(homeMenuPanel, homeMenuCard, homeMenuArrow, moreButtonView, 280, 32f);
+        revealPanel(homeMenuPanel, homeMenuCard, homeMenuArrow, moreButtonView, 280, 40f);
     }
 
     private void hideHomeMenu() {

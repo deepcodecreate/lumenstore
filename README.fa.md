@@ -145,8 +145,8 @@ keyPassword=YOUR_KEY_PASSWORD
 </div>
 
 ```bash
-git tag v0.5.5
-git push origin v0.5.5
+git tag v0.5.6-beta
+git push origin v0.5.6-beta
 ```
 
 <div dir="rtl">

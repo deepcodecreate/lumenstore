@@ -747,4 +747,7 @@ This will replace your current app list and repositories with this backup. Conti
     <string name="install_all_none">No apps available to install</string>
     <string name="home_hero_restore">%1$d apps ready to install</string>
     <string name="home_menu_check_updates">Check for updates</string>
+    <string name="hero_terbian_summary">Open-source Linux terminal for Android</string>
+    <string name="hero_pond_summary">Detect tampering on custom-modified phones</string>
+    <string name="hero_proxy_share_summary">Tunnel other devices through your proxy</string>
 </resources>

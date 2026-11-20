@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/heroSlideCard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="?attr/colorPrimaryContainer"
+    app:cardElevation="0dp"
+    app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
+    app:strokeWidth="0dp">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <View
+            android:id="@+id/heroSlideCircleA"
+            android:layout_width="124dp"
+            android:layout_height="124dp"
+            android:layout_gravity="end|top"
+            android:layout_marginTop="-26dp"
+            android:layout_marginEnd="-30dp" />
+        <View
+            android:id="@+id/heroSlideCircleB"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="62dp"
+            android:layout_marginBottom="-22dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginEnd="108dp"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="8dp">
+            <TextView
+                android:id="@+id/heroSlideTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
+                android:textAlignment="viewStart"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                android:textColor="?attr/colorOnPrimaryContainer" />
+            <TextView
+                android:id="@+id/heroSlideSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:alpha="0.8"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAlignment="viewStart"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorOnPrimaryContainer" />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/heroSlideIcon"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -2,6 +2,13 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.6-beta]
+
+### Changed
+- Explore hero is now a slider that introduces Lumen's own apps (Terbian, Pond and Proxy Share) with their icons and background colors taken from each icon
+- The three-dot menu now has equal, larger corners on all four sides and the pointer arrow moved so it no longer breaks the shape
+- Pull-to-refresh indicator now floats above the content instead of pushing it down
+
 ## [0.5.5]
 
 ### Changed

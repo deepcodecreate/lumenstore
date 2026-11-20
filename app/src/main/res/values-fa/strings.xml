@@ -746,4 +746,7 @@
     <string name="install_all_none">اپی برای نصب موجود نیست</string>
     <string name="home_hero_restore">%1$d اپ آماده نصب</string>
     <string name="home_menu_check_updates">بررسی بروزرسانی‌ها</string>
+    <string name="hero_terbian_summary">ترمینال متن‌باز لینوکس برای اندروید</string>
+    <string name="hero_pond_summary">کشف دستکاری‌شدگی‌های موبایل کاستوم‌شده</string>
+    <string name="hero_proxy_share_summary">تانل کردن بقیه دستگاه‌ها از طریق پروکسی</string>
 </resources>
