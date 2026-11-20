@@ -2,6 +2,11 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.2] - Beta
+
+### Changed
+- GitHub account page redesigned to be minimal and compact: smaller avatar and header without the oversized card, one slim stats row, a single-row action bar, tighter repository, language, people and activity items
+
 ## [0.5.1] - Beta
 
 ### Fixed

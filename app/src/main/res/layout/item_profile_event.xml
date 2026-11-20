@@ -4,17 +4,17 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingHorizontal="8dp"
-    android:paddingVertical="9dp">
+    android:paddingHorizontal="4dp"
+    android:paddingVertical="6dp">
     <View
-        android:layout_width="10dp"
-        android:layout_height="10dp"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
         android:background="@drawable/bg_profile_dot"
         android:backgroundTint="?attr/colorTertiary" />
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
+        android:layout_marginStart="12dp"
         android:layout_weight="1"
         android:orientation="vertical">
         <TextView

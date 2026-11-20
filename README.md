@@ -49,7 +49,7 @@ It also works as a discovery tool: browse GitHub projects, read their READMEs an
 ### Explore
 - Browse and search GitHub repositories
 - Rich README rendering with tables, badges, SVG images and screenshots
-- GitHub user and organization profiles with repositories, activity and stats
+- Compact, minimal GitHub user and organization profiles with repositories, activity and stats
 - Search Google Play listings and jump to their open-source counterparts
 - Anti-feature warnings for apps from F-Droid indexes
 
@@ -129,8 +129,8 @@ To sign release builds in CI, add these repository secrets:
 To publish a release:
 
 ```bash
-git tag v0.5.0
-git push origin v0.5.0
+git tag v0.5.2
+git push origin v0.5.2
 ```
 
 ## Tech stack

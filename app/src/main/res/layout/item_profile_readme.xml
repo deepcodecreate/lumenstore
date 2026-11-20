@@ -4,15 +4,15 @@
     android:id="@+id/profileReadmeCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-        android:visibility="gone"
+    android:visibility="gone"
     app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
-    app:cardCornerRadius="28dp"
+    app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
     app:strokeWidth="0dp">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/profileReadmeContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="12dp"
         android:clipToPadding="false" />
 </com.google.android.material.card.MaterialCardView>

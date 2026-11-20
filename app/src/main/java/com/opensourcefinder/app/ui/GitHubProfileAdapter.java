@@ -370,9 +370,12 @@ final class GitHubProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             chip.setText(text.trim());
             chip.setCheckable(false);
             chip.setChipBackgroundColor(ColorStateList.valueOf(MaterialColors.getColor(chip,
-                    com.google.android.material.R.attr.colorSurface, 0xFF000000)));
+                    com.google.android.material.R.attr.colorSurfaceContainerHigh, 0xFF222222)));
             chip.setChipStrokeWidth(0f);
-            chip.setTextColor(MaterialColors.getColor(chip, com.google.android.material.R.attr.colorOnSurface, 0xFFFFFFFF));
+            chip.setEnsureMinTouchTargetSize(false);
+            chip.setChipMinHeight(28f * chip.getResources().getDisplayMetrics().density);
+            chip.setTextSize(12f);
+            chip.setTextColor(MaterialColors.getColor(chip, com.google.android.material.R.attr.colorOnSurfaceVariant, 0xFFFFFFFF));
             if (url != null) chip.setOnClickListener(v -> listener.onOpenUrl(url));
             else chip.setClickable(false);
             chips.addView(chip);
@@ -538,6 +541,9 @@ final class GitHubProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 chip.setChipBackgroundColor(ColorStateList.valueOf(MaterialColors.getColor(chip,
                         com.google.android.material.R.attr.colorSurfaceContainerHigh, 0xFF222222)));
                 chip.setChipStrokeWidth(0f);
+                chip.setEnsureMinTouchTargetSize(false);
+                chip.setChipMinHeight(26f * itemView.getResources().getDisplayMetrics().density);
+                chip.setTextSize(12f);
                 chip.setChipIconVisible(true);
                 android.graphics.drawable.GradientDrawable dotShape = new android.graphics.drawable.GradientDrawable();
                 dotShape.setShape(android.graphics.drawable.GradientDrawable.OVAL);
