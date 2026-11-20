@@ -7,7 +7,7 @@ const CFG = {
   site: "https://deepcodecreate.github.io/lumenstore/",
   appRepo: "deepcodecreate/lumenstore",            // where the Lumen Store APK is released
   scheme: "lumenstore",                            // lumenstore://app/<package>  (LumenLinks.java)
-  telegram: "lsolbl",                              // DM used for app submissions
+  telegram: "lumenapps",                              // DM used for app submissions
   channel: "deepcodecreate",                       // announcement channel
   cacheHours: 12,
   proxy: "",   // live CORS pass-through (tools/cors-worker.js), e.g. "https://lumen-proxy.YOURNAME.workers.dev/". F-Droid / Izzy send no CORS headers, so browsers need it.
