@@ -75,6 +75,8 @@ It also works as a discovery tool: browse GitHub projects, read their READMEs an
 
 Grab the latest APK from the [Releases](https://github.com/deepcodecreate/lumenstore/releases) page.
 
+[![Get it in Lumen Store](https://deepcodecreate.github.io/lumenstore/badges/lumen-store.svg)](https://deepcodecreate.github.io/lumenstore/app.html?id=com.opensourcefinder.app)
+
 Requires Android 8.0 (API 26) or newer. You will need to allow installs from this app the first time you update something.
 
 ## Build from source
