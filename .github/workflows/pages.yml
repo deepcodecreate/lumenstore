@@ -1,14 +1,14 @@
-name: Pages
+name: Deploy site
 
 on:
   push:
     branches: [main]
     paths:
       - 'site/**'
-      - '.github/assets/**'
+      - 'tools/**'
       - '.github/workflows/pages.yml'
   schedule:
-    - cron: '17 */6 * * *'
+    - cron: '17 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -18,7 +18,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -30,17 +30,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - run: python site/build.py
+      - run: python3 tools/fetch_data.py site
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: public
+          path: site
 
       - id: deployment
         uses: actions/deploy-pages@v4

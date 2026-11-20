@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://deepcodecreate.github.io/lumenstore/sitemap.xml

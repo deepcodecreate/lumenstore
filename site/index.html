@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <title>Lumen Store</title>
+    <meta name="description" content="Lumen Store؛ کشف و دریافت برنامه‌های متن‌باز اندروید از فهرست‌های Lumen، F-Droid و IzzyOnDroid." />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Lumen Store" />
+    <meta property="og:description" content="Lumen Store؛ کشف و دریافت برنامه‌های متن‌باز اندروید از فهرست‌های Lumen، F-Droid و IzzyOnDroid." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://deepcodecreate.github.io/lumenstore/social-preview.png" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <style>html,body{background:#000;color:#e8eeeb;margin:0}</style>
+    <link rel="stylesheet" href="assets/app.css" />
+    <script defer src="assets/app.js"></script>
+  </head>
+  <body data-page="home">
+    <header class="topbar" id="topbar"></header>
+    <main>
+      <section class="hero" id="home">
+        <div class="container hero-grid">
+          <div class="reveal">
+            <span class="eyebrow">برای اندروید؛ برای آزادی انتخاب</span>
+            <h1>نرم‌افزار آزاد،<br /><em>روشن‌تر</em> پیدا می‌شود.</h1>
+            <p class="lead">Lumen Store فهرست‌های Lumen، F-Droid و IzzyOnDroid را می‌خواند؛ می‌توانید مخزن‌های سازگار F-Droid، GitHub یا انتشار APK را هم دستی اضافه کنید و پروژه‌های GitHub را ببینید.</p>
+            <div class="hero-actions" id="download">
+              <a class="btn btn-primary" id="hero-download" aria-disabled="true" href="#download">APK هنوز منتشر نشده</a>
+              <a class="btn btn-outline" href="#apps">دیدن برنامه‌ها</a>
+              <a class="badge-link" href="#badge" aria-label="Get it in Lumen Store"><img src="badges/lumen-store.svg" alt="Get it in Lumen Store" /></a>
+            </div>
+            <p class="release-note" id="release-note"><span class="dot"></span>APK هنوز عمومی نیست؛ به‌محض انتشار در GitHub Releases، دکمهٔ دانلود خودکار فعال می‌شود.</p>
+          </div>
+          <div class="hero-art" aria-label="پیش‌نمایش برنامهٔ Lumen Store">
+            <div class="orbit" aria-hidden="true"></div>
+            <div class="floating one"><strong><span class="dot ok"></span>چند مخزن، یک جا</strong>جست‌وجوی بازتر</div>
+            <div class="phone">
+              <div class="phone-top"><span>۹:۴۱</span><span class="phone-logo"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 19 12l-7 9.5L5 12z" fill="#F6F3EC"/></svg></i>Lumen</span></div>
+              <div class="phone-search">جست‌وجوی برنامه یا پروژه…</div>
+              <div class="phone-heading">برای کشف امروز</div>
+              <div class="app-row"><span class="tile" style="--tile:#4fd1c5">OM</span><span class="app-meta"><b>Organic Maps</b><small>نقشهٔ آفلاین</small></span><span class="install">نصب</span></div>
+              <div class="app-row"><span class="tile" style="--tile:#a8cbe4">TX</span><span class="app-meta"><b>Termux</b><small>ابزارهای خط فرمان</small></span><span class="install">نصب</span></div>
+              <div class="app-row"><span class="tile" style="--tile:#d9a17c">NP</span><span class="app-meta"><b>NewPipe</b><small>پخش رسانه</small></span><span class="install">نصب</span></div>
+              <div class="app-row"><span class="tile" style="--tile:#b1ccc6">KP</span><span class="app-meta"><b>KeePassDX</b><small>مدیریت گذرواژه</small></span><span class="install">نصب</span></div>
+            </div>
+            <div class="floating two"><strong>متن‌باز، قابل بررسی</strong>از مخزن‌های عمومی</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="ticker" aria-label="دربارهٔ Lumen Store"><div class="container ticker-inner">
+        <div class="ticker-item"><b>۰۱</b> کشف برنامه‌های متن‌باز</div>
+        <div class="ticker-item"><b>۰۲</b> مرور فهرست‌های F-Droid و Izzy</div>
+        <div class="ticker-item"><b>۰۳</b> دیدن پروژه‌های GitHub</div>
+        <div class="ticker-item"><b>۰۴</b> کنترل انتخاب با شما</div>
+      </div></div>
+
+      <section class="section" id="apps">
+        <div class="container">
+          <div class="section-head">
+            <div><span class="kicker">01 / همهٔ برنامه‌ها</span><h2>چیزی برای کشف کردن.</h2></div>
+<p class="section-intro">فهرست زندهٔ برنامه‌های مخزن Lumen. روی هر برنامه بزنید تا جزئیات و دانلود APK را ببینید.</p>
+          </div>
+          <div class="toolbar">
+            <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg><input id="search" type="search" placeholder="نام برنامه یا شناسهٔ بسته…" aria-label="جست‌وجو در فهرست برنامه‌ها" autocomplete="off" /></label>
+            <span class="count" id="count" aria-live="polite"></span>
+          </div>
+          <div class="ixs" id="ixstatus" aria-live="polite"></div>
+          <div class="chips" id="srcchips" role="group" aria-label="فیلتر فهرست"></div>
+          <div class="chips" id="chips" role="group" aria-label="فیلتر دسته‌بندی"></div>
+          <div class="grid" id="grid"></div>
+          <div class="more" id="more"></div><div id="sentinel" style="height:1px"></div>
+<p class="footnote">برنامه‌های فهرست Lumen پس از بررسی و تأیید مدیریت منتشر می‌شوند و فایل APK مستقیم از بخش Releases مخزن GitHub هر پروژه دریافت می‌شود. فهرست هر ساعت به‌روز می‌شود. مخزن رسمی فهرست: <a class="ltr" href="https://github.com/deepcodecreate/lumenrepo" target="_blank" rel="noopener">deepcodecreate/lumenrepo</a></p>
+        </div>
+      </section>
+
+      <section class="section" id="submit" style="padding-top:0">
+        <div class="container">
+          <div class="section-head">
+            <div><span class="kicker">02 / برای سازندگان</span><h2>اپتان را در Lumen Store ثبت کنید.</h2></div>
+            <p class="section-intro">ابتدا شرایط پذیرش را بخوانید، سپس فرم را پر کنید. درخواست شما در تلگرام بررسی می‌شود.</p>
+          </div>
+
+          <article class="terms-card" id="terms" aria-labelledby="terms-title">
+            <h3 id="terms-title">شرایط پذیرش برنامه در Lumen Store</h3>
+            <ol class="terms">
+              <li>برنامه باید متن‌باز باشد و سورس‌کد آن در یک مخزن عمومی GitHub منتشر شده باشد.</li>
+              <li>مخزن باید شامل آیکون رسمی برنامه با فرمت PNG و تصاویر اسکرین‌شات باشد.</li>
+              <li>اسکرین‌شات‌ها باید عمودی و با نسبت تصویر ۹:۱۶ باشند.</li>
+              <li>آیکون‌های فاقد پس‌زمینه مناسب (Transparent) و لوگوهای نامتقارن یا غیراستاندارد پذیرفته نمی‌شوند.</li>
+              <li>مدیریت دسته‌بندی‌ها و تگ‌های برنامه باید اصولی، دقیق و متناسب با عملکرد واقعی آن باشد.</li>
+              <li>توسعه‌دهنده باید لینک مخزن GitHub و شناسه بسته (Package Name) را برای بررسی ارسال کند.</li>
+              <li>تمامی برنامه‌ها پیش از انتشار، از نظر کیفیت، صحت اطلاعات، امنیت و سلامت فایل‌های اجرایی بررسی و آزمایش خواهند شد.</li>
+              <li>انتشار برنامه در Lumen Store منوط به تأیید نهایی مدیریت فروشگاه است.</li>
+              <li>Lumen Store از به‌روزرسانی خودکار اطلاعات نسخه‌ها بر اساس Release و Tag مخزن پشتیبانی می‌کند؛ بنابراین پس از ثبت و تأیید اولیه، برای انتشار نسخه‌های جدید نیازی به ثبت مجدد برنامه نیست.</li>
+            </ol>
+          </article>
+
+          <div class="submit">
+            <div>
+              <ol class="steps">
+                <li>شرایط پذیرش را بخوانید و مطمئن شوید مخزن شما آن‌ها را دارد.</li>
+                <li>فرم را پر کنید؛ نام برنامه، شناسهٔ بسته و پیوند مخزن GitHub الزامی است.</li>
+                <li>دکمهٔ «ارسال در تلگرام» پیام آماده را کپی می‌کند و گفت‌وگو با من را باز می‌کند؛ پیام را Paste کنید.</li>
+                <li>پس از بررسی و تأیید نهایی، برنامه به فهرست Lumen اضافه می‌شود.</li>
+              </ol>
+              <div class="tg-links">
+                <a class="btn btn-tonal" href="https://t.me/lsolbl" target="_blank" rel="noopener">پیام در تلگرام <small class="ltr">@lsolbl</small></a>
+<a class="btn btn-outline" href="https://github.com/deepcodecreate/lumenrepo#readme" target="_blank" rel="noopener">قوانین و شرایط پذیرش <small class="ltr">lumenrepo</small></a>
+                <a class="btn btn-outline" href="https://t.me/deepcodecreate" target="_blank" rel="noopener">کانال اطلاع‌رسانی <small class="ltr">@deepcodecreate</small></a>
+              </div>
+            </div>
+            <div>
+              <form class="form-card" id="submit-form" autocomplete="off" novalidate>
+                <div class="form-grid">
+                  <div class="field"><label for="f-name">نام برنامه *</label><input id="f-name" name="name" required /></div>
+                  <div class="field"><label for="f-pkg">شناسهٔ بسته *</label><input id="f-pkg" name="pkg" dir="ltr" placeholder="com.example.app" spellcheck="false" autocapitalize="none" required /></div>
+                  <div class="field full"><label for="f-repo">مخزن GitHub *</label><input id="f-repo" name="repo" dir="ltr" placeholder="https://github.com/you/app" inputmode="url" autocapitalize="none" spellcheck="false" required /></div>
+                  <div class="field"><label for="f-cat">دسته‌بندی *</label><select id="f-cat" name="cat" required><option value="">انتخاب کنید…</option></select></div>
+                  <div class="field"><label for="f-tags">تگ‌ها</label><input id="f-tags" name="tags" placeholder="مثلاً: حریم خصوصی، آفلاین" /></div>
+                  <div class="field full"><label for="f-index">اگر در F-Droid / Izzy هست</label><input id="f-index" name="index" dir="ltr" placeholder="https://f-droid.org/packages/…" inputmode="url" autocapitalize="none" spellcheck="false" /></div>
+                  <div class="field full"><label for="f-desc">توضیح کوتاه</label><textarea id="f-desc" name="desc" rows="2"></textarea></div>
+                  <div class="field full"><label for="f-who">نام برای تماس</label><input id="f-who" name="who" /></div>
+                </div>
+                <div class="checks" role="group" aria-label="تأییدیه‌ها">
+                  <label class="check"><input type="checkbox" name="c_oss" /><span>برنامه متن‌باز است و سورس‌کد آن در مخزن عمومی GitHub منتشر شده است.</span></label>
+                  <label class="check"><input type="checkbox" name="c_assets" /><span>مخزن شامل آیکون رسمی PNG و اسکرین‌شات‌های عمودی ۹:۱۶ است و آیکون با شرایط پذیرش (پس‌زمینهٔ مناسب، لوگوی استاندارد) مطابقت دارد.</span></label>
+                  <label class="check"><input type="checkbox" name="c_review" /><span>می‌دانم برنامه پیش از انتشار از نظر کیفیت، صحت اطلاعات، امنیت و سلامت فایل اجرایی بررسی می‌شود و انتشار منوط به تأیید نهایی مدیریت است.</span></label>
+                </div>
+                <div class="form-actions"><button class="btn btn-primary" type="submit">ارسال در تلگرام</button></div>
+                <p class="form-note">پیام آماده در کادر زیر دیده می‌شود. اگر تلگرام باز نشد، همان را کپی و برای <span class="ltr">@lsolbl</span> بفرستید.</p>
+                <div id="submit-preview"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="listing" style="padding-top:0">
+        <div class="container split">
+          <aside class="aside-card">
+            <span class="kicker">03 / شفافیت</span>
+            <h3>مخزن‌تان را به اشتراک بگذارید.</h3>
+<p>فهرست Lumen بر اساس شرایط پذیرش و پس از بررسی تکمیل می‌شود. قوانین کامل و روش ثبت برنامه در مخزن lumenrepo آمده است.</p>
+            <div class="aside-actions"><a class="btn btn-outline" href="#submit">ثبت برنامه</a><a class="btn btn-outline" href="#badge">افزودن نشان به پروژه</a></div>
+          </aside>
+          <div>
+            <span class="kicker">فهرست‌سازی شفاف</span>
+            <h2>برنامه‌ها از کجا می‌آیند؟</h2>
+<p class="section-intro" style="margin-top:12px">همهٔ برنامه‌های این سایت از یک فهرست خوانده می‌شوند: مخزن رسمی Lumen. برنامهٔ اندروید می‌تواند مخزن‌های دیگر را هم دستی اضافه کند.</p>
+            <div class="req-list">
+<article class="req"><span class="req-n">۰۱</span><div><h3>فهرست Lumen</h3><p><a class="ltr" href="https://github.com/deepcodecreate/lumenrepo" target="_blank" rel="noopener">github.com / deepcodecreate / lumenrepo</a></p><p><a class="ltr" href="https://raw.githubusercontent.com/deepcodecreate/lumenrepo/main/index-v2.json" target="_blank" rel="noreferrer">index-v2.json</a></p></div></article>
+<article class="req"><span class="req-n">۰۲</span><div><h3>شرایط پذیرش</h3><p>متن‌باز، ساخت با GitHub Actions، آیکون و اسکرین‌شات در <span class="ltr">.github/assets</span> و تگ‌های منظم. <a href="https://github.com/deepcodecreate/lumenrepo#readme" target="_blank" rel="noopener">خواندن قوانین</a></p></div></article>
+<article class="req"><span class="req-n">۰۳</span><div><h3>انتشار خودکار</h3><p>نسخه‌های بعدی هر برنامه از تگ‌های Release مخزن GitHub خودش شناسایی می‌شود.</p></div></article>
+<article class="req"><span class="req-n">۰۴</span><div><h3>مخزن‌های دیگر</h3><p>در برنامهٔ اندروید می‌توانید مخزن‌های سازگار GitHub، F-Droid و انتشار APK را دستی اضافه کنید.</p></div></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section badge-section" id="badge">
+        <div class="container badge-layout">
+          <div class="badge-stage">
+            <span class="cap">پیش‌نمایش نشان در صفحهٔ پروژه</span>
+            <img src="badges/lumen-store.svg" alt="Get it in Lumen Store" />
+            <span class="cap">یک اشارهٔ کوچک؛ راهی روشن به برنامهٔ شما.</span>
+          </div>
+          <div>
+            <span class="kicker">04 / نشان دریافت</span>
+            <h2 style="font-size:clamp(25px,3.2vw,36px)">به مخزن یا وب‌سایت اضافه کنید.</h2>
+            <p class="section-intro" style="margin-top:10px;max-width:none">شناسهٔ بستهٔ برنامه‌تان را بنویسید؛ نشان به صفحهٔ برنامه در این سایت پیوند می‌خورد و از همان‌جا با یک دکمه در Lumen Store باز می‌شود.</p>
+            <div class="field-inline"><label for="badge-pkg">شناسهٔ بسته</label><input id="badge-pkg" value="com.example.app" spellcheck="false" autocomplete="off" inputmode="url" /></div>
+            <div id="badge-viewer"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="closing"><div class="container closing-row">
+        <h2>نرم‌افزار آزاد را<br /><em>با کنجکاوی پیدا کنید.</em></h2>
+        <a class="btn btn-primary" href="#apps">شروع به کشف کنید</a>
+      </div></section>
+    </main>
+    <footer class="footer" id="footer"></footer>
+    <noscript><p style="padding:24px;text-align:center">برای مشاهدهٔ فهرست برنامه‌ها جاوااسکریپت را فعال کنید.</p></noscript>
+  </body>
+</html>
