@@ -1,0 +1,1 @@
+New version comparison engine (rc0 to rc1), smarter GitHub release selection, faster parallel index refresh.

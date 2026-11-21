@@ -166,38 +166,40 @@ public class GitHubRelease implements Serializable {
         return findApkAsset(true) != null;
     }
 
-    public static GitHubRelease firstStableInstallable(List<GitHubRelease> releases) {
+    private static GitHubRelease bestOf(List<GitHubRelease> releases, boolean clone, boolean includePre) {
         if (releases == null) return null;
-        GitHubRelease firstAny = null;
+        GitHubRelease best = null;
         for (GitHubRelease release : releases) {
-            if (release == null || release.isDraft() || release.getTagName() == null) continue;
-            if (release.findApkAsset(false) == null) continue;
-            if (!release.isPrerelease()) return release;
-            if (firstAny == null) firstAny = release;
+            if (release == null || release.isDraft()) continue;
+            String tag = release.getTagName();
+            if (tag == null || tag.isEmpty()) continue;
+            if (!includePre && release.isPrerelease()) continue;
+            if (release.findApkAsset(clone) == null) continue;
+            if (best == null || outranks(tag, best.getTagName())) best = release;
         }
-        return firstAny;
+        return best;
+    }
+
+    private static boolean outranks(String candidate, String current) {
+        if (!com.opensourcefinder.app.install.VersionCompare.sameFamily(candidate, current)) return false;
+        return com.opensourcefinder.app.install.VersionCompare.compare(candidate, current) > 0;
+    }
+
+    public static GitHubRelease firstStableInstallable(List<GitHubRelease> releases) {
+        GitHubRelease stable = bestOf(releases, false, false);
+        return stable != null ? stable : bestOf(releases, false, true);
     }
 
     public static GitHubRelease pickForInstalled(List<GitHubRelease> releases, boolean clone, String installedVersionName) {
-        if (releases == null) return null;
-        boolean trackPre = com.opensourcefinder.app.install.InstallState.isPreRelease(installedVersionName);
-        GitHubRelease firstAny = null;
-        for (GitHubRelease release : releases) {
-            if (release == null || release.isDraft() || release.getTagName() == null) continue;
-            if (release.findApkAsset(clone) == null) continue;
-            if (trackPre || !release.isPrerelease()) return release;
-            if (firstAny == null) firstAny = release;
+        if (com.opensourcefinder.app.install.InstallState.isPreRelease(installedVersionName)) {
+            return bestOf(releases, clone, true);
         }
-        return firstAny;
+        GitHubRelease stable = bestOf(releases, clone, false);
+        return stable != null ? stable : bestOf(releases, clone, true);
     }
 
     public static GitHubRelease firstBaseInstallable(List<GitHubRelease> releases) {
-        if (releases == null) return null;
-        for (GitHubRelease release : releases) {
-            if (release == null || release.isDraft() || release.getTagName() == null) continue;
-            if (release.findApkAsset(false) != null) return release;
-        }
-        return null;
+        return bestOf(releases, false, true);
     }
 
     private static final Pattern CLONE_TOKEN = Pattern.compile(

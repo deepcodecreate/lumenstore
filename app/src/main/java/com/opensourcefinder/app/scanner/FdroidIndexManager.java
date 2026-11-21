@@ -196,44 +196,68 @@ public class FdroidIndexManager {
 
     private void resolveGithubReleases(Map<String, MatchedApp> apps, boolean force) {
         if (apps == null || apps.isEmpty()) return;
-        List<MatchedApp> previous = null;
-        CustomRepositoryScanner scanner = null;
+        final List<MatchedApp> targets = new ArrayList<>();
         for (MatchedApp app : apps.values()) {
-            if (stopRequested()) return;
             if (app == null || !app.isGithubRelease() || app.getDownloadUrl() != null) continue;
             String slug = app.getGithubSlug();
+            if (slug == null) continue;
             int cut = slug.indexOf('/');
             if (cut <= 0 || cut >= slug.length() - 1) continue;
-            CustomRepositoryScanner.ResolvedRelease release = cachedRelease(slug, force || forceReleases);
-            if (release == null) {
-                if (scanner == null) scanner = new CustomRepositoryScanner(context);
-                try {
-                    release = scanner.resolveLatestRelease(slug.substring(0, cut), slug.substring(cut + 1));
-                } catch (Exception ignored) {}
-                if (release != null) storeRelease(slug, release);
-                else release = cachedRelease(slug, false, true);
+            targets.add(app);
+        }
+        if (targets.isEmpty() || stopRequested()) return;
+        final boolean forceNow = force || forceReleases;
+        final List<MatchedApp> previous = MatchStore.get(context);
+        java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(Math.min(4, targets.size()));
+        try {
+            List<java.util.concurrent.Future<?>> pending = new ArrayList<>();
+            for (final MatchedApp app : targets) {
+                pending.add(pool.submit(() -> resolveGithubRelease(app, forceNow, previous)));
             }
-            if (release != null) {
-                app.setLatestTag(release.tag);
-                app.setDownloadUrl(release.downloadUrl);
-            } else {
-                if (previous == null) previous = MatchStore.get(context);
-                for (MatchedApp old : previous) {
-                    if (old != null && app.getPackageName().equals(old.getPackageName())
-                            && slug.equalsIgnoreCase(old.getGithubSlug())
-                            && old.getLatestTag() != null && old.getDownloadUrl() != null) {
-                        app.setLatestTag(old.getLatestTag());
-                        app.setDownloadUrl(old.getDownloadUrl());
-                        break;
-                    }
+            for (java.util.concurrent.Future<?> future : pending) {
+                try {
+                    future.get();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                } catch (Exception ignored) {}
+            }
+        } finally {
+            pool.shutdownNow();
+        }
+    }
+
+    private void resolveGithubRelease(MatchedApp app, boolean force, List<MatchedApp> previous) {
+        if (stopRequested()) return;
+        String slug = app.getGithubSlug();
+        int cut = slug.indexOf('/');
+        CustomRepositoryScanner.ResolvedRelease release = cachedRelease(slug, force);
+        if (release == null) {
+            try {
+                release = new CustomRepositoryScanner(context).resolveLatestRelease(slug.substring(0, cut), slug.substring(cut + 1));
+            } catch (Exception ignored) {}
+            if (release != null) storeRelease(slug, release);
+            else release = cachedRelease(slug, false, true);
+        }
+        if (release != null) {
+            app.setLatestTag(release.tag);
+            app.setDownloadUrl(release.downloadUrl);
+        } else {
+            for (MatchedApp old : previous) {
+                if (old != null && app.getPackageName().equals(old.getPackageName())
+                        && slug.equalsIgnoreCase(old.getGithubSlug())
+                        && old.getLatestTag() != null && old.getDownloadUrl() != null) {
+                    app.setLatestTag(old.getLatestTag());
+                    app.setDownloadUrl(old.getDownloadUrl());
+                    break;
                 }
             }
-            if (app.getLatestTag() != null) {
-                String have = app.getInstalledVersionName();
-                app.setUpdateAvailable(have != null && !have.isEmpty()
-                        && !com.opensourcefinder.app.install.InstallState.sameVersionName(app.getLatestTag(), have)
-                        && com.opensourcefinder.app.install.InstallState.isNewer(app.getLatestTag(), have));
-            }
+        }
+        if (app.getLatestTag() != null) {
+            String have = app.getInstalledVersionName();
+            app.setUpdateAvailable(have != null && !have.isEmpty()
+                    && !com.opensourcefinder.app.install.InstallState.sameVersionName(app.getLatestTag(), have)
+                    && com.opensourcefinder.app.install.InstallState.isNewer(app.getLatestTag(), have));
         }
     }
 

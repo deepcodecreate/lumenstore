@@ -2,6 +2,15 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.6.0-beta]
+
+### Changed
+- New version comparison engine: pre-release steps such as v5.0 rc0 to v5.0rc1 are detected, numbers are compared safely, and words like src or device are no longer mistaken for pre-release markers
+- GitHub releases are now chosen by the highest compatible version instead of listing order, so backport releases and overlapping tags no longer hide the real latest version
+- Auto-matched GitHub apps now follow the same stable or pre-release track as the installed version
+- The installed release tag is now recorded from the download link, so updates are detected even when the APK name has no version and the version name does not change
+- GitHub releases referenced by indexes are resolved in parallel for much faster list and update refreshes
+
 ## [0.5.10-beta]
 
 ### Changed

@@ -101,7 +101,7 @@ public class GitHubMatcher {
     }
 
     private MatchResult buildResultForRepo(GitHubRepo repo, InstalledAppInfo app) throws Exception {
-        GitHubRelease release = fetchLatestRelease(repo);
+        GitHubRelease release = fetchLatestRelease(repo, app.getVersionName());
         MatchedApp matched = new MatchedApp();
         matched.setPackageName(app.getPackageName());
         matched.setAppLabel(app.getAppLabel());
@@ -215,11 +215,11 @@ public class GitHubMatcher {
           catch (Exception e) { return repo; }
     }
 
-    private GitHubRelease fetchLatestRelease(GitHubRepo repo) throws Exception {
+    private GitHubRelease fetchLatestRelease(GitHubRepo repo, String installedVersionName) throws Exception {
         throttleContentCall();
         Response<List<GitHubRelease>> r = executeWithRetry(api.listReleases(repo.getOwnerLogin(), repo.getName(), 100));
         if (!r.isSuccessful() || r.body() == null) return null;
-        return GitHubRelease.firstBaseInstallable(r.body());
+        return GitHubRelease.pickForInstalled(r.body(), false, installedVersionName);
     }
 
     private <T> Response<T> executeWithRetry(retrofit2.Call<T> call) throws Exception {

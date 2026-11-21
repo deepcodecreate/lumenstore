@@ -27,13 +27,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import com.opensourcefinder.app.model.ExploreApp;
 import com.opensourcefinder.app.model.MatchedApp;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public final class InstallState {
     private InstallState() {}
@@ -79,56 +75,11 @@ public final class InstallState {
 
     public static boolean isNewer(String remote, String local) {
         if (remote == null || local == null) return false;
-        List<Long> a = numbers(remote), b = numbers(local);
-        if (a.isEmpty() || b.isEmpty()) return false;
-        int n = Math.max(a.size(), b.size());
-        for (int i = 0; i < n; i++) {
-            long x = i < a.size() ? a.get(i) : 0, y = i < b.size() ? b.get(i) : 0;
-            if (x != y) return x > y;
-        }
-        boolean ra = isPreRelease(remote), lb = isPreRelease(local);
-        if (ra != lb) return !ra;
-        if (ra) {
-            long[] pa = preRank(remote), pb = preRank(local);
-            if (pa[0] != pb[0]) return pa[0] > pb[0];
-            return pa[1] > pb[1];
-        }
-        return false;
-    }
-
-    private static final Pattern RUN = Pattern.compile("\\d+(?:[._-]\\d+)*");
-    private static final Pattern PRE = Pattern.compile("(?i)(alpha|beta|rc|preview|snapshot|nightly|dev)");
-
-    private static List<Long> numbers(String s) {
-        Matcher m = RUN.matcher(s);
-        String best = null; int bestParts = 0;
-        while (m.find()) {
-            String run = m.group();
-            int parts = run.split("[._-]").length;
-            if (parts > bestParts) { best = run; bestParts = parts; }
-        }
-        List<Long> out = new ArrayList<>();
-        if (best == null) return out;
-        for (String part : best.split("[._-]")) {
-            try { out.add(Long.parseLong(part)); } catch (Exception ignored) { out.add(0L); }
-        }
-        return out;
+        return VersionCompare.isNewer(remote, local);
     }
 
     public static boolean isPreRelease(String s) {
-        return s != null && PRE.matcher(s.toLowerCase(Locale.ROOT)).find();
-    }
-
-    private static final Pattern PRE_NUM = Pattern.compile("(?i)(alpha|beta|rc|preview|snapshot|nightly|dev)[._-]?(\\d+)?");
-
-    private static long[] preRank(String s) {
-        Matcher m = PRE_NUM.matcher(s == null ? "" : s);
-        if (!m.find()) return new long[]{Long.MAX_VALUE, 0};
-        String kind = m.group(1).toLowerCase(Locale.ROOT);
-        long rank = kind.equals("alpha") ? 1 : kind.equals("beta") ? 2 : kind.equals("rc") ? 3 : 0;
-        long n = 0;
-        try { if (m.group(2) != null) n = Long.parseLong(m.group(2)); } catch (Exception ignored) {}
-        return new long[]{rank, n};
+        return VersionCompare.isPreRelease(s);
     }
 
     public static boolean tagIsNewer(String remote, String local) {
@@ -182,10 +133,31 @@ public final class InstallState {
         return isApkInstalled(context, e.apkFile, pkg) || isApkInstalled(context, e.apkFile, e.key);
     }
 
+    private static final String DOWNLOAD_MARKER = "/releases/download/";
+
+    static String tagFromUrl(String url) {
+        if (url == null) return null;
+        int at = url.indexOf(DOWNLOAD_MARKER);
+        if (at < 0) return null;
+        String rest = url.substring(at + DOWNLOAD_MARKER.length());
+        int cut = rest.indexOf('/');
+        if (cut <= 0) return null;
+        String raw = rest.substring(0, cut);
+        try {
+            return java.net.URLDecoder.decode(raw.replace("+", "%2B"), "UTF-8");
+        } catch (Exception e) {
+            return raw;
+        }
+    }
+
     public static void recordInstalledTag(Context context, MatchedApp m, com.opensourcefinder.app.download.DownloadTracker.Entry e) {
-        if (m == null || e == null || e.fileName == null || !verifiedInstalled(context, e)) return;
-        String tag = m.getLatestTag();
-        if (tag == null || tag.isEmpty() || !e.fileName.contains(tag)) return;
+        if (m == null || e == null || !verifiedInstalled(context, e)) return;
+        String tag = tagFromUrl(e.url);
+        if (tag == null || tag.isEmpty()) {
+            String latest = m.getLatestTag();
+            if (latest == null || latest.isEmpty() || e.fileName == null || !e.fileName.contains(latest)) return;
+            tag = latest;
+        }
         Info info = read(context, m.getPackageName());
         if (info == null) return;
         m.setInstalledTag(tag);
@@ -243,7 +215,10 @@ public final class InstallState {
         if (!verifiedInstalled(context, e)) return;
         if (m.getLatestVersionCode() > 0) return;
         String tag = m.getLatestTag();
-        if (tag != null && !tag.isEmpty() && e.fileName != null && e.fileName.contains(tag)) m.setUpdateAvailable(false);
+        if (tag == null || tag.isEmpty()) return;
+        String downloaded = tagFromUrl(e.url);
+        boolean same = downloaded != null ? downloaded.equals(tag) : e.fileName != null && e.fileName.contains(tag);
+        if (same) m.setUpdateAvailable(false);
     }
 
     public static boolean isApkInstalled(Context context, java.io.File apk, String fallbackPackage) {
