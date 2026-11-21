@@ -1,0 +1,1 @@
+Cleaner, faster slider animation. Anti-features have short descriptions in the app language.

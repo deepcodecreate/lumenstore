@@ -1,1 +1,1 @@
-Fixed automatic slider on RTL and square banner while swiping. Cleaner, faster slider animation. Anti-features have short descriptions in the app language.
+Fixed automatic slider on RTL and square banner while swiping. Anti-features now have short descriptions.
