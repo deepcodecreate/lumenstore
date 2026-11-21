@@ -7,9 +7,11 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 ### Fixed
 - The Explore Lumen apps slider now advances automatically on right-to-left layouts too
 - Swiping the slider by hand no longer squeezes the banner into a clipped square shape; the transition is now flat and clean
+- Slider transitions, page dots and the progress fill now run on one shared timing
 
 ### Changed
-- Each anti-feature in the app detail now shows a short description in both Persian and English
+- The Explore Lumen apps slider changes slides sooner and moves with a single smooth, cleaner animation
+- Each anti-feature in the app detail now shows a short description in the app language
 
 ## [0.5.8-beta]
 

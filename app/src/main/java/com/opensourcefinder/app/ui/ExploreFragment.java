@@ -31,7 +31,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -98,7 +97,8 @@ public class ExploreFragment extends Fragment {
             heroHandler.postDelayed(this, HERO_INTERVAL_MS);
         }
     };
-    private static final long HERO_INTERVAL_MS = 6500L;
+    private static final long HERO_INTERVAL_MS = 4000L;
+    private static final long HERO_SCROLL_MS = 600L;
     private ExploreAdapter searchAdapter;
     private View exploreScroll;
     private View loadingPanel;
@@ -1118,7 +1118,6 @@ public class ExploreFragment extends Fragment {
         heroPageCallback = new androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
             @Override public void onPageSelected(int position) {
                 updateHeroDots(position);
-                popHeroIcon(position);
             }
 
             @Override public void onPageScrollStateChanged(int state) {
@@ -1167,6 +1166,10 @@ public class ExploreFragment extends Fragment {
 
     private static boolean heroFakeDragFlipped;
 
+    private static android.view.animation.Interpolator heroInterpolator() {
+        return new android.view.animation.PathInterpolator(0.3f, 0f, 0f, 1f);
+    }
+
     private void scrollHeroTo(final int target) {
         if (heroPager == null) return;
         final int current = heroPager.getCurrentItem();
@@ -1179,10 +1182,11 @@ public class ExploreFragment extends Fragment {
         boolean rtl = heroPager.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
         float sign = (rtl ^ heroFakeDragFlipped) ? -1f : 1f;
         final float total = sign * (current - target) * (float) pageSize;
+        updateHeroDots(target);
         final float[] applied = {0f};
         ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
-        animator.setDuration(Math.abs(target - current) > 1 ? 1700L : 1150L);
-        animator.setInterpolator(new android.view.animation.AccelerateDecelerateInterpolator());
+        animator.setDuration(Math.min(1400L, HERO_SCROLL_MS + 220L * (Math.abs(target - current) - 1)));
+        animator.setInterpolator(heroInterpolator());
         animator.addUpdateListener(a -> {
             if (heroPager == null || !heroPager.isFakeDragging()) return;
             float now = total * (float) a.getAnimatedValue();
@@ -1213,33 +1217,6 @@ public class ExploreFragment extends Fragment {
             heroFakeDragFlipped = !heroFakeDragFlipped;
             heroPager.setCurrentItem(target, true);
         }, 700L);
-    }
-
-    private void popHeroIcon(int position) {
-        if (heroPager == null || AppPreferences.isReduceMotion(requireContext())) return;
-        View list = heroPager.getChildAt(0);
-        if (!(list instanceof RecyclerView)) return;
-        RecyclerView.ViewHolder holder = ((RecyclerView) list).findViewHolderForAdapterPosition(position);
-        if (holder == null) return;
-        View icon = holder.itemView.findViewById(R.id.heroSlideIcon);
-        View title = holder.itemView.findViewById(R.id.heroSlideTitle);
-        View subtitle = holder.itemView.findViewById(R.id.heroSlideSubtitle);
-        if (icon != null) {
-            icon.animate().cancel();
-            icon.setScaleX(0.55f);
-            icon.setScaleY(0.55f);
-            icon.animate().scaleX(1f).scaleY(1f).setDuration(780L)
-                    .setInterpolator(new android.view.animation.OvershootInterpolator(2.6f)).start();
-        }
-        View[] texts = {title, subtitle};
-        for (int i = 0; i < texts.length; i++) {
-            View t = texts[i];
-            if (t == null) continue;
-            t.animate().cancel();
-            t.setTranslationY(14f * getResources().getDisplayMetrics().density);
-            t.animate().translationY(0f).setStartDelay(160L + i * 120L).setDuration(640L)
-                    .setInterpolator(new DecelerateInterpolator(2f)).start();
-        }
     }
 
     private void transformHeroPage(@NonNull View page, float position) {
@@ -1326,6 +1303,10 @@ public class ExploreFragment extends Fragment {
             invalidate();
         }
 
+        float getProgress() {
+            return progress;
+        }
+
         @Override protected void onDraw(android.graphics.Canvas canvas) {
             float w = getWidth();
             float h = getHeight();
@@ -1366,39 +1347,39 @@ public class ExploreFragment extends Fragment {
         if (heroDots == null) return;
         float density = getResources().getDisplayMetrics().density;
         boolean animate = !AppPreferences.isReduceMotion(requireContext());
+        boolean filling = animate && heroDots.getChildCount() > 1;
         heroSelected = selected;
         for (int i = 0; i < heroDots.getChildCount(); i++) {
             View child = heroDots.getChildAt(i);
             if (!(child instanceof HeroDot)) continue;
             final HeroDot dot = (HeroDot) child;
-            boolean on = i == selected;
-            dot.setProgress(on ? 1f : 0f);
+            final boolean on = i == selected;
+            final float from = dot.getProgress();
+            if (on) dot.setProgress(filling ? 0f : 1f);
             final int to = Math.round((on ? 24 : 6) * density);
             final ViewGroup.LayoutParams lp = dot.getLayoutParams();
-            if (lp.width == to) continue;
+            if (lp.width == to) {
+                if (!on) dot.setProgress(0f);
+                continue;
+            }
             Object running = dot.getTag();
             if (running instanceof ValueAnimator) ((ValueAnimator) running).cancel();
             if (!animate) {
                 lp.width = to;
                 dot.setLayoutParams(lp);
+                if (!on) dot.setProgress(0f);
                 continue;
             }
             ValueAnimator widthAnim = ValueAnimator.ofInt(lp.width, to);
-            widthAnim.setDuration(620L);
-            widthAnim.setInterpolator(new android.view.animation.OvershootInterpolator(on ? 2.2f : 0f));
+            widthAnim.setDuration(HERO_SCROLL_MS);
+            widthAnim.setInterpolator(heroInterpolator());
             widthAnim.addUpdateListener(a -> {
                 lp.width = Math.max(Math.round(4 * density), (int) a.getAnimatedValue());
                 dot.setLayoutParams(lp);
+                if (!on) dot.setProgress(from * (1f - a.getAnimatedFraction()));
             });
             dot.setTag(widthAnim);
             widthAnim.start();
-            if (on) {
-                dot.animate().cancel();
-                dot.setScaleY(1f);
-                dot.animate().scaleY(1.7f).setDuration(220L).withEndAction(() ->
-                        dot.animate().scaleY(1f).setDuration(420L)
-                                .setInterpolator(new android.view.animation.OvershootInterpolator(3f)).start()).start();
-            }
         }
     }
 
