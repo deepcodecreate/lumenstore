@@ -546,7 +546,7 @@ public class HomeFragment extends Fragment {
             turnFabIcon(false, out, true, new DecelerateInterpolator(1.6f));
             for (int i = 0; i < n; i++) {
                 View c = menu.getChildAt(i);
-                final boolean last = i == 0;
+                final boolean last = i == n - 1;
                 c.animate().alpha(0f).translationY(16f * d).scaleX(0.8f).scaleY(0.8f)
                         .setStartDelay(i * 40L)
                         .setDuration(out)

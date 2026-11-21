@@ -375,13 +375,11 @@
                         android:paddingStart="64dp"
                         android:paddingEnd="16dp"
                         android:paddingBottom="16dp">
-                        <TextView
-                            android:id="@+id/exploreDetailAntiFeaturesText"
+                        <LinearLayout
+                            android:id="@+id/exploreDetailAntiFeaturesList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:lineSpacingMultiplier="1.15"
-                            android:textAppearance="?attr/textAppearanceBodyMedium"
-                            android:textColor="?attr/colorOnSurfaceVariant" />
+                            android:orientation="vertical" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

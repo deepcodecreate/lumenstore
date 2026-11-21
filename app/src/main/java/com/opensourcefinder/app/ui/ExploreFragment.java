@@ -21,6 +21,9 @@
 
 package com.opensourcefinder.app.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -82,17 +85,20 @@ public class ExploreFragment extends Fragment {
     private HeroAdapter heroAdapter;
     private LinearLayout heroDots;
     private androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback heroPageCallback;
+    private ValueAnimator heroScroll;
+    private ValueAnimator heroDotProgress;
+    private int heroSelected;
     private final android.os.Handler heroHandler = new android.os.Handler(android.os.Looper.getMainLooper());
     private final Runnable heroAuto = new Runnable() {
         @Override public void run() {
             if (heroPager == null || heroAdapter == null || !isAdded() || isHidden()) return;
             int count = heroAdapter.getItemCount();
             if (count < 2) return;
-            heroPager.setCurrentItem((heroPager.getCurrentItem() + 1) % count, true);
+            scrollHeroTo((heroPager.getCurrentItem() + 1) % count);
             heroHandler.postDelayed(this, HERO_INTERVAL_MS);
         }
     };
-    private static final long HERO_INTERVAL_MS = 4200L;
+    private static final long HERO_INTERVAL_MS = 6500L;
     private ExploreAdapter searchAdapter;
     private View exploreScroll;
     private View loadingPanel;
@@ -1116,7 +1122,7 @@ public class ExploreFragment extends Fragment {
             }
 
             @Override public void onPageScrollStateChanged(int state) {
-                if (state == androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING) stopHeroAuto();
+                if (state == androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING && !heroPager.isFakeDragging()) stopHeroAuto();
                 else if (state == androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE) startHeroAuto();
             }
         };
@@ -1126,13 +1132,67 @@ public class ExploreFragment extends Fragment {
 
     private void startHeroAuto() {
         heroHandler.removeCallbacks(heroAuto);
+        if (heroDotProgress != null) heroDotProgress.cancel();
         if (heroPager == null || heroAdapter == null || !isAdded() || isHidden()) return;
         if (AppPreferences.isReduceMotion(requireContext()) || heroAdapter.getItemCount() < 2) return;
         heroHandler.postDelayed(heroAuto, HERO_INTERVAL_MS);
+        runHeroDotProgress();
     }
 
     private void stopHeroAuto() {
         heroHandler.removeCallbacks(heroAuto);
+        if (heroScroll != null) heroScroll.cancel();
+        if (heroDotProgress != null) heroDotProgress.cancel();
+        HeroDot dot = heroDotAt(heroSelected);
+        if (dot != null) dot.setProgress(1f);
+    }
+
+    @Nullable
+    private HeroDot heroDotAt(int index) {
+        if (heroDots == null || index < 0 || index >= heroDots.getChildCount()) return null;
+        View child = heroDots.getChildAt(index);
+        return child instanceof HeroDot ? (HeroDot) child : null;
+    }
+
+    private void runHeroDotProgress() {
+        HeroDot dot = heroDotAt(heroSelected);
+        if (dot == null) return;
+        dot.setProgress(0f);
+        heroDotProgress = ValueAnimator.ofFloat(0f, 1f);
+        heroDotProgress.setDuration(HERO_INTERVAL_MS);
+        heroDotProgress.setInterpolator(new android.view.animation.LinearInterpolator());
+        heroDotProgress.addUpdateListener(a -> dot.setProgress((float) a.getAnimatedValue()));
+        heroDotProgress.start();
+    }
+
+    private void scrollHeroTo(int target) {
+        if (heroPager == null) return;
+        int current = heroPager.getCurrentItem();
+        int pageSize = heroPager.getWidth();
+        if (target == current || pageSize <= 0) return;
+        if (!heroPager.beginFakeDrag()) {
+            heroPager.setCurrentItem(target, true);
+            return;
+        }
+        final float total = (current - target) * (float) pageSize;
+        final float[] applied = {0f};
+        ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+        animator.setDuration(Math.abs(target - current) > 1 ? 1700L : 1150L);
+        animator.setInterpolator(new android.view.animation.AccelerateDecelerateInterpolator());
+        animator.addUpdateListener(a -> {
+            if (heroPager == null || !heroPager.isFakeDragging()) return;
+            float now = total * (float) a.getAnimatedValue();
+            heroPager.fakeDragBy(now - applied[0]);
+            applied[0] = now;
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override public void onAnimationEnd(Animator a) {
+                if (heroPager != null && heroPager.isFakeDragging()) heroPager.endFakeDrag();
+                if (heroScroll == a) heroScroll = null;
+            }
+        });
+        heroScroll = animator;
+        animator.start();
     }
 
     private void popHeroIcon(int position) {
@@ -1148,7 +1208,7 @@ public class ExploreFragment extends Fragment {
             icon.animate().cancel();
             icon.setScaleX(0.55f);
             icon.setScaleY(0.55f);
-            icon.animate().scaleX(1f).scaleY(1f).setDuration(520L)
+            icon.animate().scaleX(1f).scaleY(1f).setDuration(780L)
                     .setInterpolator(new android.view.animation.OvershootInterpolator(2.6f)).start();
         }
         View[] texts = {title, subtitle};
@@ -1157,7 +1217,7 @@ public class ExploreFragment extends Fragment {
             if (t == null) continue;
             t.animate().cancel();
             t.setTranslationY(14f * getResources().getDisplayMetrics().density);
-            t.animate().translationY(0f).setStartDelay(80L + i * 70L).setDuration(420L)
+            t.animate().translationY(0f).setStartDelay(160L + i * 120L).setDuration(640L)
                     .setInterpolator(new DecelerateInterpolator(2f)).start();
         }
     }
@@ -1231,37 +1291,95 @@ public class ExploreFragment extends Fragment {
         startHeroAuto();
     }
 
+    private static final class HeroDot extends View {
+        private final android.graphics.Paint paint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.RectF rect = new android.graphics.RectF();
+        private int color;
+        private float progress;
+
+        HeroDot(android.content.Context context, int color) {
+            super(context);
+            this.color = color;
+        }
+
+        void setProgress(float value) {
+            progress = value;
+            invalidate();
+        }
+
+        @Override protected void onDraw(android.graphics.Canvas canvas) {
+            float w = getWidth();
+            float h = getHeight();
+            float r = h / 2f;
+            paint.setColor(androidx.core.graphics.ColorUtils.setAlphaComponent(color, 80));
+            rect.set(0f, 0f, w, h);
+            canvas.drawRoundRect(rect, r, r, paint);
+            if (progress <= 0f) return;
+            float fill = Math.max(h, w * Math.min(1f, progress));
+            boolean rtl = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+            paint.setColor(androidx.core.graphics.ColorUtils.setAlphaComponent(color, 235));
+            rect.set(rtl ? w - fill : 0f, 0f, rtl ? w : fill, h);
+            canvas.drawRoundRect(rect, r, r, paint);
+        }
+    }
+
     private void buildHeroDots(int count) {
         if (heroDots == null) return;
         heroDots.removeAllViews();
         heroDots.setVisibility(count > 1 ? View.VISIBLE : View.GONE);
         float density = getResources().getDisplayMetrics().density;
+        int base = com.google.android.material.color.MaterialColors.getColor(heroDots,
+                com.google.android.material.R.attr.colorOnSurface, android.graphics.Color.GRAY);
+        heroSelected = heroPager == null ? 0 : Math.min(heroPager.getCurrentItem(), Math.max(0, count - 1));
         for (int i = 0; i < count; i++) {
-            View dot = new View(requireContext());
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Math.round(6 * density), Math.round(6 * density));
-            lp.setMarginStart(Math.round(2 * density));
-            lp.setMarginEnd(Math.round(2 * density));
+            HeroDot dot = new HeroDot(requireContext(), base);
+            boolean on = i == heroSelected;
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(Math.round((on ? 24 : 6) * density), Math.round(6 * density));
+            lp.setMarginStart(Math.round(3 * density));
+            lp.setMarginEnd(Math.round(3 * density));
             dot.setLayoutParams(lp);
+            dot.setProgress(on ? 1f : 0f);
             heroDots.addView(dot);
         }
-        updateHeroDots(heroPager == null ? 0 : heroPager.getCurrentItem());
     }
 
     private void updateHeroDots(int selected) {
         if (heroDots == null) return;
         float density = getResources().getDisplayMetrics().density;
-        int base = com.google.android.material.color.MaterialColors.getColor(heroDots,
-                com.google.android.material.R.attr.colorOnSurface, android.graphics.Color.GRAY);
+        boolean animate = !AppPreferences.isReduceMotion(requireContext());
+        heroSelected = selected;
         for (int i = 0; i < heroDots.getChildCount(); i++) {
-            View dot = heroDots.getChildAt(i);
+            View child = heroDots.getChildAt(i);
+            if (!(child instanceof HeroDot)) continue;
+            final HeroDot dot = (HeroDot) child;
             boolean on = i == selected;
-            android.graphics.drawable.GradientDrawable d = new android.graphics.drawable.GradientDrawable();
-            d.setCornerRadius(3 * density);
-            d.setColor(androidx.core.graphics.ColorUtils.setAlphaComponent(base, on ? 230 : 90));
-            dot.setBackground(d);
-            ViewGroup.LayoutParams lp = dot.getLayoutParams();
-            lp.width = Math.round((on ? 16 : 6) * density);
-            dot.setLayoutParams(lp);
+            dot.setProgress(on ? 1f : 0f);
+            final int to = Math.round((on ? 24 : 6) * density);
+            final ViewGroup.LayoutParams lp = dot.getLayoutParams();
+            if (lp.width == to) continue;
+            Object running = dot.getTag();
+            if (running instanceof ValueAnimator) ((ValueAnimator) running).cancel();
+            if (!animate) {
+                lp.width = to;
+                dot.setLayoutParams(lp);
+                continue;
+            }
+            ValueAnimator widthAnim = ValueAnimator.ofInt(lp.width, to);
+            widthAnim.setDuration(620L);
+            widthAnim.setInterpolator(new android.view.animation.OvershootInterpolator(on ? 2.2f : 0f));
+            widthAnim.addUpdateListener(a -> {
+                lp.width = Math.max(Math.round(4 * density), (int) a.getAnimatedValue());
+                dot.setLayoutParams(lp);
+            });
+            dot.setTag(widthAnim);
+            widthAnim.start();
+            if (on) {
+                dot.animate().cancel();
+                dot.setScaleY(1f);
+                dot.animate().scaleY(1.7f).setDuration(220L).withEndAction(() ->
+                        dot.animate().scaleY(1f).setDuration(420L)
+                                .setInterpolator(new android.view.animation.OvershootInterpolator(3f)).start()).start();
+            }
         }
     }
 

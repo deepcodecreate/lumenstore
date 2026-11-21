@@ -750,25 +750,23 @@ public class ExploreDetailActivity extends BaseActivity {
 
     private void bindAntiFeatures() {
         View card = findViewById(R.id.exploreDetailAntiFeaturesCard);
-        TextView text = findViewById(R.id.exploreDetailAntiFeaturesText);
+        LinearLayout list = findViewById(R.id.exploreDetailAntiFeaturesList);
         View header = findViewById(R.id.exploreDetailAntiFeaturesHeader);
         View body = findViewById(R.id.exploreDetailAntiFeaturesBody);
         ImageView arrow = findViewById(R.id.exploreDetailAntiFeaturesArrow);
         ImageView icon = findViewById(R.id.exploreDetailAntiFeaturesIcon);
         TextView count = findViewById(R.id.exploreDetailAntiFeaturesCount);
-        if (card == null || text == null || body == null) return;
+        if (card == null || list == null || body == null) return;
         List<String> features = app.getAntiFeatures();
         if (features == null || features.isEmpty()) { card.setVisibility(View.GONE); return; }
-        StringBuilder readable = new StringBuilder();
+        list.removeAllViews();
         int n = 0;
         for (String feature : features) {
             if (TextUtils.isEmpty(feature)) continue;
-            if (readable.length() > 0) readable.append("\n");
-            readable.append("•  ").append(feature);
+            addAntiFeatureRow(list, feature);
             n++;
         }
         if (n == 0) { card.setVisibility(View.GONE); return; }
-        text.setText(readable.toString());
         if (count != null) count.setText(String.valueOf(n));
         card.setVisibility(View.VISIBLE);
 
@@ -784,6 +782,56 @@ public class ExploreDetailActivity extends BaseActivity {
             antiFeaturesAnimated = true;
             animateAntiFeaturesIn(card, icon);
         }
+    }
+
+    private String antiFeatureIcon(String feature) {
+        String key = feature.toLowerCase(java.util.Locale.ROOT).replaceAll("[^a-z]", "");
+        if (key.contains("nonfreenet")) return "ic_cloud";
+        if (key.contains("nonfreeadd")) return "ic_af_puzzle";
+        if (key.contains("nonfreedep")) return "ic_lm_link";
+        if (key.contains("nonfreeasset")) return "ic_af_photo";
+        if (key.contains("upstreamnonfree")) return "ic_lm_license";
+        if (key.contains("nosource")) return "ic_lm_code";
+        if (key.contains("knownvuln")) return "ic_af_shield";
+        if (key.contains("disabledalgorithm")) return "ic_af_lock";
+        if (key.contains("debuggable")) return "ic_lm_bug";
+        if (key.contains("tracking")) return "ic_af_eye";
+        if (key.contains("nsfw")) return "ic_af_eye_off";
+        if (key.contains("ads")) return "ic_af_megaphone";
+        return "ic_alert_triangle";
+    }
+
+    private void addAntiFeatureRow(LinearLayout container, String feature) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPaddingRelative(0, dp(6), 0, dp(6));
+
+        FrameLayout iconFrame = new FrameLayout(this);
+        iconFrame.setLayoutParams(new LinearLayout.LayoutParams(dp(34), dp(34)));
+        android.graphics.drawable.GradientDrawable iconBg = new android.graphics.drawable.GradientDrawable();
+        iconBg.setShape(android.graphics.drawable.GradientDrawable.OVAL);
+        iconBg.setColor(MaterialColors.getColor(row, com.google.android.material.R.attr.colorErrorContainer, 0));
+        iconFrame.setBackground(iconBg);
+        ImageView icon = new ImageView(this);
+        FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(dp(18), dp(18));
+        iconParams.gravity = Gravity.CENTER;
+        icon.setLayoutParams(iconParams);
+        icon.setImageResource(TablerIconRes.get(this, antiFeatureIcon(feature)));
+        ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(
+                MaterialColors.getColor(row, com.google.android.material.R.attr.colorOnErrorContainer, 0)));
+        iconFrame.addView(icon);
+        row.addView(iconFrame);
+
+        TextView label = new TextView(this);
+        label.setText(feature);
+        label.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyMedium);
+        label.setTextColor(MaterialColors.getColor(row, com.google.android.material.R.attr.colorOnSurface, 0));
+        LinearLayout.LayoutParams labelParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        labelParams.setMarginStart(dp(12));
+        label.setLayoutParams(labelParams);
+        row.addView(label);
+        container.addView(row);
     }
 
     private void animateAntiFeaturesIn(View card, View icon) {

@@ -2,6 +2,17 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.8-beta]
+
+### Fixed
+- The Home add-button menu no longer cuts the top item while opening and no longer mixes up when the list is scrolled quickly
+- The add button could stay hidden after quick direction changes while scrolling; it now always follows the last scroll direction
+
+### Changed
+- The Lumen apps slider in Explore is slower, with longer transitions, animated page dots and a progress fill on the active dot
+- Anti-features in the app detail now show an icon matching each one
+- Releases, including beta versions, are published as the latest release
+
 ## [0.5.7-beta]
 
 ### Fixed

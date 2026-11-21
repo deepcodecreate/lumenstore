@@ -235,6 +235,7 @@ public final class MotionHelper {
         if (fab.getVisibility() != View.VISIBLE && fab.getScaleX() == 0f) return;
         fab.animate().cancel();
         if (AppPreferences.isReduceMotion(fab.getContext())) {
+            fab.animate().setListener(null);
             fab.setAlpha(0f);
             fab.setScaleX(0f);
             fab.setScaleY(0f);
@@ -245,11 +246,17 @@ public final class MotionHelper {
                 .scaleX(0f).scaleY(0f).alpha(0f)
                 .setDuration(getDuration(fab.getContext(), 150, 210))
                 .setInterpolator(getInterpolator(fab.getContext()))
-                .withEndAction(() -> {
-                    if (fab instanceof FloatingActionButton) {
-                        ((FloatingActionButton) fab).hide();
-                    } else {
-                        fab.setVisibility(View.INVISIBLE);
+                .setListener(new android.animation.AnimatorListenerAdapter() {
+                    private boolean cancelled;
+                    @Override public void onAnimationCancel(android.animation.Animator animation) { cancelled = true; }
+                    @Override public void onAnimationEnd(android.animation.Animator animation) {
+                        fab.animate().setListener(null);
+                        if (cancelled) return;
+                        if (fab instanceof FloatingActionButton) {
+                            ((FloatingActionButton) fab).hide();
+                        } else {
+                            fab.setVisibility(View.INVISIBLE);
+                        }
                     }
                 })
                 .start();
@@ -257,6 +264,7 @@ public final class MotionHelper {
 
     public static void showFab(@NonNull View fab) {
         fab.animate().cancel();
+        fab.animate().setListener(null);
         if (AppPreferences.isReduceMotion(fab.getContext())) {
             fab.setVisibility(View.VISIBLE);
             fab.setScaleX(1f);
