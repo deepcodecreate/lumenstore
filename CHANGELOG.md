@@ -2,6 +2,12 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.6.1-beta]
+
+### Changed
+- Loading placeholders in app lists now share a single animation clock and cached theme colors, which removes per-item animators and theme lookups while scrolling
+- Smoother list binding: each row now updates its text once instead of twice
+
 ## [0.6.0-beta]
 
 ### Changed

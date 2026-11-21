@@ -240,21 +240,19 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppViewH
         } else {
             subtitle = context.getString(R.string.source_manual);
         }
-        holder.repoFullName.setText(subtitle);
-        bindVersion(holder, matchedApp, context);
+        bindVersion(holder, matchedApp, context, subtitle);
 
         bindIcon(holder, matchedApp, context);
         bindAction(holder, matchedApp);
     }
 
-    private void bindVersion(AppViewHolder holder, MatchedApp app, Context context) {
+    private void bindVersion(AppViewHolder holder, MatchedApp app, Context context, CharSequence base) {
         String installed = app.getInstalledVersionName();
         String latest = app.getLatestTag();
         boolean hasInstalled = installed != null && !installed.isEmpty();
         boolean hasLatest = latest != null && !latest.isEmpty();
         boolean pending = !app.isNotInstalled() && app.isUpdateAvailable();
 
-        CharSequence base = holder.repoFullName.getText();
         String extra = null;
         if (app.isNotInstalled() && hasLatest) {
             extra = context.getString(R.string.last_label, latest);
@@ -263,7 +261,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppViewH
         } else if (hasInstalled) {
             extra = installed;
         }
-        if (extra != null) holder.repoFullName.setText(base + " \u00B7 " + extra);
+        holder.repoFullName.setText(extra != null ? base + " \u00B7 " + extra : base);
 
         MaterialCardView card = holder.card;
         ensureColors(context);
