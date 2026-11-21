@@ -1,0 +1,1 @@
+Fixed automatic slider on RTL and square banner while swiping. Anti-features now have short descriptions.

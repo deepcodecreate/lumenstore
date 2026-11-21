@@ -2,6 +2,15 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.9-beta]
+
+### Fixed
+- The Explore Lumen apps slider now advances automatically on right-to-left layouts too
+- Swiping the slider by hand no longer squeezes the banner into a clipped square shape; the transition is now flat and clean
+
+### Changed
+- Each anti-feature in the app detail now shows a short description in both Persian and English
+
 ## [0.5.8-beta]
 
 ### Fixed

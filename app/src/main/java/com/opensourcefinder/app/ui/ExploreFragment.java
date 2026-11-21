@@ -1165,16 +1165,20 @@ public class ExploreFragment extends Fragment {
         heroDotProgress.start();
     }
 
-    private void scrollHeroTo(int target) {
+    private static boolean heroFakeDragFlipped;
+
+    private void scrollHeroTo(final int target) {
         if (heroPager == null) return;
-        int current = heroPager.getCurrentItem();
+        final int current = heroPager.getCurrentItem();
         int pageSize = heroPager.getWidth();
         if (target == current || pageSize <= 0) return;
         if (!heroPager.beginFakeDrag()) {
             heroPager.setCurrentItem(target, true);
             return;
         }
-        final float total = (current - target) * (float) pageSize;
+        boolean rtl = heroPager.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+        float sign = (rtl ^ heroFakeDragFlipped) ? -1f : 1f;
+        final float total = sign * (current - target) * (float) pageSize;
         final float[] applied = {0f};
         ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
         animator.setDuration(Math.abs(target - current) > 1 ? 1700L : 1150L);
@@ -1185,14 +1189,30 @@ public class ExploreFragment extends Fragment {
             heroPager.fakeDragBy(now - applied[0]);
             applied[0] = now;
         });
+        final boolean[] cancelled = {false};
         animator.addListener(new AnimatorListenerAdapter() {
+            @Override public void onAnimationCancel(Animator a) {
+                cancelled[0] = true;
+            }
+
             @Override public void onAnimationEnd(Animator a) {
                 if (heroPager != null && heroPager.isFakeDragging()) heroPager.endFakeDrag();
                 if (heroScroll == a) heroScroll = null;
+                if (!cancelled[0]) verifyHeroScroll(target);
             }
         });
         heroScroll = animator;
         animator.start();
+    }
+
+    private void verifyHeroScroll(final int target) {
+        heroHandler.postDelayed(() -> {
+            if (heroPager == null || !isAdded() || isHidden()) return;
+            if (heroPager.getCurrentItem() == target || heroPager.isFakeDragging()) return;
+            if (heroPager.getScrollState() != androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE) return;
+            heroFakeDragFlipped = !heroFakeDragFlipped;
+            heroPager.setCurrentItem(target, true);
+        }, 700L);
     }
 
     private void popHeroIcon(int position) {
@@ -1225,43 +1245,42 @@ public class ExploreFragment extends Fragment {
     private void transformHeroPage(@NonNull View page, float position) {
         float abs = Math.min(1f, Math.abs(position));
         float width = page.getWidth();
-        page.setCameraDistance(page.getResources().getDisplayMetrics().density * 9000f);
-        page.setPivotX(position < 0 ? width : 0f);
+        page.setRotationY(0f);
+        page.setScaleX(1f);
+        page.setScaleY(1f);
+        page.setPivotX(width / 2f);
         page.setPivotY(page.getHeight() / 2f);
-        page.setRotationY(-32f * position);
-        page.setScaleX(1f - 0.2f * abs);
-        page.setScaleY(1f - 0.2f * abs);
-        page.setAlpha(1f - 0.7f * abs);
+        page.setAlpha(1f - 0.45f * abs);
         View icon = page.findViewById(R.id.heroSlideIcon);
         View title = page.findViewById(R.id.heroSlideTitle);
         View subtitle = page.findViewById(R.id.heroSlideSubtitle);
         View circleA = page.findViewById(R.id.heroSlideCircleA);
         View circleB = page.findViewById(R.id.heroSlideCircleB);
         if (icon != null) {
-            icon.setTranslationX(-position * width * 0.5f);
-            icon.setRotation(position * -140f);
-            icon.setScaleX(1f - 0.45f * abs);
-            icon.setScaleY(1f - 0.45f * abs);
+            icon.setTranslationX(-position * width * 0.12f);
+            icon.setRotation(0f);
+            icon.setScaleX(1f - 0.18f * abs);
+            icon.setScaleY(1f - 0.18f * abs);
         }
         if (title != null) {
-            title.setTranslationX(position * width * 0.28f);
-            title.setAlpha(1f - abs);
+            title.setTranslationX(position * width * 0.1f);
+            title.setAlpha(1f - 0.6f * abs);
         }
         if (subtitle != null) {
-            subtitle.setTranslationX(position * width * 0.45f);
-            subtitle.setAlpha((1f - abs) * 0.8f);
+            subtitle.setTranslationX(position * width * 0.16f);
+            subtitle.setAlpha((1f - 0.6f * abs) * 0.9f);
         }
         if (circleA != null) {
-            circleA.setTranslationX(position * width * 0.7f);
-            circleA.setRotation(position * 120f);
-            circleA.setScaleX(1f + 0.7f * abs);
-            circleA.setScaleY(1f + 0.7f * abs);
+            circleA.setTranslationX(position * width * 0.25f);
+            circleA.setRotation(0f);
+            circleA.setScaleX(1f + 0.15f * abs);
+            circleA.setScaleY(1f + 0.15f * abs);
         }
         if (circleB != null) {
-            circleB.setTranslationX(-position * width * 0.35f);
-            circleB.setTranslationY(abs * 24f * page.getResources().getDisplayMetrics().density);
-            circleB.setScaleX(1f + 0.9f * abs);
-            circleB.setScaleY(1f + 0.9f * abs);
+            circleB.setTranslationX(-position * width * 0.15f);
+            circleB.setTranslationY(0f);
+            circleB.setScaleX(1f + 0.2f * abs);
+            circleB.setScaleY(1f + 0.2f * abs);
         }
     }
 

@@ -801,6 +801,23 @@ public class ExploreDetailActivity extends BaseActivity {
         return "ic_alert_triangle";
     }
 
+    private int[] antiFeatureDescription(String feature) {
+        String key = feature.toLowerCase(java.util.Locale.ROOT).replaceAll("[^a-z]", "");
+        if (key.contains("nonfreenet")) return new int[]{R.string.af_nonfreenet_en, R.string.af_nonfreenet_fa};
+        if (key.contains("nonfreeadd")) return new int[]{R.string.af_nonfreeadd_en, R.string.af_nonfreeadd_fa};
+        if (key.contains("nonfreedep")) return new int[]{R.string.af_nonfreedep_en, R.string.af_nonfreedep_fa};
+        if (key.contains("nonfreeasset")) return new int[]{R.string.af_nonfreeasset_en, R.string.af_nonfreeasset_fa};
+        if (key.contains("upstreamnonfree")) return new int[]{R.string.af_upstreamnonfree_en, R.string.af_upstreamnonfree_fa};
+        if (key.contains("nosource")) return new int[]{R.string.af_nosource_en, R.string.af_nosource_fa};
+        if (key.contains("knownvuln")) return new int[]{R.string.af_knownvuln_en, R.string.af_knownvuln_fa};
+        if (key.contains("disabledalgorithm")) return new int[]{R.string.af_disabledalgorithm_en, R.string.af_disabledalgorithm_fa};
+        if (key.contains("debuggable")) return new int[]{R.string.af_debuggable_en, R.string.af_debuggable_fa};
+        if (key.contains("tracking")) return new int[]{R.string.af_tracking_en, R.string.af_tracking_fa};
+        if (key.contains("nsfw")) return new int[]{R.string.af_nsfw_en, R.string.af_nsfw_fa};
+        if (key.contains("ads")) return new int[]{R.string.af_ads_en, R.string.af_ads_fa};
+        return new int[]{R.string.af_generic_en, R.string.af_generic_fa};
+    }
+
     private void addAntiFeatureRow(LinearLayout container, String feature) {
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
@@ -827,10 +844,26 @@ public class ExploreDetailActivity extends BaseActivity {
         label.setText(feature);
         label.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyMedium);
         label.setTextColor(MaterialColors.getColor(row, com.google.android.material.R.attr.colorOnSurface, 0));
-        LinearLayout.LayoutParams labelParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-        labelParams.setMarginStart(dp(12));
-        label.setLayoutParams(labelParams);
-        row.addView(label);
+        int[] descriptions = antiFeatureDescription(feature);
+        int muted = MaterialColors.getColor(row, com.google.android.material.R.attr.colorOnSurfaceVariant, 0);
+        LinearLayout textColumn = new LinearLayout(this);
+        textColumn.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams columnParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        columnParams.setMarginStart(dp(12));
+        textColumn.setLayoutParams(columnParams);
+        textColumn.addView(label);
+        for (int res : descriptions) {
+            TextView description = new TextView(this);
+            description.setText(res);
+            description.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodySmall);
+            description.setTextColor(muted);
+            LinearLayout.LayoutParams descriptionParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            descriptionParams.topMargin = dp(2);
+            description.setLayoutParams(descriptionParams);
+            textColumn.addView(description);
+        }
+        row.addView(textColumn);
         container.addView(row);
     }
 

@@ -754,4 +754,30 @@ This will replace your current app list and repositories with this backup. Conti
     <string name="delete_apk_only">Delete APK only</string>
     <string name="delete_apk_only_message">Only the APK file will be deleted. The item stays in the list.</string>
     <string name="apk_deleted">APK deleted</string>
+    <string name="af_nonfreenet_en" translatable="false">Depends on or promotes a non-free network service.</string>
+    <string name="af_nonfreenet_fa" translatable="false">به یک سرویس شبکه‌ای غیرآزاد وابسته است یا آن را تبلیغ می‌کند.</string>
+    <string name="af_nonfreeadd_en" translatable="false">Promotes non-free add-ons or plugins.</string>
+    <string name="af_nonfreeadd_fa" translatable="false">افزونه‌ها یا پلاگین‌های غیرآزاد را تبلیغ می‌کند.</string>
+    <string name="af_nonfreedep_en" translatable="false">Depends on a non-free app or library.</string>
+    <string name="af_nonfreedep_fa" translatable="false">به یک برنامه یا کتابخانه غیرآزاد وابسته است.</string>
+    <string name="af_nonfreeasset_en" translatable="false">Contains non-free images, sounds or other assets.</string>
+    <string name="af_nonfreeasset_fa" translatable="false">شامل تصویر، صدا یا دارایی‌های غیرآزاد است.</string>
+    <string name="af_upstreamnonfree_en" translatable="false">The upstream source code is not fully free.</string>
+    <string name="af_upstreamnonfree_fa" translatable="false">کد منبع اصلی کاملاً آزاد نیست.</string>
+    <string name="af_nosource_en" translatable="false">The source code is no longer available.</string>
+    <string name="af_nosource_fa" translatable="false">کد منبع دیگر در دسترس نیست.</string>
+    <string name="af_knownvuln_en" translatable="false">Has known security vulnerabilities.</string>
+    <string name="af_knownvuln_fa" translatable="false">دارای آسیب‌پذیری‌های امنیتی شناخته‌شده است.</string>
+    <string name="af_disabledalgorithm_en" translatable="false">Signed with a weak or disabled algorithm.</string>
+    <string name="af_disabledalgorithm_fa" translatable="false">با الگوریتم امضای ضعیف یا غیرفعال امضا شده است.</string>
+    <string name="af_debuggable_en" translatable="false">A debug build that may be insecure.</string>
+    <string name="af_debuggable_fa" translatable="false">نسخه دیباگ است و ممکن است ناامن باشد.</string>
+    <string name="af_tracking_en" translatable="false">Tracks and reports your activity.</string>
+    <string name="af_tracking_fa" translatable="false">فعالیت شما را ردیابی و گزارش می‌کند.</string>
+    <string name="af_nsfw_en" translatable="false">Contains adult or sensitive content.</string>
+    <string name="af_nsfw_fa" translatable="false">شامل محتوای بزرگسالان یا حساس است.</string>
+    <string name="af_ads_en" translatable="false">Shows advertisements.</string>
+    <string name="af_ads_fa" translatable="false">تبلیغات نمایش می‌دهد.</string>
+    <string name="af_generic_en" translatable="false">This app has a trait worth reviewing.</string>
+    <string name="af_generic_fa" translatable="false">این برنامه ویژگی‌ای دارد که بهتر است بررسی شود.</string>
 </resources>
