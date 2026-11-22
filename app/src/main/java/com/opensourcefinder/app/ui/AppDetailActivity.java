@@ -710,6 +710,17 @@ public class AppDetailActivity extends BaseActivity {
         updateActionVisibility();
     }
 
+    private void settleAfterInstall() {
+        if (matchedApp == null || matchedApp.isNotInstalled() || !matchedApp.isUpdateAvailable()) return;
+        if (matchedApp.getLatestVersionCode() > 0) return;
+        matchedApp.setUpdateAvailable(false);
+        MatchStore.upsert(this, matchedApp);
+        updateButton.setEnabled(false);
+        updateButton.setText(getString(R.string.installed));
+        setupInstalledActions();
+        updateActionVisibility();
+    }
+
     private void checkInstallSucceeded() {
         DownloadTracker.Entry entry = DownloadTracker.get().getEntry(matchedApp.getPackageName());
         DownloadTracker.get().detectInstalledPackages(this);
@@ -975,11 +986,9 @@ public class AppDetailActivity extends BaseActivity {
         if (entry == null || matchedApp == null) return;
         switch (entry.state) {
             case INSTALLING:
-                updateButton.showIndeterminate(getString(R.string.installing));
-                updateButton.setEnabled(false);
-                break;
             case AWAITING_CONFIRM:
-                updateButton.showIndeterminate(getString(R.string.waiting_install_confirmation));
+                updateButton.showIndeterminate(getString(entry.firstInstall
+                        ? R.string.installing_progress : R.string.updating_progress));
                 updateButton.setEnabled(false);
                 break;
             case INSTALLED:
@@ -987,6 +996,7 @@ public class AppDetailActivity extends BaseActivity {
                 DownloadTracker.get().markInstalled(matchedApp.getPackageName());
                 InstallTracker.get().clear(matchedApp.getPackageName());
                 checkInstallSucceeded();
+                settleAfterInstall();
                 break;
             case CANCELLED:
                 updateButton.hideProgress();

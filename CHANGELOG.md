@@ -2,6 +2,14 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.6.2-beta]
+
+### Changed
+- Several downloaded apps are now installed one after another: the next install dialog appears only after the previous install finishes, is cancelled or fails
+- App detail buttons now show Installing... or Updating... for the whole install and no longer flash back to Install or Update while the system is still installing
+- After an install completes the detail page switches straight to the Open and Uninstall buttons
+- Cancelled installs are detected from the system install session instead of guessing, and tapping install again while the confirmation is pending reopens it
+
 ## [0.6.1-beta]
 
 ### Changed

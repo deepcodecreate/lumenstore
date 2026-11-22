@@ -40,12 +40,11 @@ public class InstallResultReceiver extends BroadcastReceiver {
         String message = intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE);
 
         if (status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
-            InstallTracker.get().reportAwaitingConfirm(key);
             Intent confirmIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
+            InstallTracker.get().reportAwaitingConfirm(key, confirmIntent);
             if (confirmIntent != null) {
-                confirmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
-                    context.startActivity(confirmIntent);
+                    InstallTracker.get().launchConfirmation(context, confirmIntent);
                 } catch (Exception e) {
                     InstallTracker.get().reportStatus(key, PackageInstaller.STATUS_FAILURE, e.getMessage());
                 }

@@ -87,6 +87,7 @@ public class ExploreDetailActivity extends BaseActivity {
     private MaterialButton uninstallButton;
     private DownloadTracker.Listener listener;
     private InstallTracker.Listener installListener;
+    private boolean installCompletedHere;
     private java.io.File pendingReinstallApk;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private MaterialToolbar toolbar;
@@ -483,7 +484,8 @@ public class ExploreDetailActivity extends BaseActivity {
         boolean downloading = e != null && e.state == DownloadTracker.State.DOWNLOADING;
         boolean awaitingInstall = e != null && e.state == DownloadTracker.State.COMPLETED;
         boolean installed = app.isInstalled();
-        boolean updateAvailable = installed && com.opensourcefinder.app.install.InstallState.ui(app) == com.opensourcefinder.app.install.InstallState.Ui.UPDATE;
+        boolean updateAvailable = installed && !installCompletedHere
+                && com.opensourcefinder.app.install.InstallState.ui(app) == com.opensourcefinder.app.install.InstallState.Ui.UPDATE;
 
         setVis(progressCaption, View.GONE);
 
@@ -1284,7 +1286,7 @@ public class ExploreDetailActivity extends BaseActivity {
             app.setInstalled(true);
             app.setInstalledVersionCode(installedCode);
             app.setInstalledVersionName(pi.versionName);
-            if (com.opensourcefinder.app.install.InstallState.ui(app) != com.opensourcefinder.app.install.InstallState.Ui.UPDATE) {
+            if (installCompletedHere || com.opensourcefinder.app.install.InstallState.ui(app) != com.opensourcefinder.app.install.InstallState.Ui.UPDATE) {
                 DownloadTracker.get().markInstalled(app.getPackageName());
                 installButton.hideProgress();
                 installButton.setText(getString(R.string.installed));
@@ -1390,20 +1392,32 @@ public class ExploreDetailActivity extends BaseActivity {
         installListener = entry -> runOnUiThread(() -> applyInstallState(entry));
     }
 
+    private String installProgressLabel(InstallTracker.Entry entry) {
+        return getString(entry != null && !entry.firstInstall ? R.string.updating_progress : R.string.installing_progress);
+    }
+
+    private void applyInstalledLocally() {
+        installCompletedHere = true;
+        app.setInstalled(true);
+        try {
+            android.content.pm.PackageInfo pi = getPackageManager().getPackageInfo(app.getPackageName(), 0);
+            app.setInstalledVersionCode(com.opensourcefinder.app.install.InstallState.codeOf(pi));
+            app.setInstalledVersionName(pi.versionName);
+        } catch (Exception ignored) {}
+    }
+
     private void applyInstallState(InstallTracker.Entry entry) {
         if (entry == null) return;
         switch (entry.state) {
             case INSTALLING:
-                installButton.showIndeterminate(getString(R.string.installing));
-                installButton.setEnabled(false);
-                break;
             case AWAITING_CONFIRM:
-                installButton.showIndeterminate(getString(R.string.waiting_install_confirmation));
+                installButton.showIndeterminate(installProgressLabel(entry));
                 installButton.setEnabled(false);
                 break;
             case INSTALLED:
                 DownloadTracker.get().markInstalled(app.getPackageName());
                 InstallTracker.get().clear(app.getPackageName());
+                applyInstalledLocally();
                 installButton.hideProgress();
                 installButton.setEnabled(false);
                 installButton.setText(getString(R.string.installed));
@@ -1491,11 +1505,9 @@ public class ExploreDetailActivity extends BaseActivity {
             case COMPLETED: {
                 boolean canInstall = e.apkFile != null && e.apkFile.exists() && e.apkFile.length() > 0;
                 InstallTracker.Entry ie = InstallTracker.get().getEntry(app.getPackageName());
-                if (ie != null && ie.state == InstallTracker.State.INSTALLING) {
-                    installButton.showIndeterminate(getString(R.string.installing));
-                    installButton.setEnabled(false);
-                } else if (ie != null && ie.state == InstallTracker.State.AWAITING_CONFIRM) {
-                    installButton.showIndeterminate(getString(R.string.waiting_install_confirmation));
+                if (ie != null && (ie.state == InstallTracker.State.INSTALLING
+                        || ie.state == InstallTracker.State.AWAITING_CONFIRM)) {
+                    installButton.showIndeterminate(installProgressLabel(ie));
                     installButton.setEnabled(false);
                 } else {
                     installButton.hideProgress();
@@ -1569,6 +1581,7 @@ public class ExploreDetailActivity extends BaseActivity {
 
         String fileName = (app.getName() != null ? app.getName() : app.getPackageName())
                 + "-" + (app.getLatestVersionName() != null ? app.getLatestVersionName() : "latest") + ".apk";
+        installCompletedHere = false;
         popInstallButton();
         ensureListener();
         DownloadTracker.get().start(this, app.getPackageName(), app.getDownloadUrl(), fileName, listener, app.getIconUrl());

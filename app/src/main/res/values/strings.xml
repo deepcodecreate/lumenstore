@@ -767,4 +767,6 @@ This will replace your current app list and repositories with this backup. Conti
     <string name="af_nsfw">Contains adult or sensitive content.</string>
     <string name="af_ads">Shows advertisements.</string>
     <string name="af_generic">This app has a trait worth reviewing.</string>
+    <string name="installing_progress">Installing…</string>
+    <string name="updating_progress">Updating…</string>
 </resources>

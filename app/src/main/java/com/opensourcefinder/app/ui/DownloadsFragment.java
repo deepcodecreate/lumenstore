@@ -673,7 +673,7 @@ public class DownloadsFragment extends Fragment {
                     boolean installing = ie != null && ie.state == InstallTracker.State.INSTALLING;
                     boolean awaitingConfirm = ie != null && ie.state == InstallTracker.State.AWAITING_CONFIRM;
                     if (installing) {
-                        h.status.setText(getString(R.string.installing));
+                        h.status.setText(getString(ie.firstInstall ? R.string.installing_progress : R.string.updating_progress));
                     } else if (awaitingConfirm) {
                         h.status.setText(getString(R.string.waiting_install_confirmation));
                     } else {

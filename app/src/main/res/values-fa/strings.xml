@@ -766,4 +766,6 @@
     <string name="af_nsfw">شامل محتوای بزرگسالان یا حساس است.</string>
     <string name="af_ads">تبلیغات نمایش می‌دهد.</string>
     <string name="af_generic">این برنامه ویژگی‌ای دارد که بهتر است بررسی شود.</string>
+    <string name="installing_progress">در حال نصب…</string>
+    <string name="updating_progress">در حال بروزرسانی…</string>
 </resources>

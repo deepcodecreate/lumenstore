@@ -1,0 +1,1 @@
+Sequential install queue, steady Installing/Updating button, Open and Uninstall right after install.
