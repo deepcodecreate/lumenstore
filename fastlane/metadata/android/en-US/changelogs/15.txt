@@ -1,0 +1,1 @@
+Apps are no longer added to the home screen as Lumen Store shortcuts with a Lumen badge. Installs now register the app name and icon with the system installer so the launcher adds the real app icon by itself.

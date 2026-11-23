@@ -26,7 +26,13 @@ import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageInstaller;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,7 +56,6 @@ public final class InstallTracker {
     public static final class Entry {
         public final String key;
         public final boolean firstInstall;
-        public volatile boolean shortcutPending;
         public volatile State state = State.IDLE;
         public volatile String message;
         public volatile File apkFile;
@@ -81,6 +86,7 @@ public final class InstallTracker {
 
     private static final long AWAIT_LIMIT_MS = 90_000L;
     private static final long SESSION_LIMIT_MS = 120_000L;
+    private static final int ICON_SIZE = 192;
 
     private final Map<String, Entry> entries = new ConcurrentHashMap<>();
     private final ArrayDeque<Entry> queue = new ArrayDeque<>();
@@ -112,7 +118,6 @@ public final class InstallTracker {
                     Context appContext = activity.getApplicationContext();
                     mainHandler.postDelayed(() -> reconcileAwaitingConfirm(appContext), 400L);
                 }
-                requestPendingShortcuts();
                 mainHandler.post(() -> pump(false));
             }
             @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
@@ -153,26 +158,9 @@ public final class InstallTracker {
             if (!installed && awaiting && now - e.awaitingSince <= AWAIT_LIMIT_MS && sessionPending(context, e)) continue;
 
             e.state = installed ? State.INSTALLED : (stuck ? State.FAILED : State.CANCELLED);
-            if (installed && e.firstInstall) {
-                e.shortcutPending = true;
-                mainHandler.post(() -> requestPendingShortcut(e));
-            }
             if (!installed) cleanupAbandonedPlaceholder(e);
             e.notifyState();
             finish(e);
-        }
-    }
-
-    private void requestPendingShortcuts() {
-        for (Entry entry : entries.values()) requestPendingShortcut(entry);
-    }
-
-    private void requestPendingShortcut(Entry entry) {
-        if (entry == null || !entry.shortcutPending) return;
-        Activity activity = resumedActivity;
-        if (activity == null || activity.isFinishing() || activity.isDestroyed()) return;
-        if (InstallShortcutHelper.requestPinForInstalledApp(activity, entry.key)) {
-            entry.shortcutPending = false;
         }
     }
 
@@ -278,6 +266,8 @@ public final class InstallTracker {
             PackageInstaller installer = context.getPackageManager().getPackageInstaller();
             PackageInstaller.SessionParams params =
                     new PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL);
+            params.setInstallReason(PackageManager.INSTALL_REASON_USER);
+            applyApkDetails(context, params, entry.apkFile);
             int sessionId = installer.createSession(params);
             entry.sessionId = sessionId;
             try (PackageInstaller.Session session = installer.openSession(sessionId)) {
@@ -300,6 +290,34 @@ public final class InstallTracker {
         } catch (Exception e) {
             reportStatus(entry.key, PackageInstaller.STATUS_FAILURE, e.getMessage());
         }
+    }
+
+    private static void applyApkDetails(Context context, PackageInstaller.SessionParams params, File apkFile) {
+        try {
+            PackageManager pm = context.getPackageManager();
+            String path = apkFile.getAbsolutePath();
+            PackageInfo info = pm.getPackageArchiveInfo(path, 0);
+            if (info == null || info.applicationInfo == null || info.packageName == null
+                    || info.packageName.isEmpty()) return;
+            params.setAppPackageName(info.packageName);
+            ApplicationInfo appInfo = info.applicationInfo;
+            appInfo.sourceDir = path;
+            appInfo.publicSourceDir = path;
+            try {
+                CharSequence label = appInfo.loadLabel(pm);
+                if (label != null && label.length() > 0) params.setAppLabel(label);
+            } catch (Exception ignored) {}
+            try {
+                Drawable icon = appInfo.loadIcon(pm);
+                if (icon != null) {
+                    Bitmap bitmap = Bitmap.createBitmap(ICON_SIZE, ICON_SIZE, Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(bitmap);
+                    icon.setBounds(0, 0, ICON_SIZE, ICON_SIZE);
+                    icon.draw(canvas);
+                    params.setAppIcon(bitmap);
+                }
+            } catch (Exception ignored) {}
+        } catch (Exception ignored) {}
     }
 
     public void reportAwaitingConfirm(String key, Intent confirmIntent) {
@@ -329,11 +347,9 @@ public final class InstallTracker {
         e.message = message;
 
         if (state == State.CANCELLED || state == State.FAILED) cleanupAbandonedPlaceholder(e);
-        if (state == State.INSTALLED && e.firstInstall) e.shortcutPending = true;
         e.notifyState();
         finish(e);
         if (state == State.INSTALLED && e.appContext != null) {
-            mainHandler.post(() -> requestPendingShortcut(e));
             InstallEvents.packageChanged(e.appContext, null);
         }
     }

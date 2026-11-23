@@ -2,6 +2,15 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.6.4-beta]
+
+### Fixed
+- Installed apps are no longer pinned to the home screen as Lumen Store shortcuts carrying a Lumen badge under the icon
+- Installs now go through the system installer exactly as other app stores do: the app name and icon are registered with the install session and the install is marked as started by the user, so the launcher adds the real app icon to the home screen by itself when its Add icon to Home screen setting is on
+
+### Removed
+- The pin shortcut request that appeared after a first install
+
 ## [0.6.3-beta]
 
 ### Added
