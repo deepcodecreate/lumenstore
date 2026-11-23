@@ -468,7 +468,7 @@ public class RepositoryReleasesActivity extends BaseActivity {
                 TextView row = new TextView(this);
                 row.setText(String.format(Locale.US, "%s  ·  %.1f MB", name, asset.getSize() / (1024f * 1024f)));
                 row.setTextAppearance(appearance(com.google.android.material.R.attr.textAppearanceBodySmall));
-                row.setTextColor(color(row, com.google.android.material.R.attr.colorPrimary));
+                row.setTextColor(color(row, androidx.appcompat.R.attr.colorPrimary));
                 row.setPadding(dp(4), dp(8), dp(4), dp(8));
                 TypedValue ripple = new TypedValue();
                 getTheme().resolveAttribute(android.R.attr.selectableItemBackground, ripple, true);
