@@ -103,12 +103,88 @@ public class CustomRepositoryScanner {
 
         if (!forceFull) {
             List<MatchedApp> cached = scanFromCache(source, byPkg);
-            if (cached != null) return cached;
+            if (cached != null) return applyRepositorySettings(source, cached, byPkg);
         }
 
         List<MatchedApp> fresh = scanUncached(source, installedApps);
         rememberResult(source, fresh);
-        return fresh;
+        return applyRepositorySettings(source, fresh, byPkg);
+    }
+
+    private List<MatchedApp> applyRepositorySettings(SourceRepository source, List<MatchedApp> apps,
+                                                     Map<String, InstalledAppInfo> byPkg) {
+        if (source == null || apps == null || apps.isEmpty() || !source.hasCustomization()) return apps;
+        Matcher gh = GITHUB.matcher(source.getUrl() == null ? "" : source.getUrl());
+        if (!gh.find()) return apps;
+        String owner = gh.group(1);
+        String repo = cleanRepoName(gh.group(2));
+
+        MatchedApp primary = null;
+        for (MatchedApp app : apps) {
+            if (app != null) { primary = app; break; }
+        }
+        if (primary == null) return apps;
+
+        String forced = source.getPackageName() == null ? "" : source.getPackageName().trim();
+        if (!forced.isEmpty()) primary.setPackageName(forced);
+
+        if (source.hasReleaseSettings()) {
+            List<GitHubRelease> listed = listReleasesChecked(owner, repo);
+            if (listed != null) {
+                GitHubRelease chosen = RepoReleasePolicy.pick(listed, source);
+                GitHubRelease.Asset asset = RepoReleasePolicy.pickAsset(chosen, source);
+                if (chosen != null && asset != null && asset.getBrowserDownloadUrl() != null) {
+                    primary.setLatestTag(chosen.getTagName());
+                    primary.setDownloadUrl(asset.getBrowserDownloadUrl());
+                } else {
+                    primary.setLatestTag(null);
+                    primary.setDownloadUrl(null);
+                }
+                primary.setLatestLocked(true);
+            }
+        }
+
+        String baseline = source.getBaselineTag() == null ? "" : source.getBaselineTag().trim();
+        InstalledAppInfo installed = primary.getPackageName() == null ? null : byPkg.get(primary.getPackageName());
+        if (!baseline.isEmpty() && installed != null) {
+            boolean recorded = false;
+            for (MatchedApp old : MatchStore.get(context)) {
+                if (old != null && primary.getPackageName().equals(old.getPackageName())
+                        && old.getInstalledTag() != null
+                        && old.getInstalledTagVersionCode() == installed.getVersionCode()) {
+                    recorded = true;
+                    break;
+                }
+            }
+            if (!recorded) {
+                primary.setInstalledTag(baseline);
+                primary.setInstalledTagVersionCode(installed.getVersionCode());
+            }
+        }
+
+        applyInstalledState(apps, byPkg);
+        return apps;
+    }
+
+    private static final java.util.Set<String> VARIANT_SUFFIXES = new HashSet<>(java.util.Arrays.asList(
+            "debug", "beta", "alpha", "nightly", "dev", "preview", "rc", "canary", "foss", "fdroid",
+            "github", "release", "staging", "snapshot", "test", "pro", "lite", "free"));
+
+    private static boolean isPackageVariant(String longer, String base) {
+        return longer.startsWith(base + ".") && VARIANT_SUFFIXES.contains(longer.substring(base.length() + 1));
+    }
+
+    private static String installedVariant(Set<String> packageIds, Map<String, InstalledAppInfo> byPkg) {
+        if (packageIds == null || packageIds.isEmpty()) return null;
+        for (String id : packageIds) {
+            if (id == null || id.isEmpty()) continue;
+            String base = id.toLowerCase(java.util.Locale.ROOT);
+            for (String pkg : byPkg.keySet()) {
+                String installed = pkg.toLowerCase(java.util.Locale.ROOT);
+                if (isPackageVariant(installed, base) || isPackageVariant(base, installed)) return pkg;
+            }
+        }
+        return null;
     }
 
     private List<MatchedApp> scanPlay(SourceRepository source) {
@@ -643,6 +719,8 @@ public class CustomRepositoryScanner {
     private String choosePackage(Set<String> packageIds, Map<String, InstalledAppInfo> byPkg,
                                  String type, String owner, String repo) {
         for (String pkg : packageIds) if (byPkg.containsKey(pkg)) return pkg;
+        String variant = installedVariant(packageIds, byPkg);
+        if (variant != null) return variant;
         if (!packageIds.isEmpty()) return packageIds.iterator().next();
         return type + "." + owner + "." + repo.replaceAll("[^a-zA-Z0-9_]", "_");
     }
@@ -847,6 +925,7 @@ public class CustomRepositoryScanner {
                 break;
             }
         }
+        if (chosenPkg == null) chosenPkg = installedVariant(packageIds, byPkg);
         if (chosenPkg == null) {
             for (String pkg : packageIds) {
                 chosenPkg = pkg;
@@ -970,6 +1049,7 @@ public class CustomRepositoryScanner {
         for (String pkg : packageIds) {
             if (byPkg.containsKey(pkg)) { chosenPkg = pkg; break; }
         }
+        if (chosenPkg == null) chosenPkg = installedVariant(packageIds, byPkg);
         if (chosenPkg == null) {
             for (String pkg : packageIds) { chosenPkg = pkg; break; }
         }

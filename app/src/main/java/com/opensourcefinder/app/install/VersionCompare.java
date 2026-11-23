@@ -139,6 +139,20 @@ public final class VersionCompare {
         return Long.compare(a.preNumber, b.preNumber);
     }
 
+    public static int compareCore(String a, String b) {
+        Parsed x = parse(a);
+        Parsed y = parse(b);
+        if (x == null || y == null) return 0;
+        int n = Math.max(x.parts.size(), y.parts.size());
+        for (int i = 0; i < n; i++) {
+            String p = i < x.parts.size() ? x.parts.get(i) : "0";
+            String q = i < y.parts.size() ? y.parts.get(i) : "0";
+            int c = compareNumeric(p, q);
+            if (c != 0) return c;
+        }
+        return 0;
+    }
+
     public static boolean comparable(String a, String b) {
         return parse(a) != null && parse(b) != null;
     }

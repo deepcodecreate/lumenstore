@@ -4,11 +4,20 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ## [0.6.2-beta]
 
+### Added
+- Manual repository management: a new Manage releases screen lists every release tag and APK asset of a GitHub repository
+- Per repository you can choose the release channel (auto, stable, pre-release, all), limit updates to tags containing a word such as rc or a regular expression, set the version updates are checked from, pick the preferred APK by name with wildcards, and tell the app which tag your installed version is
+- A repository can be linked to a specific installed app when its package could not be detected
+
 ### Changed
 - Several downloaded apps are now installed one after another: the next install dialog appears only after the previous install finishes, is cancelled or fails
 - App detail buttons now show Installing... or Updating... for the whole install and no longer flash back to Install or Update while the system is still installing
 - After an install completes the detail page switches straight to the Open and Uninstall buttons
 - Cancelled installs are detected from the system install session instead of guessing, and tapping install again while the confirmation is pending reopens it
+
+### Fixed
+- Installed apps whose package differs from the repository only by a suffix such as debug, beta, nightly or foss are now recognised and shown as installed instead of missing
+- Pre-release update memory no longer overrides a release channel chosen by the user
 
 ## [0.6.1-beta]
 

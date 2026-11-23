@@ -1,1 +1,1 @@
-Sequential install queue, steady Installing/Updating button, Open and Uninstall right after install.
+Sequential install queue, steady Installing/Updating button, Open and Uninstall right after install. Manage releases screen for manual repositories and better recognition of installed app variants.

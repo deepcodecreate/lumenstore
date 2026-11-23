@@ -27,6 +27,12 @@ public class SourceRepository implements Serializable {
     private String url;
     private String name;
     private String type;
+    private String packageName;
+    private String channel;
+    private String tagFilter;
+    private String minVersion;
+    private String assetPattern;
+    private String baselineTag;
 
     public SourceRepository() {}
 
@@ -42,4 +48,29 @@ public class SourceRepository implements Serializable {
     public void setUrl(String url) { this.url = url; }
     public void setName(String name) { this.name = name; }
     public void setType(String type) { this.type = type; }
+
+    public String getPackageName() { return packageName; }
+    public void setPackageName(String packageName) { this.packageName = packageName; }
+    public String getChannel() { return channel; }
+    public void setChannel(String channel) { this.channel = channel; }
+    public String getTagFilter() { return tagFilter; }
+    public void setTagFilter(String tagFilter) { this.tagFilter = tagFilter; }
+    public String getMinVersion() { return minVersion; }
+    public void setMinVersion(String minVersion) { this.minVersion = minVersion; }
+    public String getAssetPattern() { return assetPattern; }
+    public void setAssetPattern(String assetPattern) { this.assetPattern = assetPattern; }
+    public String getBaselineTag() { return baselineTag; }
+    public void setBaselineTag(String baselineTag) { this.baselineTag = baselineTag; }
+
+    private static boolean filled(String value) {
+        return value != null && !value.trim().isEmpty();
+    }
+
+    public boolean hasReleaseSettings() {
+        return (filled(channel) && !"auto".equals(channel)) || filled(tagFilter) || filled(minVersion) || filled(assetPattern);
+    }
+
+    public boolean hasCustomization() {
+        return hasReleaseSettings() || filled(packageName) || filled(baselineTag);
+    }
 }

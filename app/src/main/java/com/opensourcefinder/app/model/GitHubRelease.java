@@ -166,18 +166,23 @@ public class GitHubRelease implements Serializable {
         return findApkAsset(true) != null;
     }
 
-    private static GitHubRelease bestOf(List<GitHubRelease> releases, boolean clone, boolean includePre) {
+    public static GitHubRelease bestMatching(List<GitHubRelease> releases, boolean clone,
+                                             java.util.function.Predicate<GitHubRelease> accept) {
         if (releases == null) return null;
         GitHubRelease best = null;
         for (GitHubRelease release : releases) {
             if (release == null || release.isDraft()) continue;
             String tag = release.getTagName();
             if (tag == null || tag.isEmpty()) continue;
-            if (!includePre && release.isPrerelease()) continue;
+            if (accept != null && !accept.test(release)) continue;
             if (release.findApkAsset(clone) == null) continue;
             if (best == null || outranks(tag, best.getTagName())) best = release;
         }
         return best;
+    }
+
+    private static GitHubRelease bestOf(List<GitHubRelease> releases, boolean clone, boolean includePre) {
+        return bestMatching(releases, clone, release -> includePre || !release.isPrerelease());
     }
 
     private static boolean outranks(String candidate, String current) {

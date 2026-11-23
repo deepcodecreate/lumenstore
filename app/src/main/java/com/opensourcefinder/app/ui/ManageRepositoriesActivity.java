@@ -397,6 +397,9 @@ public class ManageRepositoriesActivity extends BaseActivity {
                     Intent send = new Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, s.getUrl());
                     startActivity(Intent.createChooser(send, null));
                 })
+                .action(getString(R.string.repos_action_releases), TablerIconRes.get(c, "ic_download"), 0, () ->
+                        startActivity(new Intent(c, RepositoryReleasesActivity.class)
+                                .putExtra(RepositoryReleasesActivity.EXTRA_URL, s.getUrl())))
                 .action(getString(R.string.repos_action_rename), TablerIconRes.get(c, "ic_pencil"), 0, () -> showRenameDialog(s))
                 .action(getString(R.string.repos_action_select), TablerIconRes.get(c, "ic_circle_check"), 0, () -> {
                     selected.add(key(s));

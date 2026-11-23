@@ -104,6 +104,22 @@ public final class RepositoryManager {
         ManualScanCache.remove(context, url);
     }
 
+    public static synchronized void update(Context context, SourceRepository changed) {
+        if (changed == null || changed.getUrl() == null) return;
+        List<SourceRepository> list = get(context);
+        boolean found = false;
+        for (int i = 0; i < list.size(); i++) {
+            SourceRepository item = list.get(i);
+            if (item.getUrl() != null && item.getUrl().equalsIgnoreCase(changed.getUrl())) {
+                list.set(i, changed);
+                found = true;
+            }
+        }
+        if (!found) list.add(changed);
+        save(context, list);
+        ManualScanCache.remove(context, changed.getUrl());
+    }
+
     public static synchronized void replaceAll(Context context, List<SourceRepository> list) {
         save(context, list == null ? new ArrayList<>() : new ArrayList<>(list));
     }

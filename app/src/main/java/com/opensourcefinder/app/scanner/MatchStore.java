@@ -122,7 +122,7 @@ public final class MatchStore {
 
     private static void inherit(MatchedApp match, MatchedApp old) {
         if (match == null || old == null || match == old) return;
-        if (match.getLatestVersionCode() <= 0 && old.getLatestVersionCode() <= 0
+        if (!match.isLatestLocked() && match.getLatestVersionCode() <= 0 && old.getLatestVersionCode() <= 0
                 && old.getLatestTag() != null && match.getLatestTag() != null
                 && old.getDownloadUrl() != null
                 && !match.isNotInstalled()

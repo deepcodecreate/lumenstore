@@ -38,6 +38,7 @@
         <activity android:name=".ui.GitHubSearchActivity" android:exported="false" />
         <activity android:name=".ui.PlaySearchActivity" android:exported="false" />
         <activity android:name=".ui.ManageRepositoriesActivity" android:exported="false" />
+        <activity android:name=".ui.RepositoryReleasesActivity" android:exported="false" />
         <activity
             android:name=".ui.LinkHandlerActivity"
             android:exported="true"

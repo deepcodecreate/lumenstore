@@ -57,6 +57,8 @@ public class MatchedApp implements Serializable {
 
     private boolean fromBackup;
 
+    private boolean latestLocked;
+
     public static final String LUMEN_REPO_NAME = "Lumen Store";
 
     public static final String VARIANT_CLONE = "clone";
@@ -68,9 +70,12 @@ public class MatchedApp implements Serializable {
         c.sourceType = sourceType; c.sourceUrl = sourceUrl; c.downloadUrl = downloadUrl;
         c.latestVersionCode = latestVersionCode; c.origin = origin; c.description = description;
         c.iconUrl = iconUrl; c.readme = readme; c.releases = releases; c.notInstalled = notInstalled; c.variant = variant; c.secondary = secondary; c.installedTag = installedTag; c.installedTagVersionCode = installedTagVersionCode;
-        c.indexRepo = indexRepo; c.githubSlug = githubSlug; c.fromBackup = fromBackup;
+        c.indexRepo = indexRepo; c.githubSlug = githubSlug; c.fromBackup = fromBackup; c.latestLocked = latestLocked;
         return c;
     }
+
+    public boolean isLatestLocked() { return latestLocked; }
+    public void setLatestLocked(boolean latestLocked) { this.latestLocked = latestLocked; }
 
     public boolean isFromBackup() { return fromBackup; }
     public void setFromBackup(boolean fromBackup) { this.fromBackup = fromBackup; }
