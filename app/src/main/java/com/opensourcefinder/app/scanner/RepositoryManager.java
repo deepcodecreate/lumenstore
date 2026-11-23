@@ -97,9 +97,30 @@ public final class RepositoryManager {
         save(context, list);
     }
 
+    public static String normalizeUrl(String url) {
+        if (url == null) return "";
+        String value = url.trim().toLowerCase(Locale.ROOT).replaceFirst("^[a-z][a-z0-9+.-]*://", "");
+        if (value.startsWith("www.")) value = value.substring(4);
+        int cut = value.indexOf('#');
+        if (cut >= 0) value = value.substring(0, cut);
+        if (value.startsWith("github.com/") || value.startsWith("codeberg.org/")) {
+            cut = value.indexOf('?');
+            if (cut >= 0) value = value.substring(0, cut);
+            String[] parts = value.split("/");
+            if (parts.length >= 3) value = parts[0] + "/" + parts[1] + "/" + parts[2];
+        }
+        while (value.endsWith("/")) value = value.substring(0, value.length() - 1);
+        if (value.endsWith(".git")) value = value.substring(0, value.length() - 4);
+        return value;
+    }
+
+    public static boolean sameUrl(String a, String b) {
+        return a != null && b != null && normalizeUrl(a).equals(normalizeUrl(b));
+    }
+
     public static synchronized void remove(Context context, String url) {
         List<SourceRepository> list = get(context);
-        list.removeIf(item -> item.getUrl() != null && item.getUrl().equalsIgnoreCase(url));
+        list.removeIf(item -> item.getUrl() != null && sameUrl(item.getUrl(), url));
         save(context, list);
         ManualScanCache.remove(context, url);
     }

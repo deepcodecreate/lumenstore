@@ -215,7 +215,7 @@ public class CustomRepositoryScanner {
     }
 
     private static final long GITHUB_REANALYSE_MILLIS = 14L * 24L * 60L * 60L * 1000L;
-    private static final long PLACEHOLDER_REANALYSE_MILLIS = 24L * 60L * 60L * 1000L;
+    private static final long PLACEHOLDER_REANALYSE_MILLIS = 6L * 60L * 60L * 1000L;
     private static final long NO_RELEASE_REANALYSE_MILLIS = 3L * 24L * 60L * 60L * 1000L;
     private static final long OTHER_SOURCE_TTL_MILLIS = 30L * 60L * 1000L;
     private boolean forceFull;
@@ -466,11 +466,7 @@ public class CustomRepositoryScanner {
             List<GitHubRelease> hostedReleases = findHostedReleases(hosted);
             HostedRelease latest = findLatestInstallableHostedRelease(hostedReleases);
             if (latest != null && latest.assetName != null) {
-                Matcher pm = APK_PKG_IN_NAME.matcher(latest.assetName);
-                while (pm.find()) {
-                    String candidate = pm.group(1);
-                    if (candidate.contains(".") && candidate.length() > 3) packageIds.add(candidate);
-                }
+                addPackagesFromName(latest.assetName, packageIds);
             }
 
             Set<String> realPkgs = new HashSet<>();
@@ -716,12 +712,52 @@ public class CustomRepositoryScanner {
         return null;
     }
 
+    private static final Pattern PACKAGE_SEGMENT = Pattern.compile("[A-Za-z][A-Za-z0-9_]*");
+
+    private static boolean looksLikePackage(String value) {
+        if (value == null) return false;
+        String[] parts = value.split("\\.", -1);
+        if (parts.length < 2) return false;
+        for (String part : parts) {
+            if (!PACKAGE_SEGMENT.matcher(part).matches()) return false;
+        }
+        String last = parts[parts.length - 1].toLowerCase(java.util.Locale.ROOT);
+        return !last.equals("apk") && !last.equals("aab") && !last.equals("zip") && !last.equals("xapk");
+    }
+
+    private static void addPackagesFromName(String fileName, Set<String> target) {
+        if (fileName == null || target == null) return;
+        Matcher matcher = APK_PKG_IN_NAME.matcher(fileName);
+        while (matcher.find()) {
+            String candidate = matcher.group(1);
+            if (candidate.length() > 3 && looksLikePackage(candidate)) target.add(candidate);
+        }
+    }
+
+    private static String firstPackageInName(String fileName) {
+        Set<String> found = new java.util.LinkedHashSet<>();
+        addPackagesFromName(fileName, found);
+        return found.isEmpty() ? null : found.iterator().next();
+    }
+
+    private static String preferredPackage(Set<String> packageIds) {
+        String best = null;
+        if (packageIds == null) return null;
+        for (String pkg : packageIds) {
+            if (pkg == null || pkg.isEmpty()) continue;
+            if (best == null || pkg.length() < best.length()
+                    || (pkg.length() == best.length() && pkg.compareTo(best) < 0)) best = pkg;
+        }
+        return best;
+    }
+
     private String choosePackage(Set<String> packageIds, Map<String, InstalledAppInfo> byPkg,
                                  String type, String owner, String repo) {
         for (String pkg : packageIds) if (byPkg.containsKey(pkg)) return pkg;
         String variant = installedVariant(packageIds, byPkg);
         if (variant != null) return variant;
-        if (!packageIds.isEmpty()) return packageIds.iterator().next();
+        String preferred = preferredPackage(packageIds);
+        if (preferred != null) return preferred;
         return type + "." + owner + "." + repo.replaceAll("[^a-zA-Z0-9_]", "_");
     }
 
@@ -902,11 +938,7 @@ public class CustomRepositoryScanner {
 
         DirectRelease release = findLatestApkRelease(owner, repo);
         if (release != null && release.assetName != null) {
-            Matcher pm = APK_PKG_IN_NAME.matcher(release.assetName);
-            while (pm.find()) {
-                String candidate = pm.group(1);
-                if (candidate.contains(".") && candidate.length() > 3) packageIds.add(candidate);
-            }
+            addPackagesFromName(release.assetName, packageIds);
         }
 
         Set<String> realPkgs = new HashSet<>();
@@ -1018,11 +1050,7 @@ public class CustomRepositoryScanner {
                     selected = chosenRelease;
                     asset = candidate;
                     if (candidate.getName() != null) {
-                        Matcher pm = APK_PKG_IN_NAME.matcher(candidate.getName());
-                        while (pm.find()) {
-                            String cand = pm.group(1);
-                            if (cand.contains(".") && cand.length() > 3) packageIds.add(cand);
-                        }
+                        addPackagesFromName(candidate.getName(), packageIds);
                     }
                 }
             }
@@ -1208,22 +1236,40 @@ public class CustomRepositoryScanner {
     private DirectRelease findNewestListedRelease(String owner, String repo) {
         String base = "https://github.com/" + owner + "/" + repo;
         try {
-            String html = downloadText(base + "/releases");
-            Matcher link = APK_HREF.matcher(html);
-            while (link.find()) {
-                String href = htmlDecode(link.group(1));
-                if (!href.contains("/releases/download/")) continue;
-                Matcher tagMatcher = Pattern.compile(
-                        "/releases/download/([^/]+)/", Pattern.CASE_INSENSITIVE).matcher(href);
-                String tag = tagMatcher.find() ? htmlDecode(tagMatcher.group(1)) : null;
-                String assetName = href.substring(href.lastIndexOf('/') + 1);
-                int query = assetName.indexOf('?');
-                if (query >= 0) assetName = assetName.substring(0, query);
-                if (GitHubRelease.isCloneName(assetName) || GitHubRelease.isDebugName(assetName)) continue;
-                return new DirectRelease(tag, assetName, resolve(base + "/", href));
-            }
+            return bestDirectRelease(base, downloadText(base + "/releases"));
         } catch (Exception ignored) {}
         return null;
+    }
+
+    private DirectRelease bestDirectRelease(String base, String html) {
+        if (html == null) return null;
+        Matcher link = APK_HREF.matcher(html);
+        Pattern tagPattern = Pattern.compile("/releases/download/([^/]+)/", Pattern.CASE_INSENSITIVE);
+        String firstTag = null;
+        DirectRelease best = null;
+        int bestRank = Integer.MAX_VALUE;
+        while (link.find()) {
+            String href = htmlDecode(link.group(1));
+            if (!href.contains("/releases/download/")) continue;
+            Matcher tagMatcher = tagPattern.matcher(href);
+            String tag = tagMatcher.find() ? htmlDecode(tagMatcher.group(1)) : null;
+            String assetName = href.substring(href.lastIndexOf('/') + 1);
+            int query = assetName.indexOf('?');
+            if (query >= 0) assetName = assetName.substring(0, query);
+            if (GitHubRelease.isCloneName(assetName) || GitHubRelease.isDebugName(assetName)) continue;
+            if (firstTag == null) {
+                firstTag = tag;
+            } else if (tag != null && !tag.equals(firstTag)) {
+                break;
+            }
+            int rank = com.opensourcefinder.app.model.DeviceAbi.rank(
+                    com.opensourcefinder.app.model.DeviceAbi.fromFileName(assetName));
+            if (rank < bestRank) {
+                best = new DirectRelease(tag, assetName, resolve(base + "/", href));
+                bestRank = rank;
+            }
+        }
+        return best;
     }
 
     private List<GitHubRelease> listReleasesChecked(String owner, String repo) {
@@ -1261,21 +1307,8 @@ public class CustomRepositoryScanner {
         String[] pages = {base + "/releases/latest", base + "/releases"};
         for (String page : pages) {
             try {
-                String html = downloadText(page);
-                Matcher link = APK_HREF.matcher(html);
-                while (link.find()) {
-                    String href = htmlDecode(link.group(1));
-                    if (!href.contains("/releases/download/")) continue;
-                    String downloadUrl = resolve(base + "/", href);
-                    Matcher tagMatcher = Pattern.compile(
-                            "/releases/download/([^/]+)/", Pattern.CASE_INSENSITIVE).matcher(href);
-                    String tag = tagMatcher.find() ? htmlDecode(tagMatcher.group(1)) : null;
-                    String assetName = href.substring(href.lastIndexOf('/') + 1);
-                    int query = assetName.indexOf('?');
-                    if (query >= 0) assetName = assetName.substring(0, query);
-                    if (GitHubRelease.isCloneName(assetName) || GitHubRelease.isDebugName(assetName)) continue;
-                    return new DirectRelease(tag, assetName, downloadUrl);
-                }
+                DirectRelease found = bestDirectRelease(base, downloadText(page));
+                if (found != null) return found;
             } catch (Exception ignored) {}
         }
         return null;
@@ -1367,8 +1400,8 @@ public class CustomRepositoryScanner {
         Map<String, String> apkByPackage = new LinkedHashMap<>();
         for (String apk : apkUrls) {
             String file = apk.substring(apk.lastIndexOf('/') + 1);
-            Matcher name = APK_PKG_IN_NAME.matcher(file);
-            if (name.find()) apkByPackage.put(name.group(1), apk);
+            String named = firstPackageInName(file);
+            if (named != null) apkByPackage.put(named, apk);
         }
 
         String chosenPackage = null;
@@ -1385,8 +1418,8 @@ public class CustomRepositoryScanner {
         if (apk == null) return result;
 
         if (chosenPackage == null) {
-            Matcher name = APK_PKG_IN_NAME.matcher(apk.substring(apk.lastIndexOf('/') + 1));
-            chosenPackage = name.find() ? name.group(1) : "web." + Integer.toHexString(source.getUrl().hashCode());
+            String named = firstPackageInName(apk.substring(apk.lastIndexOf('/') + 1));
+            chosenPackage = named != null ? named : "web." + Integer.toHexString(source.getUrl().hashCode());
         }
 
         InstalledAppInfo installed = byPkg.get(chosenPackage);

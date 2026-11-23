@@ -129,8 +129,8 @@ To sign release builds in CI, add these repository secrets:
 To publish a release:
 
 ```bash
-git tag v0.6.2-beta
-git push origin v0.6.2-beta
+git tag v0.6.3-beta
+git push origin v0.6.3-beta
 ```
 
 ## Tech stack

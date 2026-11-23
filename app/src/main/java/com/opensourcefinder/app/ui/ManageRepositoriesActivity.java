@@ -474,9 +474,12 @@ public class ManageRepositoriesActivity extends BaseActivity {
         Set<String> urls = new LinkedHashSet<>();
         for (SourceRepository s : removedSources) urls.add(key(s));
         for (MatchedApp m : MatchStore.get(app)) {
-            if (m != null && m.getSourceUrl() != null && urls.contains(m.getSourceUrl().toLowerCase(Locale.ROOT))) {
-                removedApps.add(m);
+            if (m == null || m.getSourceUrl() == null) continue;
+            boolean owned = urls.contains(m.getSourceUrl().toLowerCase(Locale.ROOT));
+            for (SourceRepository removed : removedSources) {
+                if (RepositoryManager.sameUrl(removed.getUrl(), m.getSourceUrl())) owned = true;
             }
+            if (owned) removedApps.add(m);
         }
         for (SourceRepository s : removedSources) RepositoryManager.remove(app, s.getUrl());
         for (MatchedApp m : removedApps) MatchStore.remove(app, m.getStoreKey());

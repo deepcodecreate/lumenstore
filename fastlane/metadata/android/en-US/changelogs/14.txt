@@ -1,0 +1,1 @@
+Manage releases screen for repositories (channel, tag filter, start version, APK pick), better detection of installed apps, fix for wrong package names.

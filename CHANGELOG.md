@@ -2,22 +2,29 @@
 
 All notable changes are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [0.6.2-beta]
+## [0.6.3-beta]
 
 ### Added
 - Manual repository management: a new Manage releases screen lists every release tag and APK asset of a GitHub repository
 - Per repository you can choose the release channel (auto, stable, pre-release, all), limit updates to tags containing a word such as rc or a regular expression, set the version updates are checked from, pick the preferred APK by name with wildcards, and tell the app which tag your installed version is
 - A repository can be linked to a specific installed app when its package could not be detected
 
+### Fixed
+- Installed apps whose package differs from the repository only by a suffix such as debug, beta, nightly or foss are now recognised and shown as installed instead of missing
+- Pre-release update memory no longer overrides a release channel chosen by the user
+- File names such as v0.6.2 or beta.apk are no longer mistaken for an app package, which left installed apps unrecognised
+- When a repository declares several packages and none is installed, the same package is now chosen on every scan instead of a random one
+- The release page fallback now picks the APK that matches the device architecture instead of the first file listed
+- Removing a repository now also removes its apps when the saved link differs only by case, a trailing slash, www or .git
+- Repositories without a detected package are re-checked every six hours instead of every day
+
+## [0.6.2-beta]
+
 ### Changed
 - Several downloaded apps are now installed one after another: the next install dialog appears only after the previous install finishes, is cancelled or fails
 - App detail buttons now show Installing... or Updating... for the whole install and no longer flash back to Install or Update while the system is still installing
 - After an install completes the detail page switches straight to the Open and Uninstall buttons
 - Cancelled installs are detected from the system install session instead of guessing, and tapping install again while the confirmation is pending reopens it
-
-### Fixed
-- Installed apps whose package differs from the repository only by a suffix such as debug, beta, nightly or foss are now recognised and shown as installed instead of missing
-- Pre-release update memory no longer overrides a release channel chosen by the user
 
 ## [0.6.1-beta]
 
