@@ -1,20 +1,28 @@
 <!DOCTYPE html>
-<html lang="fa-IR" dir="rtl">
+<html lang="en" dir="ltr" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
+    <base href="/lumenstore/" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#000000" />
-    <title>صفحه پیدا نشد — Lumen Store</title>
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#060809" />
+    <title>Page not found | Lumen Store</title>
     <meta name="description" content="" />
     <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="صفحه پیدا نشد — Lumen Store" />
+    <meta property="og:title" content="Page not found | Lumen Store" />
     <meta property="og:description" content="" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://deepcodecreate.github.io/lumenstore/social-preview.png" />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/lumenstore/favicon.svg" />
+    <script>(function(){var d=document.documentElement;try{var l=localStorage.getItem("lumen-lang");if(l!=="fa"&&l!=="en")l="en";var t=localStorage.getItem("lumen-theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.lang=l;d.dir=l==="fa"?"rtl":"ltr";d.dataset.theme=t}catch(e){d.dataset.theme="dark"}d.classList.add("js")})()</script>
     <link rel="stylesheet" href="/lumenstore/assets/app.css" />
+    <script defer src="/lumenstore/assets/i18n.js"></script>
     <script defer src="/lumenstore/assets/app.js"></script>
-  <meta http-equiv="refresh" content="3;url=/lumenstore/" /></head>
-  <body data-page="404"><main style="min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px"><div><h1>۴۰۴</h1><p class="lead" style="margin-inline:auto">این صفحه پیدا نشد.</p><a class="btn btn-primary" href="/lumenstore/">بازگشت به Lumen Store</a></div></main></body></html>
+    </head>
+  <body data-page="404" data-title="t_404">
+    <header class="topbar" id="topbar"></header>
+    <main style="min-height:70vh;display:grid;place-items:center;text-align:center;padding:24px"><div><h1 style="font-size:72px;line-height:1">404</h1><p class="lead" data-i18n="nf_p" style="margin:12px auto 22px">This page does not exist.</p><a class="btn btn-primary" href="/lumenstore/" data-i18n="nf_btn">Back to Lumen Store</a></div></main>
+    <footer class="footer" id="footer"></footer>
+  </body>
+</html>

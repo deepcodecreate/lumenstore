@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#060809" />
+    <title>Submit your app | Lumen Store</title>
+    <meta name="description" content="Requirements and the form for listing your open-source app in Lumen Store." />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Submit your app | Lumen Store" />
+    <meta property="og:description" content="Requirements and the form for listing your open-source app in Lumen Store." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://deepcodecreate.github.io/lumenstore/social-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <script>(function(){var d=document.documentElement;try{var l=localStorage.getItem("lumen-lang");if(l!=="fa"&&l!=="en")l="en";var t=localStorage.getItem("lumen-theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.lang=l;d.dir=l==="fa"?"rtl":"ltr";d.dataset.theme=t}catch(e){d.dataset.theme="dark"}d.classList.add("js")})()</script>
+    <link rel="stylesheet" href="assets/app.css" />
+    <script defer src="assets/i18n.js"></script>
+    <script defer src="assets/app.js"></script>
+  </head>
+  <body data-page="submit" data-title="t_submit" data-desc="d_submit">
+    <header class="topbar" id="topbar"></header>
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <span class="eyebrow reveal" data-i18n="sub_kicker">For developers</span>
+          <h1 class="reveal" data-i18n="sub_h1">List your app in Lumen Store</h1>
+          <p class="lead reveal" data-i18n="sub_lead"></p>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top:12px">
+        <div class="container">
+          <article class="terms-card reveal" id="terms" aria-labelledby="terms-title">
+            <h3 id="terms-title" data-i18n="terms_h">Requirements for listing</h3>
+            <ol class="terms" id="terms-list"></ol>
+          </article>
+
+          <div class="submit">
+            <div class="reveal">
+              <ol class="steps" id="steps-list"></ol>
+              <div class="tg-links">
+                <a class="btn btn-tonal" href="https://t.me/lumenapps" target="_blank" rel="noopener"><span data-i18n="tg_msg">Message on Telegram</span> <small class="ltr">@lumenapps</small></a>
+                <a class="btn btn-outline" href="https://github.com/deepcodecreate/lumenrepo#readme" target="_blank" rel="noopener"><span data-i18n="tg_rules">Rules and requirements</span> <small class="ltr">lumenrepo</small></a>
+                <a class="btn btn-outline" href="https://t.me/deepcodecreate" target="_blank" rel="noopener"><span data-i18n="tg_channel">Announcement channel</span> <small class="ltr">@deepcodecreate</small></a>
+              </div>
+            </div>
+            <div class="reveal">
+              <form class="form-card" id="submit-form" autocomplete="off" novalidate>
+                <div class="form-grid">
+                  <div class="field"><label for="f-name" data-i18n="f_name">App name *</label><input id="f-name" name="name" required /></div>
+                  <div class="field"><label for="f-pkg" data-i18n="f_pkg">Package name *</label><input id="f-pkg" name="pkg" dir="ltr" placeholder="com.example.app" spellcheck="false" autocapitalize="none" required /></div>
+                  <div class="field full"><label for="f-repo" data-i18n="f_repo">GitHub repository *</label><input id="f-repo" name="repo" dir="ltr" placeholder="https://github.com/you/app" inputmode="url" autocapitalize="none" spellcheck="false" required /></div>
+                  <div class="field"><label for="f-cat" data-i18n="f_cat">Category *</label><select id="f-cat" name="cat" required><option value="" data-i18n="f_cat_ph">Choose…</option></select></div>
+                  <div class="field"><label for="f-tags" data-i18n="f_tags">Tags</label><input id="f-tags" name="tags" data-i18n-ph="f_tags_ph" placeholder="e.g. privacy, offline" /></div>
+                  <div class="field full"><label for="f-index" data-i18n="f_index">If it is on F-Droid / Izzy</label><input id="f-index" name="index" dir="ltr" placeholder="https://f-droid.org/packages/…" inputmode="url" autocapitalize="none" spellcheck="false" /></div>
+                  <div class="field full"><label for="f-desc" data-i18n="f_desc">Short description</label><textarea id="f-desc" name="desc" rows="2"></textarea></div>
+                  <div class="field full"><label for="f-who" data-i18n="f_who">Your name (for contact)</label><input id="f-who" name="who" /></div>
+                </div>
+                <div class="checks" id="confirms" role="group" data-i18n-aria="conf_aria" aria-label="Confirmations"></div>
+                <div class="form-actions"><button class="btn btn-primary" type="submit" data-i18n="send_tg">Send on Telegram</button></div>
+                <p class="form-note" data-i18n="form_note"></p>
+                <div id="submit-preview"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top:0">
+        <div class="container">
+          <div class="section-head reveal"><div><span class="kicker" data-i18n="sub_kicker">For developers</span><h2 data-i18n="src_h">Where do apps come from?</h2></div><p class="section-intro" data-i18n="src_intro"></p></div>
+          <div class="req-list">
+            <article class="req reveal"><span class="req-n">01</span><div><h3 data-i18n="req1_h">Lumen repository</h3><p><a class="ltr" href="https://github.com/deepcodecreate/lumenrepo" target="_blank" rel="noopener">github.com/deepcodecreate/lumenrepo</a></p><p><a class="ltr" href="https://raw.githubusercontent.com/deepcodecreate/lumenrepo/main/index-v2.json" target="_blank" rel="noreferrer">index-v2.json</a></p></div></article>
+            <article class="req reveal"><span class="req-n">02</span><div><h3 data-i18n="req2_h">Requirements</h3><p><span data-i18n="req2_p"></span> <a href="https://github.com/deepcodecreate/lumenrepo#readme" target="_blank" rel="noopener" data-i18n="read_rules">Read the rules</a></p></div></article>
+            <article class="req reveal"><span class="req-n">03</span><div><h3 data-i18n="req3_h">Automatic releases</h3><p data-i18n="req3_p"></p></div></article>
+            <article class="req reveal"><span class="req-n">04</span><div><h3 data-i18n="req4_h">Other repositories</h3><p data-i18n="req4_p"></p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="badge" style="padding-top:0">
+        <div class="container badge-layout">
+          <div class="badge-stage reveal">
+            <span class="cap" data-i18n="badge_cap1">Badge preview on a project page</span>
+            <img src="badges/lumen-store.svg" alt="Get it in Lumen Store" />
+            <span class="cap" data-i18n="badge_cap2"></span>
+          </div>
+          <div class="reveal">
+            <span class="kicker" data-i18n="badge_kicker">Badge</span>
+            <h2 style="font-size:clamp(24px,3.2vw,34px)" data-i18n="badge_h">Add a badge to your project</h2>
+            <p class="section-intro" style="margin-top:10px;max-width:none" data-i18n="badge_intro"></p>
+            <div class="field-inline"><label for="badge-pkg" data-i18n="badge_pkg">Package name</label><input id="badge-pkg" value="com.example.app" dir="ltr" spellcheck="false" autocomplete="off" inputmode="url" /></div>
+            <div id="badge-viewer"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer" id="footer"></footer>
+    <noscript><p style="padding:24px;text-align:center">Please enable JavaScript to use this page.</p></noscript>
+  </body>
+</html>

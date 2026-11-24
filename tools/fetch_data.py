@@ -90,7 +90,7 @@ def main():
         json.dump(releases, f, ensure_ascii=False, separators=(",", ":"))
     print("releases:", len(releases), "of", len(slugs))
     today = datetime.date.today().isoformat()
-    urls = [SITE + "/"] + ["%s/app.html?id=%s" % (SITE, p) for p in packages if re.match(r"^[A-Za-z0-9._]+$", p)]
+    urls = [SITE + "/", SITE + "/submit.html", SITE + "/danger.html"] + ["%s/app.html?id=%s" % (SITE, p) for p in packages if re.match(r"^[A-Za-z0-9._]+$", p)]
     body = "".join("<url><loc>%s</loc><lastmod>%s</lastmod></url>" % (u.replace("&", "&amp;"), today) for u in urls)
     with open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">%s</urlset>\n' % body)
