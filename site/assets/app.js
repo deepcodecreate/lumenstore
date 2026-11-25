@@ -368,6 +368,7 @@ function renderTopbar(el) {
   btn = h("button", { class: "menu-toggle", type: "button", "aria-label": t("menu_aria"), "aria-expanded": "false", "aria-controls": "site-nav", onclick: () => setOpen(!nav.classList.contains("open")) }, h("i"), h("i"), h("i"));
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
   window.addEventListener("resize", () => { if (innerWidth > 760) setOpen(false); });
+  window.addEventListener("pageshow", () => setOpen(false));
   el.replaceChildren(h("div", { class: "container nav" }, brand(), nav, h("div", { class: "nav-tools" }, langBtn, themeBtn, btn)));
   const onScroll = () => el.classList.toggle("scrolled", scrollY > 8);
   addEventListener("scroll", onScroll, { passive: true }); onScroll();
