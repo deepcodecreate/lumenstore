@@ -56,7 +56,7 @@ jobs:
           FILE=".github/release-notes/${GITHUB_REF_NAME}.md"
           if [ -f "$FILE" ]; then echo "path=$FILE" >> "$GITHUB_OUTPUT"; fi
 
-      - uses: actions/attest-build-provenance@v2
+      - uses: actions/attest-build-provenance@v4
         with:
           subject-path: dist/*.apk
 
